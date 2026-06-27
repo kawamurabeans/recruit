@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中道 ○○ | パティシエ | スタッフ紹介 | 甘納豆かわむら</title>
+<meta name="description" content="甘納豆かわむらで働くパティシエ・中道のインタビュー。仕事内容・やりがい・職場環境についてリアルな声をお届けします。">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --brown:       #412107;
+  --brown-mid:   #6b3a1f;
+  --brown-light: #9c6240;
+  --gold:        #c9973a;
+  --beige:       #f5ede3;
+  --beige-light: #fdf8f3;
+  --text:        #2a1a0e;
+  --text-sub:    #6b5040;
+  --white:       #ffffff;
+  --gray:        #e8ddd4;
+}
+
+body {
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+  color: var(--text);
+  background: var(--white);
+  line-height: 1.9;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; width: 100%;
+  z-index: 100;
+  padding: 18px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.4s, padding 0.4s;
+}
+header.scrolled {
+  background: rgba(65,33,7,0.95);
+  backdrop-filter: blur(4px);
+  padding: 12px 48px;
+}
+.header-logo {
+  color: var(--white);
+  font-size: 0.85em;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+header.scrolled .header-logo { opacity: 1; }
+.header-logo span { color: var(--gold); }
+.header-back {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.75em;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+  opacity: 0;
+  transition: opacity 0.4s, color 0.2s;
+}
+header.scrolled .header-back { opacity: 1; }
+.header-back:hover { color: var(--gold); }
+
+/* ── HERO ── */
+.hero {
+  height: 100vh; min-height: 640px;
+  position: relative;
+  display: flex; align-items: flex-end;
+  overflow: hidden;
+}
+.hero-img-ph {
+  position: absolute; inset: 0;
+  background: var(--brown);
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-img-label {
+  color: rgba(255,255,255,0.2);
+  font-size: 0.75em;
+  letter-spacing: 0.2em;
+  font-family: sans-serif;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(20,8,2,0.85) 0%, rgba(20,8,2,0.2) 55%, transparent 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 0 80px 72px;
+  width: 100%;
+}
+.hero-role {
+  color: var(--gold);
+  font-size: 0.72em;
+  letter-spacing: 0.35em;
+  display: block;
+  margin-bottom: 16px;
+}
+.hero-name {
+  color: var(--white);
+  font-size: clamp(2.4em, 5vw, 3.8em);
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.hero-name-en {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.82em;
+  letter-spacing: 0.18em;
+  display: block;
+  margin-bottom: 28px;
+}
+.hero-meta {
+  display: flex; gap: 32px;
+}
+.hero-meta-item {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.75em;
+  letter-spacing: 0.1em;
+}
+.hero-meta-item strong {
+  display: block;
+  color: var(--white);
+  font-size: 1.1em;
+  font-weight: normal;
+  margin-bottom: 2px;
+}
+.hero-scroll {
+  position: absolute; bottom: 24px; right: 80px;
+  color: rgba(255,255,255,0.35);
+  font-size: 0.65em;
+  letter-spacing: 0.25em;
+  writing-mode: vertical-rl;
+  display: flex; align-items: center; gap: 12px;
+  z-index: 2;
+}
+.hero-scroll::after {
+  content: '';
+  display: block;
+  width: 1px; height: 48px;
+  background: rgba(255,255,255,0.25);
+}
+
+/* ── LEAD ── */
+.lead-section {
+  background: var(--beige-light);
+  padding: 96px 0;
+}
+.lead-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 40px;
+  text-align: center;
+}
+.lead-eyebrow {
+  color: var(--gold);
+  font-size: 0.7em;
+  letter-spacing: 0.3em;
+  display: block;
+  margin-bottom: 28px;
+}
+.lead-text {
+  font-size: 1.12em;
+  line-height: 2.2;
+  color: var(--brown-mid);
+  letter-spacing: 0.06em;
+}
+
+/* ── INTERVIEW SECTIONS ── */
+.interview-section {
+  padding: 120px 0;
+}
+.interview-section:nth-child(odd) { background: var(--white); }
+.interview-section:nth-child(even) { background: var(--beige-light); }
+
+.interview-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.interview-inner.reverse { direction: rtl; }
+.interview-inner.reverse > * { direction: ltr; }
+
+.interview-img-ph {
+  aspect-ratio: 3/4;
+  background: var(--gray);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.interview-img-ph::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--beige) 0%, var(--gray) 100%);
+}
+.interview-img-label {
+  position: relative; z-index: 1;
+  color: var(--text-sub);
+  font-size: 0.7em;
+  letter-spacing: 0.15em;
+  font-family: sans-serif;
+  text-align: center;
+  line-height: 2;
+}
+
+.interview-body {}
+.section-num {
+  font-size: 4em;
+  color: var(--gray);
+  font-weight: bold;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 8px;
+  font-family: Georgia, serif;
+}
+.section-title {
+  font-size: 1.45em;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  color: var(--brown);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.section-title-en {
+  color: var(--gold);
+  font-size: 0.68em;
+  letter-spacing: 0.25em;
+  display: block;
+  margin-bottom: 28px;
+}
+.divider-line {
+  width: 32px; height: 1px;
+  background: var(--gold);
+  margin-bottom: 28px;
+}
+.interview-q {
+  font-size: 0.82em;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.interview-q::before {
+  content: 'Q.';
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.interview-a {
+  font-size: 0.88em;
+  color: var(--text-sub);
+  line-height: 2.1;
+  margin-bottom: 28px;
+  padding-left: 20px;
+  border-left: 2px solid var(--beige);
+}
+.interview-a:last-child { margin-bottom: 0; }
+
+/* ── HIGHLIGHT QUOTE ── */
+.quote-section {
+  background: var(--brown);
+  padding: 96px 0;
+  text-align: center;
+}
+.quote-text {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 40px;
+  color: var(--white);
+  font-size: clamp(1.15em, 2.5vw, 1.55em);
+  line-height: 2.2;
+  letter-spacing: 0.08em;
+  font-weight: normal;
+}
+.quote-text em {
+  font-style: normal;
+  color: var(--gold);
+}
+.quote-attr {
+  margin-top: 36px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.72em;
+  letter-spacing: 0.2em;
+}
+
+/* ── SCHEDULE ── */
+.schedule-section {
+  background: var(--beige);
+  padding: 120px 0;
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 60px; }
+.sec-eyebrow {
+  color: var(--gold);
+  font-size: 0.7em;
+  letter-spacing: 0.3em;
+  display: block;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.sec-title {
+  font-size: 1.8em;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  color: var(--brown);
+  text-align: center;
+  margin-bottom: 64px;
+}
+.schedule-list {
+  list-style: none;
+  position: relative;
+}
+.schedule-list::before {
+  content: '';
+  position: absolute;
+  left: 72px; top: 0; bottom: 0;
+  width: 1px;
+  background: var(--gray);
+}
+.schedule-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0 32px;
+  margin-bottom: 36px;
+  position: relative;
+}
+.schedule-item::before {
+  content: '';
+  position: absolute;
+  left: 68px; top: 6px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--brown-light);
+  z-index: 1;
+}
+.schedule-time {
+  font-size: 0.8em;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  padding-top: 2px;
+  text-align: right;
+}
+.schedule-body {}
+.schedule-task {
+  font-size: 0.9em;
+  color: var(--brown);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.schedule-desc {
+  font-size: 0.78em;
+  color: var(--text-sub);
+  line-height: 1.8;
+}
+
+/* ── PROFILE CARD ── */
+.profile-section {
+  background: var(--white);
+  padding: 96px 0;
+}
+.profile-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 56px;
+  align-items: start;
+}
+.profile-img-ph {
+  aspect-ratio: 1;
+  background: var(--gray);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.profile-img-label {
+  font-size: 0.65em;
+  color: var(--text-sub);
+  letter-spacing: 0.1em;
+  font-family: sans-serif;
+  text-align: center;
+}
+.profile-name {
+  font-size: 1.5em;
+  font-weight: normal;
+  color: var(--brown);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.profile-name-en {
+  font-size: 0.78em;
+  color: var(--text-sub);
+  letter-spacing: 0.18em;
+  margin-bottom: 24px;
+  display: block;
+}
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82em;
+}
+.profile-table tr {
+  border-bottom: 1px solid var(--gray);
+}
+.profile-table th {
+  width: 100px;
+  padding: 12px 0;
+  color: var(--text-sub);
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  text-align: left;
+  vertical-align: top;
+}
+.profile-table td {
+  padding: 12px 0;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  line-height: 1.8;
+}
+
+/* ── OTHER STAFF ── */
+.other-section {
+  background: var(--brown);
+  padding: 96px 0;
+}
+.other-section .sec-title { color: var(--white); margin-bottom: 48px; }
+.other-section .sec-eyebrow { color: var(--gold); }
+.other-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.other-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s;
+  overflow: hidden;
+}
+.other-card:hover { background: rgba(255,255,255,0.10); }
+.other-card-img {
+  aspect-ratio: 4/3;
+  background: rgba(255,255,255,0.04);
+  display: flex; align-items: center; justify-content: center;
+}
+.other-card-img span {
+  color: rgba(255,255,255,0.2);
+  font-size: 0.65em;
+  letter-spacing: 0.15em;
+  font-family: sans-serif;
+}
+.other-card-body {
+  padding: 20px;
+}
+.other-card-role {
+  color: var(--gold);
+  font-size: 0.65em;
+  letter-spacing: 0.2em;
+  display: block;
+  margin-bottom: 6px;
+}
+.other-card-name {
+  color: var(--white);
+  font-size: 0.92em;
+  letter-spacing: 0.08em;
+}
+.other-card-copy {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.75em;
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #1a0a03;
+  padding: 40px;
+  text-align: center;
+}
+footer p {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.72em;
+  letter-spacing: 0.08em;
+  line-height: 2.2;
+}
+footer a {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+}
+footer a:hover { color: var(--gold); }
+
+/* ── FADE IN ANIMATION ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-up-d1 { transition-delay: 0.1s; }
+.fade-up-d2 { transition-delay: 0.2s; }
+.fade-up-d3 { transition-delay: 0.3s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  header { padding: 14px 20px; }
+  header.scrolled { padding: 10px 20px; }
+
+  .hero-content { padding: 0 24px 56px; }
+  .hero-name { font-size: clamp(1.8em, 8vw, 2.6em); }
+  .hero-meta { flex-direction: column; gap: 12px; }
+  .hero-scroll { right: 24px; }
+
+  .lead-section { padding: 64px 0; }
+
+  .interview-section { padding: 72px 0; }
+  .interview-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 24px;
+  }
+  .interview-inner.reverse { direction: ltr; }
+  .interview-img-ph { aspect-ratio: 4/3; }
+  .section-num { font-size: 2.8em; }
+
+  .quote-section { padding: 64px 0; }
+
+  .schedule-section { padding: 72px 0; }
+  .container { padding: 0 24px; }
+  .schedule-list::before { left: 60px; }
+  .schedule-item::before { left: 56px; }
+
+  .profile-section { padding: 72px 0; }
+  .profile-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0 24px;
+  }
+  .profile-img-ph { width: 120px; height: 120px; margin: 0 auto; }
+
+  .other-section { padding: 72px 0; }
+  .other-grid {
+    grid-template-columns: 1fr;
+    padding: 0 24px;
+    gap: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <a href="/staff-introduction/" class="header-back">← スタッフ紹介一覧</a>
+  <a href="https://mame-kawamura.com" class="header-logo" target="_blank"><span>甘納豆かわむら</span></a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-img-ph">
+    <span class="hero-img-label">PHOTO<br>笑顔のポートレート写真<br>（全身 or 上半身）</span>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-role">PATISSIER</span>
+    <h1 class="hero-name">中道 ○○</h1>
+    <span class="hero-name-en">Nakamichi ○○</span>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <strong>2023年</strong>入社
+      </div>
+      <div class="hero-meta-item">
+        <strong>パティシエ</strong>担当
+      </div>
+      <div class="hero-meta-item">
+        <strong>○○専門学校</strong>出身
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">SCROLL</div>
+</section>
+
+<!-- LEAD -->
+<section class="lead-section">
+  <div class="lead-inner fade-up">
+    <span class="lead-eyebrow">INTRODUCTION</span>
+    <p class="lead-text">
+      和菓子と洋菓子、どちらも本気でつくる職場があると知って、ここに決めました。
+      毎日が発見の連続で、気づいたらもう2年が経っていました。
+    </p>
+  </div>
+</section>
+
+<!-- INTERVIEW 01 -->
+<section class="interview-section">
+  <div class="interview-inner">
+    <div class="interview-img-ph fade-up">
+      <span class="interview-img-label">PHOTO<br>オーブン前での<br>作業風景</span>
+    </div>
+    <div class="interview-body">
+      <div class="section-num fade-up">01</div>
+      <h2 class="section-title fade-up">仕事内容と<br>1日の流れ<span class="section-title-en">WHAT I DO</span></h2>
+      <div class="divider-line fade-up"></div>
+      <div class="interview-q fade-up fade-up-d1">毎日どんな仕事をしていますか？</div>
+      <p class="interview-a fade-up fade-up-d2">主に洋菓子の製造を担当しています。朝8時に出勤してから、まずその日の製造スケジュールを確認します。焼き菓子・生菓子・甘納豆と商品によって工程が全く違うので、段取りが大事ですね。午後からはオンライン注文の梱包や新商品の試作に入ることも多いです。</p>
+      <div class="interview-q fade-up fade-up-d1">入社前と後で一番驚いたことは？</div>
+      <p class="interview-a fade-up fade-up-d2">和菓子と洋菓子の両方を学べる環境が、想像以上に整っていたことです。専門学校では洋菓子専攻だったので、和菓子の技術は正直ほとんど知りませんでした。でも先輩が丁寧に教えてくれるので、今では甘納豆の炊き方にも自信がついてきました。</p>
+    </div>
+  </div>
+</section>
+
+<!-- INTERVIEW 02 -->
+<section class="interview-section">
+  <div class="interview-inner reverse">
+    <div class="interview-img-ph fade-up">
+      <span class="interview-img-label">PHOTO<br>カフェでスイーツを<br>提供している場面</span>
+    </div>
+    <div class="interview-body">
+      <div class="section-num fade-up">02</div>
+      <h2 class="section-title fade-up">やりがいと<br>好きなところ<span class="section-title-en">MY MOTIVATION</span></h2>
+      <div class="divider-line fade-up"></div>
+      <div class="interview-q fade-up fade-up-d1">この仕事のどんなところが好きですか？</div>
+      <p class="interview-a fade-up fade-up-d2">お客様の反応を直接見られることが一番嬉しいです。カフェでスイーツを提供したとき、「これ美味しい」って言葉が聞こえると、疲れが吹き飛びます。金沢に来た観光客の方が「また食べたい」と言ってくださることもあって、そういう瞬間に作り続けている意味を感じます。</p>
+      <div class="interview-q fade-up fade-up-d1">特に印象に残っているエピソードは？</div>
+      <p class="interview-a fade-up fade-up-d2">試作として提案したいちごのパルフェが、実際にメニューに採用されたときは本当に嬉しかったです。入社2年目での採用で、先輩たちも喜んでくれて、自分のアイデアがお客様のもとに届くという経験は今でも忘れられません。</p>
+    </div>
+  </div>
+</section>
+
+<!-- INTERVIEW 03 -->
+<section class="interview-section">
+  <div class="interview-inner">
+    <div class="interview-img-ph fade-up">
+      <span class="interview-img-label">PHOTO<br>スタッフ同士で<br>話している場面</span>
+    </div>
+    <div class="interview-body">
+      <div class="section-num fade-up">03</div>
+      <h2 class="section-title fade-up">女性が働きやすい<br>環境について<span class="section-title-en">WORK-LIFE BALANCE</span></h2>
+      <div class="divider-line fade-up"></div>
+      <div class="interview-q fade-up fade-up-d1">職場の雰囲気はどうですか？</div>
+      <p class="interview-a fade-up fade-up-d2">女性スタッフが多く、産休・育休を経て戻ってきた先輩もたくさんいます。お子さんが2人いる先輩が現役でパティシエとして活躍されているのを見て、長く続けられる仕事だと安心しました。シフトも柔軟に相談できるので、ライフステージが変わっても働き続けられると感じています。</p>
+      <div class="interview-q fade-up fade-up-d1">育休から復帰した先輩を見て感じることは？</div>
+      <p class="interview-a fade-up fade-up-d2">復帰後も以前と変わらずバリバリ働いている先輩を見て、この職場は本当に続けやすいんだなと実感しました。「産休前と同じポジションに戻れた」と話してくれる先輩の言葉が印象的で、自分の将来についても不安なく考えられるようになりました。</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <p class="quote-text fade-up">
+    和菓子も洋菓子も、<em>どちらも本気で</em>つくれる場所。<br>
+    そんな職人が集まっているから、<br>
+    毎日が刺激的です。
+  </p>
+  <p class="quote-attr fade-up fade-up-d1">中道 ○○ — パティシエ</p>
+</section>
+
+<!-- INTERVIEW 04 -->
+<section class="interview-section">
+  <div class="interview-inner reverse">
+    <div class="interview-img-ph fade-up">
+      <span class="interview-img-label">PHOTO<br>笑顔でカメラを<br>向いたカット</span>
+    </div>
+    <div class="interview-body">
+      <div class="section-num fade-up">04</div>
+      <h2 class="section-title fade-up">これからの<br>目標<span class="section-title-en">MY FUTURE</span></h2>
+      <div class="divider-line fade-up"></div>
+      <div class="interview-q fade-up fade-up-d1">今後どんなパティシエになりたいですか？</div>
+      <p class="interview-a fade-up fade-up-d2">和菓子の技術をもっと深めて、洋菓子との融合ができるようになりたいです。かわむらが目指している「和洋の垣根を越えたお菓子づくり」を、自分の手で体現できる職人になりたいと思っています。将来は自分でプロデュースした商品を世界中のお客様に届けてみたいです。</p>
+      <div class="interview-q fade-up fade-up-d1">就活中の方へひとこと</div>
+      <p class="interview-a fade-up fade-up-d2">パティシエという仕事は体力も必要ですが、それ以上にお客様の笑顔からエネルギーをもらえる仕事です。かわむらは若手の意見をしっかり聞いてくれる職場なので、新しいことに挑戦したい方にはぴったりだと思います。ぜひ一度、工場見学に来てみてください。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule-section">
+  <div class="container">
+    <span class="sec-eyebrow">A DAY IN MY LIFE</span>
+    <h2 class="sec-title">1日のスケジュール</h2>
+    <ul class="schedule-list">
+      <li class="schedule-item fade-up">
+        <span class="schedule-time">08:00</span>
+        <div class="schedule-body">
+          <div class="schedule-task">出勤・準備</div>
+          <div class="schedule-desc">当日の製造スケジュールを確認。器具の衛生管理からスタート。</div>
+        </div>
+      </li>
+      <li class="schedule-item fade-up fade-up-d1">
+        <span class="schedule-time">08:30</span>
+        <div class="schedule-body">
+          <div class="schedule-task">製造開始（洋菓子）</div>
+          <div class="schedule-desc">焼き菓子・生菓子の製造。オーブンのタイミング管理が重要。</div>
+        </div>
+      </li>
+      <li class="schedule-item fade-up fade-up-d1">
+        <span class="schedule-time">11:30</span>
+        <div class="schedule-body">
+          <div class="schedule-task">休憩</div>
+          <div class="schedule-desc">スタッフ同士でランチ。仲が良いのでいつも賑やか。</div>
+        </div>
+      </li>
+      <li class="schedule-item fade-up fade-up-d2">
+        <span class="schedule-time">12:30</span>
+        <div class="schedule-body">
+          <div class="schedule-task">梱包・出荷作業 / カフェサポート</div>
+          <div class="schedule-desc">オンライン注文の梱包や、カフェでのスイーツ提供サポートを行う日も。</div>
+        </div>
+      </li>
+      <li class="schedule-item fade-up fade-up-d2">
+        <span class="schedule-time">14:00</span>
+        <div class="schedule-body">
+          <div class="schedule-task">試作・開発</div>
+          <div class="schedule-desc">新商品の試作に取り組む時間。アイデアをどんどん提案できる。</div>
+        </div>
+      </li>
+      <li class="schedule-item fade-up fade-up-d3">
+        <span class="schedule-time">16:30</span>
+        <div class="schedule-body">
+          <div class="schedule-task">片付け・清掃</div>
+          <div class="schedule-desc">翌日の準備を整えて終了。チームで手分けして効率よく。</div>
+        </div>
+      </li>
+      <li class="schedule-item fade-up fade-up-d3">
+        <span class="schedule-time">17:00</span>
+        <div class="schedule-body">
+          <div class="schedule-task">退勤</div>
+          <div class="schedule-desc">所定労働時間内にほぼ終業。残業は月10時間以内。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section class="profile-section">
+  <div class="profile-inner">
+    <div>
+      <div class="profile-img-ph fade-up">
+        <span class="profile-img-label">顔写真<br>（正方形）</span>
+      </div>
+    </div>
+    <div>
+      <h2 class="profile-name fade-up">中道 ○○</h2>
+      <span class="profile-name-en fade-up">Nakamichi ○○</span>
+      <table class="profile-table">
+        <tr class="fade-up">
+          <th>担当</th>
+          <td>パティシエ（洋菓子製造）</td>
+        </tr>
+        <tr class="fade-up fade-up-d1">
+          <th>入社</th>
+          <td>2023年</td>
+        </tr>
+        <tr class="fade-up fade-up-d1">
+          <th>出身</th>
+          <td>○○専門学校 製菓学科</td>
+        </tr>
+        <tr class="fade-up fade-up-d2">
+          <th>趣味</th>
+          <td>カフェ巡り・旅行</td>
+        </tr>
+        <tr class="fade-up fade-up-d2">
+          <th>好きな<br>お菓子</th>
+          <td>いちごモナカ（かわむらの定番になりました）</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER STAFF -->
+<section class="other-section">
+  <div style="text-align:center; margin-bottom:48px;">
+    <span class="sec-eyebrow">OTHER INTERVIEWS</span>
+    <h2 class="sec-title">他のスタッフを見る</h2>
+  </div>
+  <div class="other-grid">
+    <a href="#" class="other-card fade-up">
+      <div class="other-card-img"><span>PHOTO</span></div>
+      <div class="other-card-body">
+        <span class="other-card-role">PATISSIER</span>
+        <div class="other-card-name">○○ ○○</div>
+        <div class="other-card-copy">産休を経て復帰。子育てとパティシエの両立について語ります。</div>
+      </div>
+    </a>
+    <a href="#" class="other-card fade-up fade-up-d1">
+      <div class="other-card-img"><span>PHOTO</span></div>
+      <div class="other-card-body">
+        <span class="other-card-role">WAGASHI CRAFTSMAN</span>
+        <div class="other-card-name">○○ ○○</div>
+        <div class="other-card-copy">20年のキャリアを持つ和菓子職人が語る、甘納豆づくりの哲学。</div>
+      </div>
+    </a>
+    <a href="#" class="other-card fade-up fade-up-d2">
+      <div class="other-card-img"><span>PHOTO</span></div>
+      <div class="other-card-body">
+        <span class="other-card-role">SHOP STAFF</span>
+        <div class="other-card-name">○○ ○○</div>
+        <div class="other-card-copy">西茶屋街の旗艦店で、世界中のお客様と向き合う毎日。</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <a href="https://mame-kawamura.com" target="_blank">甘納豆かわむら</a>　|
+    <a href="https://mame-kawamura.com/recruit" target="_blank">採用情報</a>　|
+    <a href="/staff-introduction/">スタッフ紹介一覧</a>
+  </p>
+  <p style="margin-top:16px;">© 甘納豆かわむら All Rights Reserved.</p>
+</footer>
+
+<script>
+// ヘッダースクロール
+(function() {
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', function() {
+    header.classList.toggle('scrolled', window.scrollY > 80);
+  });
+})();
+
+// フェードインアニメーション
+(function() {
+  const els = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(function(el) { observer.observe(el); });
+})();
+</script>
+
+</body>
+</html>
