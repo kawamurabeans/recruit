@@ -324,22 +324,29 @@ header.scrolled .header-back { opacity: 1; }
 .schedule-list::before {
   content: '';
   position: absolute;
-  left: 72px; top: 0; bottom: 0;
+  left: 100px; top: 0; bottom: 0;
   width: 1px;
   background: var(--gray);
 }
 .schedule-item {
   display: grid;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 100px 1fr;
   gap: 0 32px;
   margin-bottom: 36px;
   position: relative;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.schedule-item.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 .schedule-item::before {
   content: '';
   position: absolute;
-  left: 68px; top: 6px;
-  width: 9px; height: 9px;
+  left: 95px; top: 5px;
+  width: 10px; height: 10px;
   border-radius: 50%;
   background: var(--white);
   border: 2px solid var(--brown-light);
@@ -351,6 +358,7 @@ header.scrolled .header-back { opacity: 1; }
   letter-spacing: 0.05em;
   padding-top: 2px;
   text-align: right;
+  padding-right: 20px;
 }
 .schedule-body {}
 .schedule-task {
@@ -545,8 +553,10 @@ footer a:hover { color: var(--gold); }
 
   .schedule-section { padding: 72px 0; }
   .container { padding: 0 24px; }
-  .schedule-list::before { left: 60px; }
-  .schedule-item::before { left: 56px; }
+  .schedule-list::before { left: 80px; }
+  .schedule-item::before { left: 75px; }
+  .schedule-item { grid-template-columns: 80px 1fr; }
+  .schedule-time { padding-right: 16px; }
 
   .profile-section { padding: 72px 0; }
   .profile-inner {
@@ -696,49 +706,49 @@ footer a:hover { color: var(--gold); }
     <span class="sec-eyebrow">A DAY IN MY LIFE</span>
     <h2 class="sec-title">1日のスケジュール</h2>
     <ul class="schedule-list">
-      <li class="schedule-item fade-up">
+      <li class="schedule-item">
         <span class="schedule-time">08:00</span>
         <div class="schedule-body">
           <div class="schedule-task">出勤</div>
           <div class="schedule-desc">1日のスタート。準備を整えてすぐ製造へ。</div>
         </div>
       </li>
-      <li class="schedule-item fade-up fade-up-d1">
+      <li class="schedule-item">
         <span class="schedule-time">08:30</span>
         <div class="schedule-body">
           <div class="schedule-task">製造開始（洋菓子・和菓子）</div>
           <div class="schedule-desc">パルフェやスイーツの材料を仕込んだり、羊羹を製造したり。その日によって内容はさまざま。</div>
         </div>
       </li>
-      <li class="schedule-item fade-up fade-up-d1">
+      <li class="schedule-item">
         <span class="schedule-time">12:00</span>
         <div class="schedule-body">
           <div class="schedule-task">休憩</div>
           <div class="schedule-desc">他のスタッフと話したり、好きな動画をスマホで見ながらリフレッシュ。</div>
         </div>
       </li>
-      <li class="schedule-item fade-up fade-up-d2">
+      <li class="schedule-item">
         <span class="schedule-time">13:00</span>
         <div class="schedule-body">
           <div class="schedule-task">業務再開</div>
           <div class="schedule-desc">午後も製造を続けながら、接客に入ることも。</div>
         </div>
       </li>
-      <li class="schedule-item fade-up fade-up-d2">
+      <li class="schedule-item">
         <span class="schedule-time">14:30</span>
         <div class="schedule-body">
           <div class="schedule-task">新商品の試作</div>
           <div class="schedule-desc">アイデアを形にする時間。自由に提案できる雰囲気がある。</div>
         </div>
       </li>
-      <li class="schedule-item fade-up fade-up-d3">
+      <li class="schedule-item">
         <span class="schedule-time">15:30</span>
         <div class="schedule-body">
           <div class="schedule-task">退勤前の片付け</div>
           <div class="schedule-desc">翌日に備えて道具や場所を整える。</div>
         </div>
       </li>
-      <li class="schedule-item fade-up fade-up-d3">
+      <li class="schedule-item">
         <span class="schedule-time">16:00</span>
         <div class="schedule-body">
           <div class="schedule-task">退勤</div>
@@ -847,6 +857,23 @@ footer a:hover { color: var(--gold); }
     });
   }, { threshold: 0.12 });
   els.forEach(function(el) { observer.observe(el); });
+})();
+
+// スケジュール順次アニメーション
+(function() {
+  const items = document.querySelectorAll('.schedule-item');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        const index = Array.from(items).indexOf(entry.target);
+        setTimeout(function() {
+          entry.target.classList.add('visible');
+        }, index * 120);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  items.forEach(function(item) { observer.observe(item); });
 })();
 </script>
 
