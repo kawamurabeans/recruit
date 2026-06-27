@@ -77,6 +77,10 @@ header.scrolled .header-back { opacity: 1; }
   background: var(--brown);
   display: flex; align-items: center; justify-content: center;
 }
+.hero-img-ph img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+}
 .hero-img-label {
   color: rgba(255,255,255,0.2);
   font-size: 0.75em;
@@ -571,7 +575,7 @@ footer a:hover { color: var(--gold); }
 <!-- HERO -->
 <section class="hero">
   <div class="hero-img-ph">
-    <span class="hero-img-label">PHOTO<br>笑顔のポートレート写真<br>（全身 or 上半身）</span>
+    <img src="../../assets/img/yuka-hero.jpg" alt="Yuka パティシエ">
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
