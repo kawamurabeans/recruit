@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタッフ紹介 | 甘納豆かわむら</title>
+<meta name="description" content="甘納豆かわむらの経営理念・会社の歩み・活躍できる環境をご紹介し、実際に働くスタッフのインタビューへとつなぐ採用ページです。">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --brown:       #412107;
+  --brown-mid:   #6b3a1f;
+  --brown-light: #9c6240;
+  --gold:        #c9973a;
+  --orange:      #c1622c;
+  --beige:       #f5ede3;
+  --beige-light: #fdf8f3;
+  --text:        #2a1a0e;
+  --text-sub:    #6b5040;
+  --white:       #ffffff;
+  --gray:        #e8ddd4;
+}
+
+body {
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+  color: var(--text);
+  background: var(--white);
+  line-height: 1.9;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; width: 100%;
+  z-index: 100;
+  padding: 18px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(65,33,7,0.95);
+  backdrop-filter: blur(4px);
+}
+.header-logo {
+  color: var(--white);
+  font-size: 0.85em;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+}
+.header-logo span { color: var(--gold); }
+.header-back {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.75em;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.header-back:hover { color: var(--gold); }
+
+/* ── HERO ── */
+.page-hero {
+  background: var(--brown);
+  padding: 190px 40px 110px;
+  text-align: center;
+}
+.page-hero-eyebrow {
+  color: var(--gold);
+  font-size: 0.75em;
+  letter-spacing: 0.35em;
+  display: block;
+  margin-bottom: 24px;
+}
+.page-hero-title {
+  color: var(--white);
+  font-size: clamp(2em, 5vw, 3.2em);
+  font-weight: normal;
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+}
+.page-hero-sub {
+  color: var(--gold);
+  font-size: 1.05em;
+  letter-spacing: 0.1em;
+  margin-bottom: 28px;
+}
+.page-hero-lead {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9em;
+  letter-spacing: 0.05em;
+  line-height: 2;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ── SHARED SECTION STYLES ── */
+.sec {
+  padding: 100px 40px;
+}
+.sec:nth-child(odd) { background: var(--white); }
+.sec:nth-child(even) { background: var(--beige-light); }
+.sec-inner {
+  max-width: 980px;
+  margin: 0 auto;
+}
+.sec-eyebrow {
+  color: var(--gold);
+  font-size: 0.72em;
+  letter-spacing: 0.3em;
+  display: block;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.sec-title {
+  font-size: clamp(1.5em, 3vw, 2em);
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  color: var(--brown);
+  text-align: center;
+  margin-bottom: 56px;
+}
+.sec-lead {
+  max-width: 720px;
+  margin: 0 auto 40px;
+  text-align: center;
+  color: var(--brown-mid);
+  font-size: 1em;
+  line-height: 2.1;
+  letter-spacing: 0.04em;
+}
+
+/* ── PHILOSOPHY ── */
+.philosophy-quote {
+  text-align: center;
+  color: var(--brown);
+  font-size: clamp(1.3em, 3vw, 1.8em);
+  letter-spacing: 0.1em;
+  margin-bottom: 40px;
+  position: relative;
+  padding-bottom: 32px;
+}
+.philosophy-quote::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 48px; height: 2px;
+  background: var(--gold);
+}
+
+/* ── INNOVATION DIAGRAM ── */
+.innovation-wrap {
+  display: flex; align-items: center; justify-content: center;
+  gap: 24px; flex-wrap: wrap;
+  margin: 48px 0 40px;
+}
+.innovation-box {
+  background: var(--white);
+  border-top: 3px solid var(--orange);
+  padding: 28px 32px;
+  min-width: 220px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(65,33,7,0.06);
+}
+.innovation-box h3 {
+  color: var(--orange);
+  font-size: 1.1em;
+  font-weight: normal;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gray);
+}
+.innovation-box p {
+  color: var(--text-sub);
+  font-size: 0.82em;
+  line-height: 1.8;
+}
+.innovation-x {
+  color: var(--gold);
+  font-size: 1.6em;
+}
+.innovation-result {
+  text-align: center;
+  color: var(--brown);
+  font-size: 1em;
+  line-height: 2;
+  letter-spacing: 0.05em;
+}
+.innovation-result strong { color: var(--orange); }
+
+/* ── TIMELINE ── */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+  margin-bottom: 48px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 8px; left: 12.5%; right: 12.5%;
+  height: 2px;
+  background: var(--orange);
+}
+.timeline-item { text-align: center; padding: 0 8px; }
+.timeline-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--orange);
+  margin: 0 auto 20px;
+  position: relative; z-index: 1;
+}
+.timeline-year {
+  color: var(--orange);
+  font-weight: bold;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+.timeline-desc {
+  color: var(--text-sub);
+  font-size: 0.76em;
+  line-height: 1.8;
+}
+.timeline-note {
+  background: var(--white);
+  border-left: 4px solid var(--orange);
+  padding: 28px 32px;
+  font-size: 0.85em;
+  line-height: 2;
+  color: var(--brown-mid);
+  box-shadow: 0 4px 16px rgba(65,33,7,0.05);
+}
+.timeline-note strong { color: var(--orange); }
+
+/* ── TEAM / ENV ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+.info-card {
+  background: var(--white);
+  border-top: 3px solid var(--gold);
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(65,33,7,0.05);
+}
+.info-card h3 {
+  color: var(--orange);
+  font-size: 1.05em;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  margin-bottom: 18px;
+}
+.info-card p, .info-card li {
+  color: var(--text-sub);
+  font-size: 0.85em;
+  line-height: 1.9;
+}
+.info-card ul { list-style: none; }
+.info-card .strong-line {
+  color: var(--brown);
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.highlight-banner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: var(--beige);
+  border: 1px solid var(--gray);
+  padding: 20px 28px;
+}
+.highlight-banner-img {
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.highlight-banner-img img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.highlight-banner p {
+  color: var(--brown);
+  font-size: 0.9em;
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+}
+
+/* ── WORLD (locations / customers) ── */
+.world-banner {
+  background: var(--brown);
+  color: var(--white);
+  padding: 32px 36px;
+  margin-bottom: 32px;
+  display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+}
+.world-banner h3 {
+  color: var(--gold);
+  font-size: 1.3em;
+  font-weight: normal;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.world-banner p {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.85em;
+  line-height: 1.9;
+}
+.customer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.customer-card {
+  background: var(--white);
+  border: 1px solid var(--gray);
+  padding: 24px 20px;
+  text-align: center;
+}
+.customer-card h4 {
+  color: var(--orange);
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  font-weight: normal;
+}
+.customer-card p {
+  color: var(--text-sub);
+  font-size: 0.78em;
+  line-height: 1.8;
+}
+
+/* ── PERSONA LIST ── */
+.persona-list { list-style: none; }
+.persona-item {
+  display: flex; align-items: center; gap: 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray);
+  padding: 20px 8px;
+}
+.persona-num {
+  color: var(--white);
+  background: var(--orange);
+  width: 36px; height: 36px;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85em;
+  flex-shrink: 0;
+  font-family: Georgia, serif;
+}
+.persona-text {
+  color: var(--brown);
+  font-size: 0.92em;
+  letter-spacing: 0.04em;
+}
+
+/* ── BENEFITS ── */
+.benefit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.benefit-card {
+  background: var(--white);
+  border-top: 3px solid var(--gold);
+  padding: 28px 32px;
+  box-shadow: 0 4px 16px rgba(65,33,7,0.05);
+}
+.benefit-card.wide { grid-column: 1 / -1; border-top-color: var(--orange); }
+.benefit-card h3 {
+  color: var(--orange);
+  font-size: 1em;
+  font-weight: normal;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+}
+.benefit-card p {
+  color: var(--text-sub);
+  font-size: 0.85em;
+  line-height: 1.9;
+}
+
+/* ── QUOTE / BRIDGE TO STAFF ── */
+.bridge-section {
+  background: var(--brown);
+  padding: 100px 40px;
+  text-align: center;
+}
+.bridge-text {
+  max-width: 760px;
+  margin: 0 auto;
+  color: var(--white);
+  font-size: clamp(1.15em, 2.5vw, 1.5em);
+  line-height: 2.2;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+}
+.bridge-sub {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8em;
+  letter-spacing: 0.15em;
+}
+
+/* ── STAFF GRID ── */
+.staff-section {
+  background: var(--beige-light);
+  padding: 100px 40px 140px;
+}
+.staff-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.staff-card {
+  background: var(--white);
+  text-decoration: none;
+  display: block;
+  border: 1px solid var(--gray);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+}
+.staff-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(65,33,7,0.12);
+}
+.staff-card-img {
+  aspect-ratio: 3/4;
+  background: var(--gray);
+  overflow: hidden;
+  position: relative;
+}
+.staff-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center center;
+  filter: saturate(1.15) contrast(1.05);
+}
+.staff-card-body { padding: 28px 24px; }
+.staff-card-role {
+  color: var(--gold);
+  font-size: 0.68em;
+  letter-spacing: 0.2em;
+  display: block;
+  margin-bottom: 10px;
+}
+.staff-card-name {
+  color: var(--brown);
+  font-size: 1.25em;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.staff-card-copy {
+  color: var(--text-sub);
+  font-size: 0.82em;
+  line-height: 1.8;
+}
+.staff-card.is-soon { border-style: dashed; pointer-events: none; }
+.staff-card.is-soon .staff-card-img {
+  display: flex; align-items: center; justify-content: center;
+}
+.staff-card.is-soon .staff-card-img span {
+  color: var(--text-sub);
+  font-size: 0.7em;
+  letter-spacing: 0.15em;
+  font-family: sans-serif;
+  opacity: 0.5;
+}
+.staff-card.is-soon .staff-card-name,
+.staff-card.is-soon .staff-card-copy { opacity: 0.5; }
+
+/* ── FOOTER ── */
+footer {
+  background: #1a0a03;
+  padding: 40px;
+  text-align: center;
+}
+footer p {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.72em;
+  letter-spacing: 0.08em;
+  line-height: 2.2;
+}
+footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+footer a:hover { color: var(--gold); }
+
+/* ── FADE ── */
+.fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  header { padding: 14px 20px; }
+  .page-hero { padding: 120px 24px 64px; }
+  .sec { padding: 64px 20px; }
+  .sec-title { margin-bottom: 36px; }
+
+  .innovation-wrap { flex-direction: column; }
+  .timeline { grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
+  .timeline::before { display: none; }
+
+  .two-col { grid-template-columns: 1fr; }
+  .highlight-banner { flex-direction: column; text-align: center; }
+
+  .world-banner { flex-direction: column; text-align: center; }
+  .customer-grid { grid-template-columns: 1fr; }
+
+  .benefit-grid { grid-template-columns: 1fr; }
+  .benefit-card.wide { grid-column: auto; }
+
+  .staff-section { padding: 64px 20px 96px; }
+  .staff-grid { grid-template-columns: 1fr; gap: 24px; }
+
+  .persona-item { padding: 16px 4px; }
+
+  .page-hero-lead, .sec-lead, .info-card p, .info-card li,
+  .timeline-desc, .timeline-note, .customer-card p,
+  .benefit-card p, .persona-text, .staff-card-copy,
+  .highlight-banner p, .innovation-box p, .world-banner p {
+    font-weight: 600;
+    -webkit-text-stroke: 0.2px currentColor;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="/recruit/" class="header-back">← 採用情報トップ</a>
+  <a href="https://mame-kawamura.com" class="header-logo" target="_blank"><span>甘納豆かわむら</span></a>
+</header>
+
+<!-- HERO -->
+<section class="page-hero">
+  <span class="page-hero-eyebrow fade-up">RECRUIT / STAFF INTERVIEW</span>
+  <h1 class="page-hero-title fade-up">甘納豆かわむら</h1>
+  <p class="page-hero-sub fade-up">お客様の記憶に残るお菓子を創る</p>
+  <p class="page-hero-lead fade-up">
+    和菓子、洋菓子の垣根を超えたイノベイションを。<br>
+    その想いを共有する仲間の言葉を、スタッフ紹介としてお届けします。
+  </p>
+</section>
+
+<!-- STAFF GRID (TOP) -->
+<section class="staff-section" style="padding-top: 96px; background: var(--white);">
+  <span class="sec-eyebrow fade-up">STAFF INTERVIEW</span>
+  <h2 class="sec-title fade-up">スタッフの声</h2>
+  <div class="staff-grid">
+    <a href="/recruit/staff-introduction/patissier/202607-yuka.html" class="staff-card fade-up">
+      <div class="staff-card-img">
+        <img src="/recruit/assets/img/202607-yuka-profile.jpg" alt="Yuka">
+      </div>
+      <div class="staff-card-body">
+        <span class="staff-card-role">PATISSIER</span>
+        <div class="staff-card-name">Yuka</div>
+        <div class="staff-card-copy">和菓子を勉強しながら、仕事と家庭を両立。自分の作ったものがお客様の笑顔に直結する、そのやりがいを語ります。</div>
+      </div>
+    </a>
+
+    <div class="staff-card is-soon fade-up">
+      <div class="staff-card-img"><span>COMING SOON</span></div>
+      <div class="staff-card-body">
+        <span class="staff-card-role">WAGASHI CRAFTSMAN</span>
+        <div class="staff-card-name">〇〇 〇〇</div>
+        <div class="staff-card-copy">近日公開予定</div>
+      </div>
+    </div>
+
+    <div class="staff-card is-soon fade-up">
+      <div class="staff-card-img"><span>COMING SOON</span></div>
+      <div class="staff-card-body">
+        <span class="staff-card-role">SHOP STAFF</span>
+        <div class="staff-card-name">〇〇 〇〇</div>
+        <div class="staff-card-copy">近日公開予定</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 経営理念 -->
+<section class="sec">
+  <div class="sec-inner">
+    <span class="sec-eyebrow fade-up">PHILOSOPHY</span>
+    <h2 class="sec-title fade-up">経営理念</h2>
+    <p class="philosophy-quote fade-up">お客様の記憶に残るお菓子を創る</p>
+    <p class="sec-lead fade-up">
+      皆さんにも、小さい頃に行った旅行先のテーマパーク、レストラン、お菓子屋さん――
+      忘れられない、記憶に残るお店があったと思います。<br>
+      当店はただ「美味しい」だけでなく、年月が経っても思い出してもらえる
+      心に残る存在を目指しています。その最良の手段がお菓子なのです。
+    </p>
+  </div>
+</section>
+
+<!-- 和洋の垣根を越えたお菓子づくり -->
+<section class="sec">
+  <div class="sec-inner">
+    <span class="sec-eyebrow fade-up">INNOVATION</span>
+    <h2 class="sec-title fade-up">和洋の垣根を越えたお菓子づくり</h2>
+    <div class="innovation-wrap">
+      <div class="innovation-box fade-up">
+        <h3>甘納豆</h3>
+        <p>創業以来24年間<br>磨いてきた当店の強み</p>
+      </div>
+      <div class="innovation-x fade-up">×</div>
+      <div class="innovation-box fade-up">
+        <h3>洋菓子</h3>
+        <p>時代・トレンドに沿った<br>美味しいスイーツ</p>
+      </div>
+    </div>
+    <p class="innovation-result fade-up">
+      和洋の垣根にとらわれない<strong>【イノベイティブ】</strong>なお菓子で、<br>
+      記憶に残る体験をお客様に提供する。
+    </p>
+  </div>
+</section>
+
+<!-- 会社の歩み -->
+<section class="sec">
+  <div class="sec-inner">
+    <span class="sec-eyebrow fade-up">HISTORY</span>
+    <h2 class="sec-title fade-up">会社の歩み</h2>
+    <div class="timeline">
+      <div class="timeline-item fade-up">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2001年</div>
+        <div class="timeline-desc">西茶屋街にて<br>【甘納豆専門店】として創業</div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">コロナ前</div>
+        <div class="timeline-desc">【Salon de thé Kawamura】<br>開業（和カフェ）</div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2025年</div>
+        <div class="timeline-desc">24年の間<br>一店舗で営業継続</div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2026年</div>
+        <div class="timeline-desc">泉に【工場＋店舗】<br>移転・拡張</div>
+      </div>
+    </div>
+    <div class="timeline-note fade-up">
+      2026年より「泉」の新工場・新店舗にて、和菓子・洋菓子の垣根を越えた<strong>本当に美味しいお菓子づくり</strong>に挑戦しています。<br>
+      サロン・ド・テ・カワムラでは、クオリティを追求したパルフェ・かき氷なども提供。
+    </div>
+  </div>
+</section>
+
+<!-- チーム構成と活躍できる環境 -->
+<section class="sec">
+  <div class="sec-inner">
+    <span class="sec-eyebrow fade-up">TEAM & ENVIRONMENT</span>
+    <h2 class="sec-title fade-up">チーム構成と活躍できる環境</h2>
+    <div class="two-col">
+      <div class="info-card fade-up">
+        <h3>チーム構成</h3>
+        <p class="strong-line">パティシエ → 4名在籍</p>
+        <p>うち20代が2名／若手積極登用</p>
+        <br>
+        <p class="strong-line">和菓子職人 → 4名在籍</p>
+        <p>少数精鋭のチームで運営</p>
+      </div>
+      <div class="info-card fade-up">
+        <h3>活躍できる環境</h3>
+        <ul>
+          <li>・1年目から多種多様な仕事に挑戦</li>
+          <li>・新人のお菓子も【良い】ものはお客様へ積極的に提供</li>
+          <li>・大手にはない成長スピード</li>
+          <li>・業界経験豊富な先輩がサポート</li>
+        </ul>
+      </div>
+    </div>
+    <div class="highlight-banner fade-up">
+      <div class="highlight-banner-img" style="display:flex;align-items:center;justify-content:center;background:var(--gray);">
+        <span style="font-size:0.6em;color:var(--text-sub);font-family:sans-serif;letter-spacing:0.05em;">PHOTO</span>
+      </div>
+      <p>20代パティシエ考案の「いちごモナカ」が歴代1番人気に！新人のアイデアも、良いものはすぐお客様に届く環境です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- あなたのスイーツが世界へ届く -->
+<section class="sec">
+  <div class="sec-inner">
+    <span class="sec-eyebrow fade-up">GLOBAL REACH</span>
+    <h2 class="sec-title fade-up">あなたのスイーツが世界へ届く</h2>
+    <div class="world-banner fade-up">
+      <h3>西茶屋街</h3>
+      <p>インバウンド需要が急拡大中の金沢・西茶屋街に旗艦店を構えています。</p>
+    </div>
+    <div class="customer-grid">
+      <div class="customer-card fade-up">
+        <h4>国内のお客様</h4>
+        <p>地元金沢の方々に愛される老舗専門店として24年の信頼</p>
+      </div>
+      <div class="customer-card fade-up">
+        <h4>インバウンド客</h4>
+        <p>外国人観光客が多数来店。あなたの作ったお菓子が世界へ</p>
+      </div>
+      <div class="customer-card fade-up">
+        <h4>オンライン販路も拡大中</h4>
+        <p>ECサイト・ギフト需要にも対応。全国のお客様へお届け</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 求める人材像 -->
+<section class="sec">
+  <div class="sec-inner">
+    <span class="sec-eyebrow fade-up">WHO WE WANT</span>
+    <h2 class="sec-title fade-up">求める人材像</h2>
+    <ul class="persona-list">
+      <li class="persona-item fade-up">
+        <div class="persona-num">01</div>
+        <div class="persona-text">お菓子について積極的に学ぶ意欲のある方</div>
+      </li>
+      <li class="persona-item fade-up">
+        <div class="persona-num">02</div>
+        <div class="persona-text">誰かを喜ばせることが好きな方</div>
+      </li>
+      <li class="persona-item fade-up">
+        <div class="persona-num">03</div>
+        <div class="persona-text">責任感を持って仕事ができる方</div>
+      </li>
+      <li class="persona-item fade-up">
+        <div class="persona-num">04</div>
+        <div class="persona-text">人と関わることが好きな方</div>
+      </li>
+      <li class="persona-item fade-up">
+        <div class="persona-num">05</div>
+        <div class="persona-text">新しいことに挑戦することが好きな方</div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- 待遇・福利厚生 -->
+<section class="sec">
+  <div class="sec-inner">
+    <span class="sec-eyebrow fade-up">BENEFITS</span>
+    <h2 class="sec-title fade-up">待遇・福利厚生</h2>
+    <div class="benefit-grid">
+      <div class="benefit-card fade-up">
+        <h3>勤務時間・休日</h3>
+        <p>
+          就業時間：8:00〜17:00（所定8時間）<br>
+          休憩60分　残業：月10時間以内<br>
+          年間休日107日　シフト希望制<br>
+          有給取得率70〜100%　長期休暇も可
+        </p>
+      </div>
+      <div class="benefit-card fade-up">
+        <h3>保険・各種制度</h3>
+        <p>
+          健康保険　厚生年金<br>
+          雇用保険　労災保険<br>
+          社員割引・クーポン　結婚お祝い金<br>
+          外部研修参加制度　勤続祝い
+        </p>
+      </div>
+      <div class="benefit-card wide fade-up">
+        <h3>産休・育休サポートも充実</h3>
+        <p>2児・3児の母も問題なく復帰して活躍中。ライフステージが変わっても長く働ける環境です。</p>
+      </div>
+      <div class="benefit-card wide fade-up">
+        <h3>和菓子・洋菓子 両方経験できる</h3>
+        <p>パティシエも和菓子職人も、和・洋いずれの知識も余すことなく活かせます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE TO STAFF -->
+<section class="bridge-section">
+  <p class="bridge-text fade-up">
+    イノベーティブで、お客様の記憶に残る<br>
+    お菓子づくりを、ともに追求していく仲間へ。
+  </p>
+  <p class="bridge-sub fade-up">実際に働くスタッフの声を聞いてみませんか</p>
+</section>
+
+<!-- STAFF GRID -->
+<section class="staff-section">
+  <div class="staff-grid">
+    <a href="/recruit/staff-introduction/patissier/202607-yuka.html" class="staff-card fade-up">
+      <div class="staff-card-img">
+        <img src="/recruit/assets/img/202607-yuka-profile.jpg" alt="Yuka">
+      </div>
+      <div class="staff-card-body">
+        <span class="staff-card-role">PATISSIER</span>
+        <div class="staff-card-name">Yuka</div>
+        <div class="staff-card-copy">和菓子を勉強しながら、仕事と家庭を両立。自分の作ったものがお客様の笑顔に直結する、そのやりがいを語ります。</div>
+      </div>
+    </a>
+
+    <div class="staff-card is-soon fade-up">
+      <div class="staff-card-img"><span>COMING SOON</span></div>
+      <div class="staff-card-body">
+        <span class="staff-card-role">WAGASHI CRAFTSMAN</span>
+        <div class="staff-card-name">〇〇 〇〇</div>
+        <div class="staff-card-copy">近日公開予定</div>
+      </div>
+    </div>
+
+    <div class="staff-card is-soon fade-up">
+      <div class="staff-card-img"><span>COMING SOON</span></div>
+      <div class="staff-card-body">
+        <span class="staff-card-role">SHOP STAFF</span>
+        <div class="staff-card-name">〇〇 〇〇</div>
+        <div class="staff-card-copy">近日公開予定</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <a href="https://mame-kawamura.com" target="_blank">甘納豆かわむら</a>　|
+    <a href="https://mame-kawamura.com/recruit" target="_blank">採用情報</a>
+  </p>
+  <p style="margin-top:16px;">© 甘納豆かわむら All Rights Reserved.</p>
+</footer>
+
+<script>
+(function() {
+  const els = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(function(el) { observer.observe(el); });
+})();
+</script>
+
+</body>
+</html>
