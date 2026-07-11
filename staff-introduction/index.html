@@ -29,6 +29,55 @@ body {
   line-height: 1.9;
   overflow-x: hidden;
 }
+body.loading { overflow: hidden; height: 100vh; }
+
+/* ── PAGE LOADER ── */
+#page-loader {
+  position: fixed; inset: 0;
+  z-index: 9999;
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.5s ease;
+}
+#page-loader.loader-hide { opacity: 0; pointer-events: none; }
+.loader-ring-wrap {
+  position: relative;
+  width: 220px; height: 220px;
+  display: flex; align-items: center; justify-content: center;
+}
+.loader-ring {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+  transition: opacity 0.3s ease;
+}
+.loader-ring.loader-fade { opacity: 0; }
+.loader-ring-bg { fill: none; stroke: var(--gray); stroke-width: 2.5; }
+.loader-ring-progress {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.loader-logo {
+  width: 130px; height: 130px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.9s cubic-bezier(0.7,0,0.2,1);
+}
+.loader-logo.loader-expand { transform: scale(28); }
+.loader-percent {
+  position: absolute;
+  bottom: -6px;
+  left: 50%; transform: translateX(-50%);
+  color: var(--brown-mid);
+  font-size: 0.78em;
+  letter-spacing: 0.15em;
+  font-family: Georgia, serif;
+  transition: opacity 0.3s ease;
+}
+.loader-percent.loader-fade { opacity: 0; }
 
 /* ── HEADER ── */
 header {
@@ -602,6 +651,18 @@ footer a:hover { color: var(--gold); }
 </head>
 <body>
 
+<!-- PAGE LOADER -->
+<div id="page-loader">
+  <div class="loader-ring-wrap">
+    <svg class="loader-ring" viewBox="0 0 220 220">
+      <circle class="loader-ring-bg" cx="110" cy="110" r="100"></circle>
+      <circle class="loader-ring-progress" cx="110" cy="110" r="100"></circle>
+    </svg>
+    <img class="loader-logo" src="/recruit/assets/img/logo.jpg" alt="甘納豆かわむら">
+    <div class="loader-percent">0%</div>
+  </div>
+</div>
+
 <!-- HEADER -->
 <header style="justify-content: center;">
   <span class="header-logo" style="opacity:1;"><span>甘納豆かわむら</span></span>
@@ -921,6 +982,43 @@ footer a:hover { color: var(--gold); }
 </footer>
 
 <script>
+(function() {
+  document.body.classList.add('loading');
+  const circle = document.querySelector('.loader-ring-progress');
+  const percentEl = document.querySelector('.loader-percent');
+  const logo = document.querySelector('.loader-logo');
+  const ring = document.querySelector('.loader-ring');
+  const loader = document.getElementById('page-loader');
+  if (!circle || !loader) return;
+
+  const circumference = 2 * Math.PI * 100;
+  circle.style.strokeDasharray = String(circumference);
+  circle.style.strokeDashoffset = String(circumference);
+
+  let pct = 0;
+  const timer = setInterval(function() {
+    pct += 2;
+    if (pct >= 100) {
+      pct = 100;
+      clearInterval(timer);
+      finishLoader();
+    }
+    circle.style.strokeDashoffset = String(circumference * (1 - pct / 100));
+    percentEl.textContent = pct + '%';
+  }, 32);
+
+  function finishLoader() {
+    ring.classList.add('loader-fade');
+    percentEl.classList.add('loader-fade');
+    setTimeout(function() { logo.classList.add('loader-expand'); }, 200);
+    setTimeout(function() {
+      loader.classList.add('loader-hide');
+      document.body.classList.remove('loading');
+    }, 1250);
+    setTimeout(function() { loader.style.display = 'none'; }, 1750);
+  }
+})();
+
 (function() {
   const els = document.querySelectorAll('.fade-up, .title-mask');
   const observer = new IntersectionObserver(function(entries) {
