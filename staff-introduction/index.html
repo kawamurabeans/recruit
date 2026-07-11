@@ -167,22 +167,9 @@ header {
   font-size: clamp(1.5em, 3vw, 2em);
   font-weight: normal;
   letter-spacing: 0.08em;
+  color: var(--brown);
   text-align: center;
   margin-bottom: 56px;
-  background-image: linear-gradient(100deg, var(--brown) 0%, var(--brown) 40%, #fff 48%, var(--gold) 51%, #fff 54%, var(--brown) 62%, var(--brown) 100%);
-  background-size: 200% auto;
-  background-position: 0% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-.sec-title.visible {
-  animation: title-text-shine 1.3s cubic-bezier(0.4,0,0.2,1) 0.55s forwards;
-}
-@keyframes title-text-shine {
-  0%   { background-position: 0% 0; }
-  100% { background-position: -100% 0; }
 }
 .sec-lead {
   max-width: 720px;
