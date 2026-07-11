@@ -181,60 +181,6 @@ header {
   letter-spacing: 0.04em;
 }
 
-/* ── WA-PATTERN (traditional Japanese motifs, scroll reveal) ── */
-.sec-patterned { position: relative; overflow: hidden; }
-.sec-patterned .sec-inner { position: relative; z-index: 1; }
-.wa-pattern {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateX(-48px);
-  transition: opacity 1.2s cubic-bezier(0.16,1,0.3,1), transform 1.2s cubic-bezier(0.16,1,0.3,1);
-  -webkit-mask-image: radial-gradient(ellipse at center, transparent 15%, black 78%);
-  mask-image: radial-gradient(ellipse at center, transparent 15%, black 78%);
-}
-.wa-pattern.visible { opacity: 0.1; transform: translateX(0); }
-
-/* 市松 (checkerboard) */
-.wa-pattern.pattern-ichimatsu {
-  background-image:
-    linear-gradient(45deg, var(--gold) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--gold) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--gold) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--gold) 75%);
-  background-size: 48px 48px;
-  background-position: 0 0, 0 24px, 24px -24px, -24px 0px;
-}
-
-/* 麻の葉 (asanoha / hexagonal star grid) */
-.wa-pattern.pattern-asanoha {
-  background-image:
-    repeating-linear-gradient(60deg, var(--gold), var(--gold) 1px, transparent 1px, transparent 34px),
-    repeating-linear-gradient(-60deg, var(--gold), var(--gold) 1px, transparent 1px, transparent 34px),
-    repeating-linear-gradient(0deg, var(--gold), var(--gold) 1px, transparent 1px, transparent 34px);
-}
-
-/* 青海波 (seigaiha / overlapping wave fans) */
-.wa-pattern.pattern-seigaiha {
-  background-image:
-    radial-gradient(circle at 50% 100%, transparent 20%, var(--gold) 21%, var(--gold) 23%, transparent 24%, transparent 30%, var(--gold) 31%, var(--gold) 33%, transparent 34%),
-    radial-gradient(circle at 0% 100%, transparent 20%, var(--gold) 21%, var(--gold) 23%, transparent 24%, transparent 30%, var(--gold) 31%, var(--gold) 33%, transparent 34%),
-    radial-gradient(circle at 100% 100%, transparent 20%, var(--gold) 21%, var(--gold) 23%, transparent 24%, transparent 30%, var(--gold) 31%, var(--gold) 33%, transparent 34%);
-  background-size: 44px 22px;
-}
-
-/* 七宝 (shippo / interlocking circles) */
-.wa-pattern.pattern-shippo {
-  background-image:
-    radial-gradient(circle at 0 0, transparent 23%, var(--gold) 24%, var(--gold) 25%, transparent 26%),
-    radial-gradient(circle at 100% 0, transparent 23%, var(--gold) 24%, var(--gold) 25%, transparent 26%),
-    radial-gradient(circle at 0 100%, transparent 23%, var(--gold) 24%, var(--gold) 25%, transparent 26%),
-    radial-gradient(circle at 100% 100%, transparent 23%, var(--gold) 24%, var(--gold) 25%, transparent 26%),
-    radial-gradient(circle at 50% 50%, transparent 23%, var(--gold) 24%, var(--gold) 25%, transparent 26%);
-  background-size: 42px 42px;
-}
 .philosophy-quote {
   text-align: center;
   color: var(--brown);
@@ -742,8 +688,7 @@ footer a:hover { color: var(--gold); }
 </section>
 
 <!-- 経営理念 -->
-<section class="sec sec-patterned">
-  <div class="wa-pattern pattern-ichimatsu"></div>
+<section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">PHILOSOPHY</span>
     <h2 class="sec-title fade-up from-left">経営理念</h2>
@@ -781,8 +726,7 @@ footer a:hover { color: var(--gold); }
 </section>
 
 <!-- 会社の歩み -->
-<section class="sec sec-patterned">
-  <div class="wa-pattern pattern-asanoha"></div>
+<section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">HISTORY</span>
     <h2 class="sec-title fade-up from-left">会社の歩み</h2>
@@ -849,8 +793,7 @@ footer a:hover { color: var(--gold); }
 </section>
 
 <!-- あなたのスイーツが世界へ届く -->
-<section class="sec sec-patterned">
-  <div class="wa-pattern pattern-seigaiha"></div>
+<section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">GLOBAL REACH</span>
     <h2 class="sec-title fade-up from-left">あなたのスイーツが世界へ届く</h2>
@@ -906,8 +849,7 @@ footer a:hover { color: var(--gold); }
 </section>
 
 <!-- 待遇・福利厚生 -->
-<section class="sec sec-patterned">
-  <div class="wa-pattern pattern-shippo"></div>
+<section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">BENEFITS</span>
     <h2 class="sec-title fade-up from-left">待遇・福利厚生</h2>
@@ -997,7 +939,7 @@ footer a:hover { color: var(--gold); }
 
 <script>
 (function() {
-  const els = document.querySelectorAll('.fade-up, .wa-pattern');
+  const els = document.querySelectorAll('.fade-up');
   const observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
