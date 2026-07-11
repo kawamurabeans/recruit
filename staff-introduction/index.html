@@ -66,7 +66,7 @@ body.loading { overflow: hidden; height: 100vh; }
   z-index: 1;
   transition: width 0.9s cubic-bezier(0.7,0,0.2,1), height 0.9s cubic-bezier(0.7,0,0.2,1);
 }
-.loader-logo.loader-expand { width: 220vmax; height: 220vmax; }
+.loader-logo.loader-expand { width: 500vmax; height: 500vmax; }
 .loader-percent {
   position: absolute;
   bottom: -6px;
@@ -1014,8 +1014,8 @@ footer a:hover { color: var(--gold); }
     setTimeout(function() {
       loader.classList.add('loader-hide');
       document.body.classList.remove('loading');
-    }, 1250);
-    setTimeout(function() { loader.style.display = 'none'; }, 1750);
+    }, 650);
+    setTimeout(function() { loader.style.display = 'none'; }, 1150);
   }
 })();
 
