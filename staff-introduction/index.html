@@ -926,6 +926,18 @@ footer a:hover { color: var(--gold); }
   }, { threshold: 0.12 });
   els.forEach(function(el) { observer.observe(el); });
 })();
+
+(function() {
+  const items = document.querySelectorAll('.hero-strip-item');
+  if (items.length < 2) return;
+  let current = 0;
+  items[current].classList.add('mobile-active');
+  setInterval(function() {
+    items[current].classList.remove('mobile-active');
+    current = (current + 1) % items.length;
+    items[current].classList.add('mobile-active');
+  }, 4000);
+})();
 </script>
 
 </body>
