@@ -111,8 +111,23 @@ header {
   letter-spacing: 0.03em;
   line-height: 1.4;
   margin-bottom: 28px;
-  white-space: nowrap;
 }
+.title-mask {
+  display: block;
+  width: max-content;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+}
+.title-line {
+  display: inline-block;
+  white-space: nowrap;
+  transform: translateY(105%) rotate(4deg);
+  transform-origin: left bottom;
+  opacity: 0;
+  transition: transform 1.15s cubic-bezier(0.16,1,0.3,1), opacity 0.6s ease;
+}
+.title-mask.visible .title-line { transform: translateY(0) rotate(0deg); opacity: 1; }
+.title-mask-d2 .title-line { transition-delay: 0.18s; }
 .page-hero-sub {
   color: var(--gold);
   font-size: 1.1em;
@@ -607,7 +622,10 @@ footer a:hover { color: var(--gold); }
   <div class="hero-dim"></div>
   <div class="hero-message">
     <span class="page-hero-eyebrow fade-up">RECRUIT</span>
-    <h1 class="page-hero-title fade-up">お客様の "記憶に残る"<br>お菓子を作る仲間へ・・・</h1>
+    <h1 class="page-hero-title">
+      <span class="title-mask"><span class="title-line">お客様の "記憶に残る"</span></span>
+      <span class="title-mask title-mask-d2"><span class="title-line">お菓子を作る仲間へ・・・</span></span>
+    </h1>
     <p class="page-hero-sub fade-up">甘納豆かわむら</p>
     <p class="page-hero-lead fade-up">
       和菓子、洋菓子の垣根を超えたイノベイションを。<br>
@@ -904,7 +922,7 @@ footer a:hover { color: var(--gold); }
 
 <script>
 (function() {
-  const els = document.querySelectorAll('.fade-up');
+  const els = document.querySelectorAll('.fade-up, .title-mask');
   const observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
