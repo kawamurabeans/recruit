@@ -540,8 +540,31 @@ footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
 footer a:hover { color: var(--gold); }
 
 /* ── FADE ── */
-.fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
+.fade-up-d1 { transition-delay: 0.1s; }
+.fade-up-d2 { transition-delay: 0.2s; }
+.fade-up-d3 { transition-delay: 0.3s; }
+.fade-up-d4 { transition-delay: 0.4s; }
+
+.fade-up.from-left { transform: translateX(-56px); }
+.fade-up.from-left.visible { transform: translateX(0); }
+.fade-up.from-right { transform: translateX(56px); }
+.fade-up.from-right.visible { transform: translateX(0); }
+.fade-up.rotate-in { transform: rotate(-160deg) scale(0.3); }
+.fade-up.rotate-in.visible { transform: rotate(0deg) scale(1); }
+
+/* ── TIMELINE DRAW-IN ── */
+.timeline::before { transform: scaleX(0); transform-origin: left center; transition: transform 1.3s cubic-bezier(0.16,1,0.3,1); }
+.timeline.line-draw::before { transform: scaleX(1); }
+
+/* ── PHILOSOPHY UNDERLINE DRAW-IN ── */
+.philosophy-quote::after { width: 0; transition: width 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s; }
+.philosophy-quote.visible::after { width: 48px; }
+
+/* ── BENEFIT / INFO CARD LIFT ON HOVER ── */
+.info-card, .benefit-card, .customer-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.info-card:hover, .benefit-card:hover, .customer-card:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(65,33,7,0.1); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
@@ -685,12 +708,12 @@ footer a:hover { color: var(--gold); }
     <span class="sec-eyebrow fade-up">INNOVATION</span>
     <h2 class="sec-title fade-up">和洋の垣根を越えたお菓子づくり</h2>
     <div class="innovation-wrap">
-      <div class="innovation-box fade-up">
+      <div class="innovation-box fade-up from-left">
         <h3>甘納豆</h3>
         <p>創業以来24年間<br>磨いてきた当店の強み</p>
       </div>
-      <div class="innovation-x fade-up">×</div>
-      <div class="innovation-box fade-up">
+      <div class="innovation-x fade-up rotate-in fade-up-d1">×</div>
+      <div class="innovation-box fade-up from-right">
         <h3>洋菓子</h3>
         <p>時代・トレンドに沿った<br>美味しいスイーツ</p>
       </div>
@@ -713,17 +736,17 @@ footer a:hover { color: var(--gold); }
         <div class="timeline-year">2001年</div>
         <div class="timeline-desc">西茶屋街にて<br>【甘納豆専門店】として創業</div>
       </div>
-      <div class="timeline-item fade-up">
+      <div class="timeline-item fade-up fade-up-d1">
         <div class="timeline-dot"></div>
         <div class="timeline-year">コロナ前</div>
         <div class="timeline-desc">【Salon de thé Kawamura】<br>開業（和カフェ）</div>
       </div>
-      <div class="timeline-item fade-up">
+      <div class="timeline-item fade-up fade-up-d2">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2025年</div>
         <div class="timeline-desc">24年の間<br>一店舗で営業継続</div>
       </div>
-      <div class="timeline-item fade-up">
+      <div class="timeline-item fade-up fade-up-d3">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2026年</div>
         <div class="timeline-desc">泉に【工場＋店舗】<br>移転・拡張</div>
@@ -742,15 +765,15 @@ footer a:hover { color: var(--gold); }
     <span class="sec-eyebrow fade-up">TEAM & ENVIRONMENT</span>
     <h2 class="sec-title fade-up">チーム構成と活躍できる環境</h2>
     <div class="two-col">
-      <div class="info-card fade-up">
+      <div class="info-card fade-up from-left">
         <h3>チーム構成</h3>
-        <p class="strong-line">パティシエ → 4名在籍</p>
+        <p class="strong-line">パティシエ → <span class="count-num" data-target="4">0</span>名在籍</p>
         <p>うち20代が2名／若手積極登用</p>
         <br>
-        <p class="strong-line">和菓子職人 → 4名在籍</p>
+        <p class="strong-line">和菓子職人 → <span class="count-num" data-target="4">0</span>名在籍</p>
         <p>少数精鋭のチームで運営</p>
       </div>
-      <div class="info-card fade-up">
+      <div class="info-card fade-up from-right">
         <h3>活躍できる環境</h3>
         <ul>
           <li>・1年目から多種多様な仕事に挑戦</li>
@@ -783,11 +806,11 @@ footer a:hover { color: var(--gold); }
         <h4>国内のお客様</h4>
         <p>地元金沢の方々に愛される老舗専門店として24年の信頼</p>
       </div>
-      <div class="customer-card fade-up">
+      <div class="customer-card fade-up fade-up-d1">
         <h4>インバウンド客</h4>
         <p>外国人観光客が多数来店。あなたの作ったお菓子が世界へ</p>
       </div>
-      <div class="customer-card fade-up">
+      <div class="customer-card fade-up fade-up-d2">
         <h4>オンライン販路も拡大中</h4>
         <p>ECサイト・ギフト需要にも対応。全国のお客様へお届け</p>
       </div>
@@ -801,23 +824,23 @@ footer a:hover { color: var(--gold); }
     <span class="sec-eyebrow fade-up">WHO WE WANT</span>
     <h2 class="sec-title fade-up">求める人材像</h2>
     <ul class="persona-list">
-      <li class="persona-item fade-up">
+      <li class="persona-item fade-up from-left">
         <div class="persona-num">01</div>
         <div class="persona-text">お菓子について積極的に学ぶ意欲のある方</div>
       </li>
-      <li class="persona-item fade-up">
+      <li class="persona-item fade-up from-right">
         <div class="persona-num">02</div>
         <div class="persona-text">誰かを喜ばせることが好きな方</div>
       </li>
-      <li class="persona-item fade-up">
+      <li class="persona-item fade-up from-left">
         <div class="persona-num">03</div>
         <div class="persona-text">責任感を持って仕事ができる方</div>
       </li>
-      <li class="persona-item fade-up">
+      <li class="persona-item fade-up from-right">
         <div class="persona-num">04</div>
         <div class="persona-text">人と関わることが好きな方</div>
       </li>
-      <li class="persona-item fade-up">
+      <li class="persona-item fade-up from-left">
         <div class="persona-num">05</div>
         <div class="persona-text">新しいことに挑戦することが好きな方</div>
       </li>
@@ -840,7 +863,7 @@ footer a:hover { color: var(--gold); }
           有給取得率70〜100%　長期休暇も可
         </p>
       </div>
-      <div class="benefit-card fade-up">
+      <div class="benefit-card fade-up fade-up-d1">
         <h3>保険・各種制度</h3>
         <p>
           健康保険　厚生年金<br>
@@ -849,11 +872,11 @@ footer a:hover { color: var(--gold); }
           外部研修参加制度　勤続祝い
         </p>
       </div>
-      <div class="benefit-card wide fade-up">
+      <div class="benefit-card wide fade-up fade-up-d2">
         <h3>産休・育休サポートも充実</h3>
         <p>2児・3児の母も問題なく復帰して活躍中。ライフステージが変わっても長く働ける環境です。</p>
       </div>
-      <div class="benefit-card wide fade-up">
+      <div class="benefit-card wide fade-up fade-up-d3">
         <h3>和菓子・洋菓子 両方経験できる</h3>
         <p>パティシエも和菓子職人も、和・洋いずれの知識も余すことなく活かせます。</p>
       </div>
@@ -938,6 +961,42 @@ footer a:hover { color: var(--gold); }
     current = (current + 1) % items.length;
     items[current].classList.add('mobile-active');
   }, 4000);
+})();
+
+(function() {
+  const timeline = document.querySelector('.timeline');
+  if (!timeline) return;
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('line-draw');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  observer.observe(timeline);
+})();
+
+(function() {
+  const nums = document.querySelectorAll('.count-num');
+  if (!nums.length) return;
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.target, 10);
+      const duration = 900;
+      const start = performance.now();
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - progress, 3)));
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  nums.forEach(function(el) { observer.observe(el); });
 })();
 </script>
 
