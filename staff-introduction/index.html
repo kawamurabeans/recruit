@@ -42,25 +42,10 @@ body.loading { overflow: hidden; height: 100vh; }
 #page-loader.loader-hide { opacity: 0; pointer-events: none; }
 .loader-ring-wrap {
   position: relative;
-  width: 220px; height: 220px;
-  display: flex; align-items: center; justify-content: center;
-}
-.loader-ring {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  transform: rotate(-90deg);
-  transition: opacity 0.3s ease;
-}
-.loader-ring.loader-fade { opacity: 0; }
-.loader-ring-bg { fill: none; stroke: var(--gray); stroke-width: 2.5; }
-.loader-ring-progress {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 2.5;
-  stroke-linecap: round;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
 .loader-logo {
-  width: 150px; height: 150px;
+  width: 260px; height: 260px;
   object-fit: contain;
   position: relative;
   z-index: 1;
@@ -68,17 +53,24 @@ body.loading { overflow: hidden; height: 100vh; }
   transition: transform 0.9s cubic-bezier(0.7,0,0.2,1);
   will-change: transform;
 }
-.loader-percent {
-  position: absolute;
-  bottom: -34px;
-  left: 50%; transform: translateX(-50%);
+.loader-text {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
   color: var(--beige);
-  font-size: 0.78em;
-  letter-spacing: 0.15em;
-  font-family: Georgia, serif;
+  font-size: 1.05em;
+  letter-spacing: 0.2em;
   transition: opacity 0.3s ease;
 }
-.loader-percent.loader-fade { opacity: 0; }
+.loader-text.loader-fade { opacity: 0; }
+.loader-text span {
+  display: inline-block;
+  animation: loader-bounce 1.3s ease-in-out infinite;
+}
+@keyframes loader-bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-9px); }
+}
 
 /* ── HEADER ── */
 header {
@@ -655,12 +647,10 @@ footer a:hover { color: var(--gold); }
 <!-- PAGE LOADER -->
 <div id="page-loader">
   <div class="loader-ring-wrap">
-    <svg class="loader-ring" viewBox="0 0 220 220">
-      <circle class="loader-ring-bg" cx="110" cy="110" r="100"></circle>
-      <circle class="loader-ring-progress" cx="110" cy="110" r="100"></circle>
-    </svg>
     <img class="loader-logo" src="/recruit/assets/img/logo.png" alt="甘納豆かわむら">
-    <div class="loader-percent">0%</div>
+    <div class="loader-text">
+      <span style="animation-delay:0.00s">豆</span><span style="animation-delay:0.06s">炊</span><span style="animation-delay:0.12s">き</span><span style="animation-delay:0.18s">中</span><span style="animation-delay:0.24s">・</span><span style="animation-delay:0.30s">・</span><span style="animation-delay:0.36s">・</span>
+    </div>
   </div>
 </div>
 
@@ -985,32 +975,15 @@ footer a:hover { color: var(--gold); }
 <script>
 (function() {
   document.body.classList.add('loading');
-  const circle = document.querySelector('.loader-ring-progress');
-  const percentEl = document.querySelector('.loader-percent');
   const logo = document.querySelector('.loader-logo');
-  const ring = document.querySelector('.loader-ring');
+  const text = document.querySelector('.loader-text');
   const loader = document.getElementById('page-loader');
-  if (!circle || !loader) return;
+  if (!logo || !loader) return;
 
-  const circumference = 2 * Math.PI * 100;
-  circle.style.strokeDasharray = String(circumference);
-  circle.style.strokeDashoffset = String(circumference);
-
-  let pct = 0;
-  const timer = setInterval(function() {
-    pct += 2;
-    if (pct >= 100) {
-      pct = 100;
-      clearInterval(timer);
-      finishLoader();
-    }
-    circle.style.strokeDashoffset = String(circumference * (1 - pct / 100));
-    percentEl.textContent = pct + '%';
-  }, 32);
+  setTimeout(finishLoader, 1800);
 
   function finishLoader() {
-    ring.classList.add('loader-fade');
-    percentEl.classList.add('loader-fade');
+    text.classList.add('loader-fade');
     setTimeout(function() {
       const baseSize = logo.getBoundingClientRect().width;
       const target = Math.max(window.innerWidth, window.innerHeight) * 5;
