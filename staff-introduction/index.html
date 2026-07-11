@@ -56,39 +56,92 @@ header {
 }
 .header-back:hover { color: var(--gold); }
 
-/* ── HERO ── */
+/* ── HERO (full-bleed image background + overlaid message) ── */
 .page-hero {
+  position: relative;
   background: var(--brown);
-  padding: 190px 40px 110px;
+  overflow: hidden;
+  height: 100vh;
+  min-height: 640px;
+}
+.hero-strip {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  z-index: 0;
+}
+.hero-strip-item {
+  position: relative;
+  overflow: hidden;
+}
+.hero-strip-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  filter: saturate(1.1) contrast(1.05) brightness(0.9);
+  transform: scale(1.02);
+}
+.hero-dim {
+  position: absolute; inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(15,6,2,0.75) 0%, rgba(15,6,2,0.45) 45%, rgba(15,6,2,0.55) 100%);
+}
+.hero-strip-label {
+  position: absolute;
+  left: 16px; bottom: 20px;
+  z-index: 2;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.68em;
+  letter-spacing: 0.15em;
+  writing-mode: vertical-rl;
+}
+.hero-strip-label .en {
+  color: var(--gold);
+  font-size: 0.8em;
+  letter-spacing: 0.2em;
+  display: block;
+  margin-bottom: 10px;
+  font-family: Georgia, serif;
+}
+.hero-message {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  padding: 0 24px;
 }
 .page-hero-eyebrow {
   color: var(--gold);
-  font-size: 0.75em;
-  letter-spacing: 0.35em;
+  font-size: 0.78em;
+  letter-spacing: 0.4em;
   display: block;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 .page-hero-title {
   color: var(--white);
-  font-size: clamp(2em, 5vw, 3.2em);
+  font-size: clamp(2.4em, 6vw, 5em);
   font-weight: normal;
-  letter-spacing: 0.1em;
-  margin-bottom: 20px;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  margin-bottom: 36px;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.35);
 }
 .page-hero-sub {
   color: var(--gold);
-  font-size: 1.05em;
+  font-size: 1.15em;
   letter-spacing: 0.1em;
   margin-bottom: 28px;
 }
 .page-hero-lead {
-  color: rgba(255,255,255,0.6);
-  font-size: 0.9em;
-  letter-spacing: 0.05em;
-  line-height: 2;
-  max-width: 600px;
-  margin: 0 auto;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.88em;
+  letter-spacing: 0.04em;
+  line-height: 2.1;
 }
 
 /* ── SHARED SECTION STYLES ── */
@@ -493,7 +546,18 @@ footer a:hover { color: var(--gold); }
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   header { padding: 14px 20px; }
-  .page-hero { padding: 120px 24px 64px; }
+  .page-hero { height: 100vh; min-height: 560px; }
+  .hero-strip { display: block; }
+  .hero-strip-item {
+    position: absolute; inset: 0;
+    opacity: 0;
+    transition: opacity 1.6s ease;
+  }
+  .hero-strip-item.mobile-active { opacity: 1; }
+  .hero-strip-item .hero-strip-label { display: none; }
+  .page-hero-title { font-size: 1.9em; }
+  .page-hero-eyebrow { letter-spacing: 0.3em; margin-bottom: 20px; }
+  .page-hero-lead br { display: none; }
   .sec { padding: 64px 20px; }
   .sec-title { margin-bottom: 36px; }
 
@@ -532,15 +596,36 @@ footer a:hover { color: var(--gold); }
   <span class="header-logo" style="opacity:1;"><span>甘納豆かわむら</span></span>
 </header>
 
-<!-- HERO -->
+<!-- HERO (full-bleed background + overlaid message) -->
 <section class="page-hero">
-  <span class="page-hero-eyebrow fade-up">RECRUIT / STAFF INTERVIEW</span>
-  <h1 class="page-hero-title fade-up">甘納豆かわむら</h1>
-  <p class="page-hero-sub fade-up">お客様の記憶に残るお菓子を創る</p>
-  <p class="page-hero-lead fade-up">
-    和菓子、洋菓子の垣根を超えたイノベイションを。<br>
-    その想いを共有する仲間の言葉を、スタッフ紹介としてお届けします。
-  </p>
+  <div class="hero-strip">
+    <div class="hero-strip-item">
+      <img src="/recruit/assets/img/202607-yuka-hero.jpg" alt="中道さん（パティシエ）">
+      <span class="hero-strip-label"><span class="en">PATISSIER</span>Yuka</span>
+    </div>
+    <div class="hero-strip-item">
+      <img src="/recruit/assets/img/shop_exterior02.jpg" alt="西茶屋街の店舗外観">
+      <span class="hero-strip-label"><span class="en">STORE</span>西茶屋街</span>
+    </div>
+    <div class="hero-strip-item">
+      <img src="/recruit/assets/img/strawberry_monaka01.jpg" alt="いちごモナカ">
+      <span class="hero-strip-label"><span class="en">SWEETS</span>お菓子</span>
+    </div>
+    <div class="hero-strip-item">
+      <img src="/recruit/assets/img/hukuro01.jpg" alt="袋果子">
+      <span class="hero-strip-label"><span class="en">PRODUCT</span>袋果子</span>
+    </div>
+  </div>
+  <div class="hero-dim"></div>
+  <div class="hero-message">
+    <span class="page-hero-eyebrow fade-up">RECRUIT</span>
+    <h1 class="page-hero-title fade-up">お客様の記憶に<br>残るお菓子を、<br>ともに創る仲間へ</h1>
+    <p class="page-hero-sub fade-up">甘納豆かわむら</p>
+    <p class="page-hero-lead fade-up">
+      和菓子、洋菓子の垣根を超えたイノベイションを。<br>
+      その想いを共有する仲間の言葉をお届けします。
+    </p>
+  </div>
 </section>
 
 <!-- STAFF GRID (TOP) -->
