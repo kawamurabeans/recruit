@@ -163,12 +163,31 @@ header {
   text-align: center;
 }
 .sec-title {
+  position: relative;
   font-size: clamp(1.5em, 3vw, 2em);
   font-weight: normal;
   letter-spacing: 0.08em;
   color: var(--brown);
   text-align: center;
   margin-bottom: 56px;
+}
+.sec-title::after {
+  content: '';
+  position: absolute;
+  left: 50%; bottom: -16px;
+  width: 64px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
+  transform: translateX(-50%) scaleX(0);
+  opacity: 0;
+}
+.sec-title.visible::after {
+  animation: title-glint 1.4s cubic-bezier(0.16,1,0.3,1) 0.4s forwards;
+}
+@keyframes title-glint {
+  0%   { transform: translateX(-50%) scaleX(0); opacity: 0; box-shadow: 0 0 0 rgba(201,151,58,0); }
+  40%  { transform: translateX(-50%) scaleX(1); opacity: 1; box-shadow: 0 0 12px 2px rgba(201,151,58,0.7); }
+  70%  { transform: translateX(-50%) scaleX(1); opacity: 1; box-shadow: 0 0 4px 1px rgba(201,151,58,0.25); }
+  100% { transform: translateX(-50%) scaleX(0.15); opacity: 0; box-shadow: 0 0 0 rgba(201,151,58,0); }
 }
 .sec-lead {
   max-width: 720px;
@@ -654,7 +673,7 @@ footer a:hover { color: var(--gold); }
 <!-- STAFF GRID (TOP) -->
 <section class="staff-section" style="padding-top: 96px; background: var(--white);">
   <span class="sec-eyebrow fade-up">STAFF INTERVIEW</span>
-  <h2 class="sec-title fade-up">スタッフの声</h2>
+  <h2 class="sec-title fade-up from-left">スタッフの声</h2>
   <div class="staff-grid">
     <a href="/recruit/staff-introduction/patissier/202607-yuka.html" class="staff-card fade-up">
       <div class="staff-card-img">
@@ -691,7 +710,7 @@ footer a:hover { color: var(--gold); }
 <section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">PHILOSOPHY</span>
-    <h2 class="sec-title fade-up">経営理念</h2>
+    <h2 class="sec-title fade-up from-left">経営理念</h2>
     <p class="philosophy-quote fade-up">お客様の記憶に残るお菓子を創る</p>
     <p class="sec-lead fade-up">
       皆さんにも、小さい頃に行った旅行先のテーマパーク、レストラン、お菓子屋さん――
@@ -706,7 +725,7 @@ footer a:hover { color: var(--gold); }
 <section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">INNOVATION</span>
-    <h2 class="sec-title fade-up">和洋の垣根を越えたお菓子づくり</h2>
+    <h2 class="sec-title fade-up from-left">和洋の垣根を越えたお菓子づくり</h2>
     <div class="innovation-wrap">
       <div class="innovation-box fade-up from-left">
         <h3>甘納豆</h3>
@@ -729,7 +748,7 @@ footer a:hover { color: var(--gold); }
 <section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">HISTORY</span>
-    <h2 class="sec-title fade-up">会社の歩み</h2>
+    <h2 class="sec-title fade-up from-left">会社の歩み</h2>
     <div class="timeline">
       <div class="timeline-item fade-up">
         <div class="timeline-dot"></div>
@@ -763,7 +782,7 @@ footer a:hover { color: var(--gold); }
 <section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">TEAM & ENVIRONMENT</span>
-    <h2 class="sec-title fade-up">チーム構成と活躍できる環境</h2>
+    <h2 class="sec-title fade-up from-left">チーム構成と活躍できる環境</h2>
     <div class="two-col">
       <div class="info-card fade-up from-left">
         <h3>チーム構成</h3>
@@ -796,7 +815,7 @@ footer a:hover { color: var(--gold); }
 <section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">GLOBAL REACH</span>
-    <h2 class="sec-title fade-up">あなたのスイーツが世界へ届く</h2>
+    <h2 class="sec-title fade-up from-left">あなたのスイーツが世界へ届く</h2>
     <div class="world-banner fade-up">
       <h3>西茶屋街</h3>
       <p>インバウンド需要が急拡大中の金沢・西茶屋街に旗艦店を構えています。</p>
@@ -822,7 +841,7 @@ footer a:hover { color: var(--gold); }
 <section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">WHO WE WANT</span>
-    <h2 class="sec-title fade-up">求める人材像</h2>
+    <h2 class="sec-title fade-up from-left">求める人材像</h2>
     <ul class="persona-list">
       <li class="persona-item fade-up from-left">
         <div class="persona-num">01</div>
@@ -852,7 +871,7 @@ footer a:hover { color: var(--gold); }
 <section class="sec">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">BENEFITS</span>
-    <h2 class="sec-title fade-up">待遇・福利厚生</h2>
+    <h2 class="sec-title fade-up from-left">待遇・福利厚生</h2>
     <div class="benefit-grid">
       <div class="benefit-card fade-up">
         <h3>勤務時間・休日</h3>
