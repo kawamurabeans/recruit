@@ -27,6 +27,13 @@ body {
   background: var(--white);
   line-height: 1.9;
   overflow-x: hidden;
+  opacity: 0;
+  transform: scale(1.15);
+}
+body.page-enter {
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* ── HEADER ── */
@@ -597,6 +604,7 @@ footer a:hover { color: var(--gold); }
 </style>
 </head>
 <body>
+<script>document.body.style.transformOrigin = '50% ' + (window.innerHeight / 2) + 'px';</script>
 
 <!-- HEADER -->
 <header id="header">
@@ -837,6 +845,13 @@ footer a:hover { color: var(--gold); }
 </footer>
 
 <script>
+// ページ入場(ズームイン)
+requestAnimationFrame(function() {
+  requestAnimationFrame(function() {
+    document.body.classList.add('page-enter');
+  });
+});
+
 // ヘッダースクロール
 (function() {
   const header = document.getElementById('header');

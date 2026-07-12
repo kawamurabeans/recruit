@@ -125,8 +125,14 @@ header {
   object-fit: cover;
   object-position: center 30%;
   filter: saturate(1.1) contrast(1.05) brightness(0.85);
+  transform: scale(1);
+  transition: transform 4.6s ease-out;
 }
-.hero-photo img.hero-photo-monaka { object-position: center 45%; }
+.hero-photo.active img { transform: scale(1.08); }
+.hero-photo img.hero-photo-monaka { object-position: center 62%; }
+.hero-photo img.hero-photo-exterior { object-position: center 58%; }
+.hero-photo img.hero-photo-kakigori { object-position: center 38%; }
+.hero-photo img.hero-photo-parfait { object-position: center 42%; }
 .hero-dim {
   position: absolute; inset: 0;
   z-index: 1;
@@ -504,20 +510,22 @@ header {
   max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+  justify-content: center;
   gap: 32px;
+  perspective: 1600px;
 }
 .staff-card {
-  background: var(--white);
   text-decoration: none;
   display: block;
-  border: 1px solid var(--gray);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  overflow: hidden;
+  transition: transform 0.25s ease;
 }
 .staff-card:hover {
   transform: translateY(-4px);
+}
+.staff-card:hover .card-face {
   box-shadow: 0 16px 32px rgba(65,33,7,0.12);
+  transition: box-shadow 0.25s ease;
 }
 .staff-card-img {
   aspect-ratio: 3/4;
@@ -549,7 +557,38 @@ header {
   font-size: 0.82em;
   line-height: 1.8;
 }
-.staff-card.is-soon { border-style: dashed; pointer-events: none; }
+.card-flip {
+  position: relative;
+  transition: transform 0.8s cubic-bezier(0.4,0.2,0.2,1);
+  transform-style: preserve-3d;
+}
+.staff-card.flip-ready:hover .card-flip { transform: rotateY(180deg); }
+.card-face {
+  backface-visibility: hidden;
+  background: var(--white);
+  border: 1px solid var(--gray);
+}
+.card-face-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+}
+.card-cta {
+  margin-top: 16px;
+  color: var(--gold);
+  font-size: 0.72em;
+  letter-spacing: 0.15em;
+}
+.staff-card-attr {
+  margin-top: 16px;
+  color: var(--text-sub);
+  font-size: 0.72em;
+  letter-spacing: 0.15em;
+  opacity: 0.7;
+}
+.staff-card.is-soon { border: 1px dashed var(--gray); background: var(--white); pointer-events: none; }
 .staff-card.is-soon .staff-card-img {
   display: flex; align-items: center; justify-content: center;
 }
@@ -592,6 +631,13 @@ footer a:hover { color: var(--gold); }
 .fade-up.from-right.visible { transform: translateX(0); }
 .fade-up.rotate-in { transform: rotate(-160deg) scale(0.3); }
 .fade-up.rotate-in.visible { transform: rotate(0deg) scale(1); }
+.fade-up.delay-slow { transition-delay: 0.25s; transition-duration: 1.15s; }
+.fade-up.spin-in {
+  transform: perspective(1400px) rotateY(-270deg);
+  backface-visibility: hidden;
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.25s, transform 1.3s cubic-bezier(0.16,1,0.3,1) 0.25s;
+}
+.fade-up.spin-in.visible { transform: none; }
 
 /* ── TIMELINE DRAW-IN ── */
 .timeline::before { transform: scaleX(0); transform-origin: left center; transition: transform 1.3s cubic-bezier(0.16,1,0.3,1); }
@@ -664,12 +710,12 @@ footer a:hover { color: var(--gold); }
 <section class="page-hero">
   <div class="hero-photos">
     <div class="hero-photo"><img src="/recruit/assets/img/202607-yuka-hero.jpg" alt="中道さん（パティシエ）"></div>
-    <div class="hero-photo"><img src="/recruit/assets/img/shop_exterior02.jpg" alt="西茶屋街の店舗外観"></div>
+    <div class="hero-photo"><img class="hero-photo-exterior" src="/recruit/assets/img/shop_exterior02.jpg" alt="西茶屋街の店舗外観"></div>
     <div class="hero-photo"><img class="hero-photo-monaka" src="/recruit/assets/img/strawberry_monaka01.jpg" alt="いちごモナカ"></div>
     <div class="hero-photo"><img src="/recruit/assets/img/hukuro01.jpg" alt="袋果子"></div>
-    <div class="hero-photo"><img src="/recruit/assets/img/202607-yuka-ajihei-shaved-ice.jpg" alt="中道さんが手がけたかき氷"></div>
+    <div class="hero-photo"><img class="hero-photo-kakigori" src="/recruit/assets/img/202607-yuka-ajihei-shaved-ice.jpg" alt="中道さんが手がけたかき氷"></div>
     <div class="hero-photo"><img src="/recruit/assets/img/202607-yuka-cooking.png" alt="厨房で仕込みをする中道さん"></div>
-    <div class="hero-photo"><img src="/recruit/assets/img/kawamura_parfait01.jpg" alt="サロン・ド・テ・カワムラのパルフェ"></div>
+    <div class="hero-photo"><img class="hero-photo-parfait" src="/recruit/assets/img/kawamura_parfait01.jpg" alt="サロン・ド・テ・カワムラのパルフェ"></div>
     <div class="hero-photo"><img src="/recruit/assets/img/shop_interior01.jpg" alt="店舗内観"></div>
   </div>
   <div class="hero-dim"></div>
@@ -689,20 +735,37 @@ footer a:hover { color: var(--gold); }
 
 <!-- STAFF GRID (TOP) -->
 <section class="staff-section" style="padding-top: 96px; background: var(--white);">
-  <span class="sec-eyebrow fade-up">STAFF INTERVIEW</span>
-  <h2 class="sec-title fade-up from-left">スタッフの声</h2>
+  <span class="sec-eyebrow fade-up from-left delay-slow">STAFF INTERVIEW</span>
+  <h2 class="sec-title fade-up from-left delay-slow">スタッフの声</h2>
   <div class="staff-grid">
-    <a href="/recruit/staff-introduction/patissier/202607-yuka.html" class="staff-card fade-up">
-      <div class="staff-card-img">
-        <img src="/recruit/assets/img/202607-yuka-profile.jpg" alt="Yuka">
-      </div>
-      <div class="staff-card-body">
-        <span class="staff-card-role">PATISSIER</span>
-        <div class="staff-card-name">Yuka</div>
-        <div class="staff-card-copy">和菓子を勉強しながら、仕事と家庭を両立。自分の作ったものがお客様の笑顔に直結する、そのやりがいを語ります。</div>
+    <a href="/recruit/staff-introduction/patissier/202607-yuka.html" class="staff-card fade-up spin-in">
+      <div class="card-flip">
+        <div class="card-face card-face-front">
+          <div class="staff-card-img">
+            <img src="/recruit/assets/img/202607-yuka-profile.jpg" alt="Yuka">
+          </div>
+          <div class="staff-card-body">
+            <span class="staff-card-role">PATISSIER</span>
+            <div class="staff-card-name">Yuka</div>
+            <div class="staff-card-copy">和菓子を勉強しながら、仕事と家庭を両立。自分の作ったものがお客様の笑顔に直結する、そのやりがいを語ります。</div>
+            <div class="card-cta">▶︎ 詳しく見る</div>
+          </div>
+        </div>
+        <div class="card-face card-face-back">
+          <div class="staff-card-img">
+            <img src="/recruit/assets/img/202607-yuka-cooking.png" alt="厨房で仕込みをする中道さん">
+          </div>
+          <div class="staff-card-body">
+            <span class="staff-card-role">VOICE</span>
+            <div class="staff-card-copy">甘納豆かわむらは、<br>自分たちの想いを形にできる職場。<br>日々新たな挑戦の機会があります。</div>
+            <div class="staff-card-attr">Yuka — パティシエ</div>
+            <div class="card-cta">▶︎ 詳しく見る</div>
+          </div>
+        </div>
       </div>
     </a>
 
+    <!-- 他スタッフは準備中のため公開まで一時非表示。準備でき次第このコメントを外す
     <div class="staff-card is-soon fade-up">
       <div class="staff-card-img"><span>COMING SOON</span></div>
       <div class="staff-card-body">
@@ -720,6 +783,7 @@ footer a:hover { color: var(--gold); }
         <div class="staff-card-copy">近日公開予定</div>
       </div>
     </div>
+    -->
   </div>
 </section>
 
@@ -932,17 +996,34 @@ footer a:hover { color: var(--gold); }
 <!-- STAFF GRID -->
 <section class="staff-section">
   <div class="staff-grid">
-    <a href="/recruit/staff-introduction/patissier/202607-yuka.html" class="staff-card fade-up">
-      <div class="staff-card-img">
-        <img src="/recruit/assets/img/202607-yuka-profile.jpg" alt="Yuka">
-      </div>
-      <div class="staff-card-body">
-        <span class="staff-card-role">PATISSIER</span>
-        <div class="staff-card-name">Yuka</div>
-        <div class="staff-card-copy">和菓子を勉強しながら、仕事と家庭を両立。自分の作ったものがお客様の笑顔に直結する、そのやりがいを語ります。</div>
+    <a href="/recruit/staff-introduction/patissier/202607-yuka.html" class="staff-card fade-up spin-in">
+      <div class="card-flip">
+        <div class="card-face card-face-front">
+          <div class="staff-card-img">
+            <img src="/recruit/assets/img/202607-yuka-profile.jpg" alt="Yuka">
+          </div>
+          <div class="staff-card-body">
+            <span class="staff-card-role">PATISSIER</span>
+            <div class="staff-card-name">Yuka</div>
+            <div class="staff-card-copy">和菓子を勉強しながら、仕事と家庭を両立。自分の作ったものがお客様の笑顔に直結する、そのやりがいを語ります。</div>
+            <div class="card-cta">▶︎ 詳しく見る</div>
+          </div>
+        </div>
+        <div class="card-face card-face-back">
+          <div class="staff-card-img">
+            <img src="/recruit/assets/img/202607-yuka-cooking.png" alt="厨房で仕込みをする中道さん">
+          </div>
+          <div class="staff-card-body">
+            <span class="staff-card-role">VOICE</span>
+            <div class="staff-card-copy">甘納豆かわむらは、<br>自分たちの想いを形にできる職場。<br>日々新たな挑戦の機会があります。</div>
+            <div class="staff-card-attr">Yuka — パティシエ</div>
+            <div class="card-cta">▶︎ 詳しく見る</div>
+          </div>
+        </div>
       </div>
     </a>
 
+    <!-- 他スタッフは準備中のため公開まで一時非表示。準備でき次第このコメントを外す
     <div class="staff-card is-soon fade-up">
       <div class="staff-card-img"><span>COMING SOON</span></div>
       <div class="staff-card-body">
@@ -960,6 +1041,7 @@ footer a:hover { color: var(--gold); }
         <div class="staff-card-copy">近日公開予定</div>
       </div>
     </div>
+    -->
   </div>
 </section>
 
@@ -1011,8 +1093,12 @@ footer a:hover { color: var(--gold); }
   const observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+        const el = entry.target;
+        el.classList.add('visible');
+        if (el.classList.contains('spin-in')) {
+          setTimeout(function() { el.classList.add('flip-ready'); }, 1600);
+        }
+        observer.unobserve(el);
       }
     });
   }, { threshold: 0.12 });
@@ -1065,6 +1151,28 @@ footer a:hover { color: var(--gold); }
     });
   }, { threshold: 0.5 });
   nums.forEach(function(el) { observer.observe(el); });
+})();
+
+(function() {
+  document.querySelectorAll('a.staff-card').forEach(function(card) {
+    if (card.classList.contains('is-soon')) return;
+    card.addEventListener('click', function(e) {
+      e.preventDefault();
+      const href = card.getAttribute('href');
+      const originY = window.scrollY + window.innerHeight / 2;
+
+      document.body.style.transformOrigin = '50% ' + originY + 'px';
+      document.body.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.6,0,0.9,0.1)';
+      requestAnimationFrame(function() {
+        document.body.style.opacity = '0';
+        document.body.style.transform = 'scale(0.6)';
+      });
+
+      setTimeout(function() {
+        window.location.href = href;
+      }, 500);
+    });
+  });
 })();
 </script>
 
