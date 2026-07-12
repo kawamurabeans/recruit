@@ -45,7 +45,7 @@ body.loading { overflow: hidden; height: 100vh; }
   display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
 .loader-logo {
-  width: 440px; height: 440px;
+  width: 440px; height: auto;
   object-fit: contain;
   position: relative;
   z-index: 1;
@@ -54,7 +54,7 @@ body.loading { overflow: hidden; height: 100vh; }
   will-change: transform;
 }
 .loader-text {
-  margin-top: 18px;
+  margin-top: 28px;
   display: flex;
   justify-content: center;
   color: var(--beige);
@@ -607,7 +607,7 @@ footer a:hover { color: var(--gold); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .loader-logo { width: 300px; height: 300px; }
+  .loader-logo { width: 300px; height: auto; }
   header { padding: 14px 20px; }
   .page-hero { height: 100vh; min-height: 560px; padding: 0 20px 56px; }
   .page-hero-title { font-size: 1.45em; }
