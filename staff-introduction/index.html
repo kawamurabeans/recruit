@@ -129,6 +129,8 @@ header {
   transition: transform 4.6s ease-out;
 }
 .hero-photo.active img { transform: scale(1.08); }
+.hero-photo:nth-child(even) img { transform: scale(1.12); }
+.hero-photo:nth-child(even).active img { transform: scale(1); }
 .hero-photo img.hero-photo-monaka { object-position: center 62%; }
 .hero-photo img.hero-photo-exterior { object-position: center 58%; }
 .hero-photo img.hero-photo-kakigori { object-position: center 38%; }
