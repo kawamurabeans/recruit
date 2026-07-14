@@ -235,15 +235,93 @@ header {
   letter-spacing: 0.1em;
   margin-bottom: 40px;
   position: relative;
-  padding-bottom: 32px;
 }
-.philosophy-quote::after {
+
+/* ── PHILOSOPHY: elevated dark scroll-reveal ── */
+.sec.sec-philosophy {
+  position: relative;
+  background: var(--brown);
+  height: 1400vh;
+  padding: 0;
+  overflow: visible;
+}
+.philosophy-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 140px 40px;
+}
+.philosophy-sticky::before {
   content: '';
+  position: absolute; inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at 50% 38%, rgba(65,33,7,0.35) 0%, rgba(15,7,2,0.94) 78%);
+}
+.philosophy-bg {
   position: absolute;
-  bottom: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 48px; height: 2px;
-  background: var(--gold);
+  top: -60px; left: 0; right: 0;
+  height: calc(100% + 120px);
+  z-index: 0;
+  will-change: transform;
+}
+.philosophy-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  opacity: 0.22;
+  filter: grayscale(0.25) contrast(1.05);
+}
+.philosophy-stage {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+}
+.philosophy-stage > * { grid-area: 1 / 1; }
+.philosophy-intro {
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.philosophy-intro.stage-hidden {
+  opacity: 0;
+  transform: translateY(-32px);
+  pointer-events: none;
+}
+.sec-philosophy .sec-eyebrow { color: var(--gold); font-size: 1em; letter-spacing: 0.35em; }
+.sec-philosophy .sec-title { color: var(--beige-light); font-size: clamp(2.6em, 5.5vw, 4em); margin-bottom: 64px; }
+.sec-philosophy .philosophy-quote { color: var(--beige-light); font-size: clamp(2.2em, 6vw, 3.6em); margin-bottom: 0; }
+
+.lead-scroll {
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  display: grid;
+}
+.lead-scroll > * { grid-area: 1 / 1; }
+.lead-line-item {
+  align-self: center;
+  justify-self: center;
+  text-align: center;
+  color: var(--beige-light);
+  font-size: clamp(1.8em, 5vw, 3.4em);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transform: translateY(28px) scale(0.96);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.line-seg { display: inline-block; white-space: nowrap; }
+.lead-line-item.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /* ── INNOVATION DIAGRAM ── */
@@ -645,10 +723,6 @@ footer a:hover { color: var(--gold); }
 .timeline::before { transform: scaleX(0); transform-origin: left center; transition: transform 1.3s cubic-bezier(0.16,1,0.3,1); }
 .timeline.line-draw::before { transform: scaleX(1); }
 
-/* ── PHILOSOPHY UNDERLINE DRAW-IN ── */
-.philosophy-quote::after { width: 0; transition: width 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s; }
-.philosophy-quote.visible::after { width: 48px; }
-
 /* ── BENEFIT / INFO CARD LIFT ON HOVER ── */
 .info-card, .benefit-card, .customer-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
 .info-card:hover, .benefit-card:hover, .customer-card:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(65,33,7,0.1); }
@@ -662,6 +736,9 @@ footer a:hover { color: var(--gold); }
   .page-hero-eyebrow { letter-spacing: 0.3em; margin-bottom: 20px; }
   .sec { padding: 64px 20px; }
   .sec-title { margin-bottom: 36px; }
+  .sec.sec-philosophy { height: 1100vh; }
+  .philosophy-sticky { padding: 100px 24px; }
+  .line-seg { white-space: normal; }
 
   .innovation-wrap { flex-direction: column; }
   .timeline { grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
@@ -790,17 +867,23 @@ footer a:hover { color: var(--gold); }
 </section>
 
 <!-- 経営理念 -->
-<section class="sec">
-  <div class="sec-inner">
-    <span class="sec-eyebrow fade-up">PHILOSOPHY</span>
-    <h2 class="sec-title fade-up from-left">経営理念</h2>
-    <p class="philosophy-quote fade-up">お客様の記憶に残るお菓子を創る</p>
-    <p class="sec-lead fade-up">
-      皆さんにも、小さい頃に行った旅行先のテーマパーク、レストラン、お菓子屋さん――
-      忘れられない、記憶に残るお店があったと思います。<br>
-      当店はただ「美味しい」だけでなく、年月が経っても思い出してもらえる
-      心に残る存在を目指しています。その最良の手段がお菓子なのです。
-    </p>
+<section class="sec sec-philosophy">
+  <div class="philosophy-sticky">
+    <div class="philosophy-bg" aria-hidden="true"><img src="/recruit/assets/img/shop_interior01.jpg" alt=""></div>
+    <div class="philosophy-stage">
+      <div class="philosophy-intro">
+        <span class="sec-eyebrow fade-up center-trigger delay-slow">PHILOSOPHY</span>
+        <h2 class="sec-title fade-up from-left center-trigger delay-slow">経営理念</h2>
+        <p class="philosophy-quote fade-up from-right center-trigger delay-slow">お客様の記憶に残るお菓子を創る</p>
+      </div>
+      <div class="lead-scroll">
+        <p class="lead-line-item"><span class="line-seg">小さい頃に訪れた旅行先の</span><br><span class="line-seg">テーマパーク、レストラン</span><br><span class="line-seg">お菓子屋さん</span></p>
+        <p class="lead-line-item"><span class="line-seg">忘れられない</span><br><span class="line-seg">記憶に残るお店が</span><br><span class="line-seg">皆さんにもあると思います。</span></p>
+        <p class="lead-line-item"><span class="line-seg">当店はただ「美味しい」だけでなく、</span><br><span class="line-seg">年月が経っても思い出してもらえる・・・</span></p>
+        <p class="lead-line-item"><span class="line-seg">そんな心に残る存在を目指しています。</span></p>
+        <p class="lead-line-item"><span class="line-seg">その最良の手段がお菓子なのです。</span></p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1091,7 +1174,7 @@ footer a:hover { color: var(--gold); }
 })();
 
 (function() {
-  const els = document.querySelectorAll('.fade-up, .title-mask');
+  const els = document.querySelectorAll('.fade-up:not(.center-trigger), .title-mask');
   const observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
@@ -1117,6 +1200,83 @@ footer a:hover { color: var(--gold); }
     current = (current + 1) % items.length;
     items[current].classList.add('active');
   }, 4000);
+})();
+
+(function() {
+  const section = document.querySelector('.sec-philosophy');
+  const bg = section ? section.querySelector('.philosophy-bg') : null;
+  const intro = section ? section.querySelector('.philosophy-intro') : null;
+  const lines = section ? section.querySelectorAll('.lead-line-item') : [];
+  const centerTriggerEls = section ? section.querySelectorAll('.center-trigger') : [];
+  if (!section || !bg) return;
+  const introThreshold = 0.3;
+  let current = -1;
+  let introHidden = null;
+  let introRevealed = false;
+  let ticking = false;
+
+  function targetProgress() {
+    const rect = section.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    let progress = total > 0 ? (-rect.top) / total : 0;
+    if (progress < 0) progress = 0;
+    if (progress > 1) progress = 1;
+    return progress;
+  }
+
+  function render(progress) {
+    const offset = (progress - 0.5) * 70;
+    bg.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
+
+    if (intro && centerTriggerEls.length && !introRevealed) {
+      // trigger all three together based on the intro block's own
+      // center, not each child's — a child stacked near the bottom of
+      // a tall block may sit below the viewport's centerline even once
+      // the block as a whole has arrived, and would otherwise never fire
+      const r = intro.getBoundingClientRect();
+      if (r.top + r.height / 2 <= window.innerHeight / 2) {
+        centerTriggerEls.forEach(function(el) { el.classList.add('visible'); });
+        introRevealed = true;
+      }
+    }
+
+    const shouldHideIntro = progress > introThreshold;
+    if (intro && shouldHideIntro !== introHidden) {
+      intro.classList.toggle('stage-hidden', shouldHideIntro);
+      introHidden = shouldHideIntro;
+    }
+
+    if (lines.length) {
+      let target = -1;
+      if (progress > introThreshold) {
+        let p2 = (progress - introThreshold) / (1 - introThreshold);
+        if (p2 > 1) p2 = 1;
+        target = Math.floor(p2 * lines.length);
+        if (target >= lines.length) target = lines.length - 1;
+      }
+      // advance/retreat at most one line per update, so a single large
+      // scroll jump can never skip a line entirely
+      let idx = current;
+      if (target > current) idx = current + 1;
+      else if (target < current) idx = current - 1;
+      if (idx !== current) {
+        lines.forEach(function(el, i) { el.classList.toggle('active', i === idx); });
+        current = idx;
+      }
+    }
+  }
+
+  function update() {
+    render(targetProgress());
+    ticking = false;
+  }
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }, { passive: true });
+  update();
 })();
 
 (function() {
