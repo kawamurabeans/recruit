@@ -1308,10 +1308,35 @@ footer a:hover { color: var(--gold); }
   const centerTriggerEls = section ? section.querySelectorAll('.center-trigger') : [];
   if (!scrollRoot || !section || !bg) return;
   const introThreshold = 0.3;
+  const MIN_DWELL = 260;
   let current = -1;
   let introHidden = null;
   let introRevealed = false;
   let ticking = false;
+  let pendingTarget = -1;
+  let stepping = false;
+  let lastChangeTime = 0;
+
+  function stepOnce() {
+    const now = performance.now();
+    if (now - lastChangeTime < MIN_DWELL) {
+      requestAnimationFrame(stepOnce);
+      return;
+    }
+    let idx = current;
+    if (pendingTarget > current) idx = current + 1;
+    else if (pendingTarget < current) idx = current - 1;
+    if (idx !== current) {
+      lines.forEach(function(el, i) { el.classList.toggle('active', i === idx); });
+      current = idx;
+      lastChangeTime = now;
+    }
+    if (pendingTarget !== current) {
+      requestAnimationFrame(stepOnce);
+    } else {
+      stepping = false;
+    }
+  }
 
   function targetProgress() {
     const rect = section.getBoundingClientRect();
@@ -1352,14 +1377,13 @@ footer a:hover { color: var(--gold); }
         target = Math.floor(p2 * lines.length);
         if (target >= lines.length) target = lines.length - 1;
       }
-      // advance/retreat at most one line per update, so a single large
-      // scroll jump can never skip a line entirely
-      let idx = current;
-      if (target > current) idx = current + 1;
-      else if (target < current) idx = current - 1;
-      if (idx !== current) {
-        lines.forEach(function(el, i) { el.classList.toggle('active', i === idx); });
-        current = idx;
+      // advance/retreat at most one line per step, gated by a minimum
+      // dwell time, so a fast mobile fling can't blow through a line
+      // before it's had a chance to actually be seen
+      pendingTarget = target;
+      if (!stepping && pendingTarget !== current) {
+        stepping = true;
+        requestAnimationFrame(stepOnce);
       }
     }
   }
