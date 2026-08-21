@@ -1363,7 +1363,11 @@ footer a:hover { color: var(--gold); }
       }
     }
 
-    const shouldHideIntro = progress > introThreshold;
+    // iOS Safari's innerHeight shifts as the address bar collapses,
+    // which can desync raw scroll progress from the intro's own
+    // center-based reveal — so never hide the intro or start the
+    // message lines until the intro has actually been shown
+    const shouldHideIntro = introRevealed && progress > introThreshold;
     if (intro && shouldHideIntro !== introHidden) {
       intro.classList.toggle('stage-hidden', shouldHideIntro);
       introHidden = shouldHideIntro;
@@ -1371,7 +1375,7 @@ footer a:hover { color: var(--gold); }
 
     if (lines.length) {
       let target = -1;
-      if (progress > introThreshold) {
+      if (introRevealed && progress > introThreshold) {
         let p2 = (progress - introThreshold) / (1 - introThreshold);
         if (p2 > 1) p2 = 1;
         target = Math.floor(p2 * lines.length);
