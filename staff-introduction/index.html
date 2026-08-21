@@ -252,7 +252,7 @@ header {
 .sec.sec-philosophy {
   position: relative;
   background: var(--brown);
-  height: 700vh;
+  height: 1050vh;
   padding: 0;
   overflow: visible;
 }
@@ -361,6 +361,7 @@ header {
   transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
 }
 .line-seg { display: inline-block; white-space: nowrap; }
+.mobile-br { display: none; }
 .lead-line-item.active {
   opacity: 1;
   transform: translateY(0) scale(1);
@@ -850,9 +851,11 @@ footer a:hover { color: var(--gold); }
   .sec-title { margin-bottom: 36px; }
   .sec.sec-innovation { min-height: 0; padding: 88px 20px; }
   .innovation-wrap { margin: 56px 0 48px; }
-  .sec.sec-philosophy { height: 550vh; }
+  .sec.sec-philosophy { height: 825vh; }
   .philosophy-sticky { padding: 100px 24px; }
-  .line-seg { white-space: normal; }
+  .lead-line-item { font-size: clamp(1.1em, 5.2vw, 3.4em); }
+  .philosophy-scroll-hint { left: auto; right: 20px; transform: none; }
+  .mobile-br { display: inline; }
 
   .innovation-wrap { flex-direction: column; gap: 20px; }
   .innovation-box { padding: 22px 24px; min-width: 0; width: 100%; max-width: 320px; }
@@ -1001,10 +1004,10 @@ footer a:hover { color: var(--gold); }
       </div>
       <div class="lead-scroll">
         <p class="lead-line-item"><span class="line-seg">小さい頃に訪れた旅行先の</span><br><span class="line-seg">テーマパーク、レストラン</span><br><span class="line-seg">お菓子屋さん</span></p>
-        <p class="lead-line-item"><span class="line-seg">忘れられない</span><br><span class="line-seg">記憶に残るお店が</span><br><span class="line-seg">皆さんにもあると思います。</span></p>
-        <p class="lead-line-item"><span class="line-seg">当店はただ「美味しい」だけでなく、</span><br><span class="line-seg">年月が経っても思い出してもらえる・・・</span></p>
-        <p class="lead-line-item"><span class="line-seg">そんな心に残る存在を目指しています。</span></p>
-        <p class="lead-line-item"><span class="line-seg">その最良の手段がお菓子なのです。</span></p>
+        <p class="lead-line-item"><span class="line-seg">忘れられない</span><br><span class="line-seg">記憶に残るお店が</span><br><span class="line-seg">皆さんにもあると<br class="mobile-br">思います。</span></p>
+        <p class="lead-line-item"><span class="line-seg">当店はただ「美味しい」<br class="mobile-br">だけでなく、</span><br><span class="line-seg">年月が経っても<br class="mobile-br">思い出してもらえる・・・</span></p>
+        <p class="lead-line-item"><span class="line-seg">そんな心に残る存在を<br class="mobile-br">目指しています。</span></p>
+        <p class="lead-line-item"><span class="line-seg">その最良の手段が<br class="mobile-br">お菓子なのです。</span></p>
       </div>
     </div>
     <div class="philosophy-scroll-hint"><span>Scroll</span></div>
