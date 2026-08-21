@@ -297,7 +297,7 @@ header {
 .philosophy-scroll-hint {
   position: absolute;
   left: 50%;
-  bottom: 36px;
+  bottom: 15%;
   transform: translateX(-50%);
   z-index: 2;
   writing-mode: vertical-rl;
@@ -308,7 +308,6 @@ header {
   pointer-events: none;
   transition: opacity 0.5s ease;
 }
-.philosophy-scroll-hint.stage-hidden { opacity: 0; }
 .philosophy-scroll-hint::after {
   content: '';
   position: absolute;
@@ -1337,7 +1336,6 @@ footer a:hover { color: var(--gold); }
   const section = document.querySelector('.sec-philosophy');
   const bg = section ? section.querySelector('.philosophy-bg') : null;
   const intro = section ? section.querySelector('.philosophy-intro') : null;
-  const scrollHint = section ? section.querySelector('.philosophy-scroll-hint') : null;
   const lines = section ? section.querySelectorAll('.lead-line-item') : [];
   const centerTriggerEls = section ? section.querySelectorAll('.center-trigger') : [];
   if (!scrollRoot || !section || !bg) return;
@@ -1403,7 +1401,6 @@ footer a:hover { color: var(--gold); }
     const shouldHideIntro = introRevealed && progress > introThreshold;
     if (intro && shouldHideIntro !== introHidden) {
       intro.classList.toggle('stage-hidden', shouldHideIntro);
-      if (scrollHint) scrollHint.classList.toggle('stage-hidden', shouldHideIntro);
       introHidden = shouldHideIntro;
     }
 
