@@ -22,18 +22,25 @@
   --gray:        #e8ddd4;
 }
 
-html {
-  overscroll-behavior-x: none;
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
 body {
   font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
   color: var(--text);
   background: var(--white);
   line-height: 1.9;
-  overflow-x: hidden;
-  overscroll-behavior-x: none;
 }
 body.loading { overflow: hidden; height: 100vh; }
+#scroll-root {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  overscroll-behavior-x: none;
+}
 
 /* ── PAGE LOADER ── */
 #page-loader {
@@ -863,6 +870,8 @@ footer a:hover { color: var(--gold); }
   </div>
 </div>
 
+<div id="scroll-root">
+
 <!-- HEADER -->
 <header style="justify-content: center;">
   <span class="header-logo" style="opacity:1;"><span>甘納豆かわむら</span></span>
@@ -1226,6 +1235,8 @@ footer a:hover { color: var(--gold); }
   <p style="margin-top:16px;">© 甘納豆かわむら All Rights Reserved.</p>
 </footer>
 
+</div><!-- /#scroll-root -->
+
 <script>
 (function() {
   document.body.classList.add('loading');
@@ -1289,12 +1300,13 @@ footer a:hover { color: var(--gold); }
 })();
 
 (function() {
+  const scrollRoot = document.getElementById('scroll-root');
   const section = document.querySelector('.sec-philosophy');
   const bg = section ? section.querySelector('.philosophy-bg') : null;
   const intro = section ? section.querySelector('.philosophy-intro') : null;
   const lines = section ? section.querySelectorAll('.lead-line-item') : [];
   const centerTriggerEls = section ? section.querySelectorAll('.center-trigger') : [];
-  if (!section || !bg) return;
+  if (!scrollRoot || !section || !bg) return;
   const introThreshold = 0.3;
   let current = -1;
   let introHidden = null;
@@ -1356,7 +1368,7 @@ footer a:hover { color: var(--gold); }
     render(targetProgress());
     ticking = false;
   }
-  window.addEventListener('scroll', function() {
+  scrollRoot.addEventListener('scroll', function() {
     if (!ticking) {
       requestAnimationFrame(update);
       ticking = true;
@@ -1407,7 +1419,8 @@ footer a:hover { color: var(--gold); }
     card.addEventListener('click', function(e) {
       e.preventDefault();
       const href = card.getAttribute('href');
-      const originY = window.scrollY + window.innerHeight / 2;
+      const rect = card.getBoundingClientRect();
+      const originY = rect.top + rect.height / 2;
 
       document.body.style.transformOrigin = '50% ' + originY + 'px';
       document.body.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.6,0,0.9,0.1)';
