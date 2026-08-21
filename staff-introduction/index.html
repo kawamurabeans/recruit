@@ -294,6 +294,38 @@ header {
   display: grid;
 }
 .philosophy-stage > * { grid-area: 1 / 1; }
+.philosophy-scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  z-index: 2;
+  writing-mode: vertical-rl;
+  color: var(--beige-light);
+  font-size: 0.72em;
+  letter-spacing: 0.3em;
+  opacity: 0.7;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.philosophy-scroll-hint.stage-hidden { opacity: 0; }
+.philosophy-scroll-hint::after {
+  content: '';
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0; right: 0;
+  margin: auto;
+  width: 1px;
+  height: 60px;
+  background: var(--beige-light);
+  animation: philosophy-scroll-line 2s infinite;
+}
+@keyframes philosophy-scroll-line {
+  0%   { transform: scale(1, 0); transform-origin: 0 0; }
+  50%  { transform: scale(1, 1); transform-origin: 0 0; }
+  51%  { transform: scale(1, 1); transform-origin: 0 100%; }
+  100% { transform: scale(1, 1); transform-origin: 0 100%; }
+}
 .philosophy-intro {
   align-self: center;
   justify-self: center;
@@ -976,6 +1008,7 @@ footer a:hover { color: var(--gold); }
         <p class="lead-line-item"><span class="line-seg">その最良の手段がお菓子なのです。</span></p>
       </div>
     </div>
+    <div class="philosophy-scroll-hint"><span>Scroll</span></div>
   </div>
 </section>
 
@@ -1304,6 +1337,7 @@ footer a:hover { color: var(--gold); }
   const section = document.querySelector('.sec-philosophy');
   const bg = section ? section.querySelector('.philosophy-bg') : null;
   const intro = section ? section.querySelector('.philosophy-intro') : null;
+  const scrollHint = section ? section.querySelector('.philosophy-scroll-hint') : null;
   const lines = section ? section.querySelectorAll('.lead-line-item') : [];
   const centerTriggerEls = section ? section.querySelectorAll('.center-trigger') : [];
   if (!scrollRoot || !section || !bg) return;
@@ -1369,6 +1403,7 @@ footer a:hover { color: var(--gold); }
     const shouldHideIntro = introRevealed && progress > introThreshold;
     if (intro && shouldHideIntro !== introHidden) {
       intro.classList.toggle('stage-hidden', shouldHideIntro);
+      if (scrollHint) scrollHint.classList.toggle('stage-hidden', shouldHideIntro);
       introHidden = shouldHideIntro;
     }
 
