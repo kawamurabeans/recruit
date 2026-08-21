@@ -1351,16 +1351,15 @@ footer a:hover { color: var(--gold); }
     const offset = (progress - 0.5) * 70;
     bg.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
 
-    if (intro && centerTriggerEls.length && !introRevealed) {
-      // trigger all three together based on the intro block's own
-      // center, not each child's — a child stacked near the bottom of
-      // a tall block may sit below the viewport's centerline even once
-      // the block as a whole has arrived, and would otherwise never fire
-      const r = intro.getBoundingClientRect();
-      if (r.top + r.height / 2 <= window.innerHeight / 2) {
-        centerTriggerEls.forEach(function(el) { el.classList.add('visible'); });
-        introRevealed = true;
-      }
+    if (intro && centerTriggerEls.length && !introRevealed && progress > 0.01) {
+      // tied to the same progress value as everything else below —
+      // a separate rect/innerHeight-based "has it reached the visual
+      // center" check used to live here, but iOS Safari's innerHeight
+      // shifts as the address bar collapses, which could desync that
+      // check from progress and leave the intro never revealed (or
+      // revealed too late, dumping all the queued lines at once)
+      centerTriggerEls.forEach(function(el) { el.classList.add('visible'); });
+      introRevealed = true;
     }
 
     // iOS Safari's innerHeight shifts as the address bar collapses,
