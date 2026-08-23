@@ -956,6 +956,14 @@ footer a:hover { color: var(--gold); }
 @media (max-width: 768px) {
   .timeline-photo-group { flex-wrap: wrap; }
   .timeline-photo-group .timeline-photo { flex: 1 1 200px; min-width: 140px; }
+  .timeline-photo-group .timeline-photo-natural {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  .timeline-photo-group .timeline-photo-natural img {
+    width: auto;
+    height: 220px;
+  }
   .loader-logo { width: 300px; height: auto; }
   header { padding: 14px 20px; }
   .page-hero { height: 100vh; min-height: 560px; padding: 0 20px 56px; }
@@ -1603,7 +1611,6 @@ footer a:hover { color: var(--gold); }
   if (!timeline) return;
   const items = Array.from(timeline.querySelectorAll('.timeline-item'));
   const dots = items.map(function(item) { return item.querySelector('.timeline-dot'); });
-  const revealDelay = 220; // ms after the line reaches a dot before its content fades in
   let ticking = false;
   let maxProgress = 0;
 
@@ -1611,9 +1618,11 @@ footer a:hover { color: var(--gold); }
 
   function update() {
     ticking = false;
+    const isMobile = window.innerWidth <= 768;
+    const revealDelay = isMobile ? 420 : 220; // ms after the line reaches a dot before its content fades in — a touch slower on SP
     const rect = timeline.getBoundingClientRect();
     const vh = window.innerHeight;
-    const startY = vh * 1.1;
+    const startY = vh * (isMobile ? 0.8 : 1.1); // SP: line starts growing a bit later, after more scrolling
     // finish growing once the last item's dot reaches the middle of the screen
     const finishScreenY = vh * 0.5;
     const total = startY - (finishScreenY - lastDotOffset);
