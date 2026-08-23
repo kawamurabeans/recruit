@@ -547,6 +547,16 @@ header {
   font-size: 1.05em;
   line-height: 1.9;
 }
+.timeline-photo-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+}
+.timeline-photo-group .timeline-photo {
+  margin-top: 0;
+  flex: 1 1 170px;
+}
 .timeline-photo {
   margin-top: 20px;
   max-width: 360px;
@@ -1118,13 +1128,10 @@ footer a:hover { color: var(--gold); }
         <div class="timeline-dot"></div>
         <div class="timeline-year">2013年</div>
         <div class="timeline-desc">店舗改装<br>モダンな店構えに</div>
-        <div class="timeline-photo"><img src="/recruit/assets/img/201309-renovation.jpg" alt="2013年改装後のモダンな店舗外観" loading="lazy"></div>
-      </div>
-      <div class="timeline-item fade-up fade-up-d2">
-        <div class="timeline-dot"></div>
-        <div class="timeline-year">コロナ前</div>
-        <div class="timeline-desc">【Salon de thé Kawamura】<br>開業（和カフェ）</div>
-        <div class="timeline-photo"><img src="/recruit/assets/img/shop_interior01.jpg" alt="" loading="lazy"></div>
+        <div class="timeline-photo-group">
+          <div class="timeline-photo"><img src="/recruit/assets/img/201309-renovation.jpg" alt="2013年改装後のモダンな店舗外観" loading="lazy"></div>
+          <div class="timeline-photo"><img src="/recruit/assets/img/shop_interior01.jpg" alt="" loading="lazy"></div>
+        </div>
       </div>
       <div class="timeline-item fade-up fade-up-d3">
         <div class="timeline-dot"></div>
