@@ -571,13 +571,17 @@ header {
   height: 220px;
   aspect-ratio: auto;
 }
+.timeline-photo-group-triple {
+  margin-top: 24px;
+}
 .timeline-photo-group .timeline-photo-natural {
-  flex: 0 0 auto;
+  flex: 1 1 0;
+  min-width: 0;
 }
 .timeline-photo-group .timeline-photo-natural img {
-  width: auto;
-  height: 220px;
-  object-fit: contain;
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
 }
 .timeline-photo {
   margin-top: 32px;
@@ -957,12 +961,13 @@ footer a:hover { color: var(--gold); }
   .timeline-photo-group { flex-wrap: wrap; }
   .timeline-photo-group .timeline-photo { flex: 1 1 200px; min-width: 140px; }
   .timeline-photo-group .timeline-photo-natural {
-    flex: 0 0 auto;
+    flex: 1 1 0;
     min-width: 0;
   }
   .timeline-photo-group .timeline-photo-natural img {
-    width: auto;
+    width: 100%;
     height: 220px;
+    object-fit: cover;
   }
   .loader-logo { width: 300px; height: auto; }
   header { padding: 14px 20px; }
@@ -1206,6 +1211,8 @@ footer a:hover { color: var(--gold); }
         <div class="timeline-photo-group">
           <div class="timeline-photo"><img src="/recruit/assets/img/201803-salon01.jpg" alt="サロン・ド・テ・カワムラの店内" loading="lazy"></div>
           <div class="timeline-photo"><img src="/recruit/assets/img/201803-salon02.jpg" alt="サロン・ド・テ・カワムラの窓辺の席" loading="lazy"></div>
+        </div>
+        <div class="timeline-photo-group timeline-photo-group-triple">
           <div class="timeline-photo timeline-photo-natural"><img src="/recruit/assets/img/201803-salon03.jpg" alt="サロン・ド・テ・カワムラのパルフェ" loading="lazy"></div>
           <div class="timeline-photo timeline-photo-natural"><img src="/recruit/assets/img/201803-salon04-kakigori.jpg" alt="サロン・ド・テ・カワムラのかき氷" loading="lazy"></div>
           <div class="timeline-photo timeline-photo-natural"><img src="/recruit/assets/img/201803-salon05-parfait.jpg" alt="サロン・ド・テ・カワムラのいちじくパルフェ" loading="lazy"></div>
