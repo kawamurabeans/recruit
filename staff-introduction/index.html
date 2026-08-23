@@ -470,13 +470,32 @@ header {
   font-weight: bold;
 }
 .innovation-x-spin {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1em; height: 1em;
-  line-height: 1;
-  transform-origin: 50% 50%;
+  position: relative;
+  display: block;
+  width: 20px; height: 20px;
   animation: innovation-spin 6s linear infinite;
+}
+.innovation-x-spin::before,
+.innovation-x-spin::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100%; height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.innovation-x-spin::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
 }
 @keyframes innovation-spin {
   from { transform: rotate(0deg); }
@@ -1052,7 +1071,7 @@ footer a:hover { color: var(--gold); }
         <h3 class="fade-up from-left" style="transition-delay: 1.3s;">甘納豆</h3>
         <p>創業以来24年間<br>磨いてきた当店の強み</p>
       </div>
-      <div class="innovation-x fade-up rotate-in" style="transition-delay: 0.8s;"><span class="innovation-x-spin">×</span></div>
+      <div class="innovation-x fade-up rotate-in" style="transition-delay: 0.8s;"><span class="innovation-x-spin" aria-hidden="true"></span><span class="sr-only">×</span></div>
       <div class="innovation-box fade-up from-right delay-slow" style="transition-delay: 0.5s;">
         <div class="innovation-box-header"><span class="fade-up from-left" style="transition-delay: 1.3s;">WESTERN SWEETS</span></div>
         <h3 class="fade-up from-right" style="transition-delay: 1.3s;">洋菓子</h3>
