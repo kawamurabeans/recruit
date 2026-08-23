@@ -514,10 +514,10 @@ header {
 .timeline {
   display: flex;
   flex-direction: column;
-  gap: 132px;
+  gap: 96px;
   position: relative;
   margin-bottom: 48px;
-  padding: 0 64px;
+  padding: 0 0 0 32px;
 }
 .timeline-line-svg {
   position: absolute;
@@ -533,18 +533,22 @@ header {
   stroke-width: 2;
   transition: stroke-dashoffset 1.3s cubic-bezier(0.16,1,0.3,1);
 }
-.timeline-item { text-align: left; padding: 0; position: relative; z-index: 1; }
+.timeline-item {
+  text-align: left;
+  padding-left: 32px;
+  position: relative;
+  z-index: 1;
+}
+.timeline-item:nth-of-type(even) {
+  margin-left: 340px;
+}
 .timeline-dot {
   width: 18px; height: 18px;
   border-radius: 50%;
   background: var(--orange);
   position: absolute;
-  top: 2px; left: -64px;
+  top: 2px; left: 0;
   z-index: 1;
-}
-.timeline-item:nth-of-type(even) .timeline-dot {
-  left: auto;
-  right: -64px;
 }
 .timeline-year {
   color: var(--orange);
@@ -959,7 +963,7 @@ footer a:hover { color: var(--gold); }
   .innovation-box h3 { display: inline-block; font-size: 1.2em; margin-bottom: 10px; padding-bottom: 10px; }
   .innovation-box p { font-size: 0.92em; line-height: 1.6; }
   .innovation-x { width: 40px; height: 40px; font-size: 1.2em; }
-  .timeline { gap: 88px; padding: 0 0 0 40px; }
+  .timeline { gap: 88px; padding: 0 0 0 8px; }
   .timeline-line-svg { display: none; }
   .timeline::before {
     content: '';
@@ -972,11 +976,7 @@ footer a:hover { color: var(--gold); }
     transition: transform 1.3s cubic-bezier(0.16,1,0.3,1);
   }
   .timeline.line-draw::before { transform: scaleY(1); }
-  .timeline-dot,
-  .timeline-item:nth-child(even) .timeline-dot {
-    left: -40px;
-    right: auto;
-  }
+  .timeline-item:nth-of-type(even) { margin-left: 0; }
   .timeline-photo { max-width: 100%; }
 
   .two-col { grid-template-columns: 1fr; }
@@ -1588,7 +1588,7 @@ footer a:hover { color: var(--gold); }
   if (!timeline) return;
   const svg = timeline.querySelector('.timeline-line-svg');
   const path = svg ? svg.querySelector('path') : null;
-  const dots = Array.from(timeline.querySelectorAll('.timeline-dot'));
+  const items = Array.from(timeline.querySelectorAll('.timeline-item'));
 
   function drawZigzagPath() {
     if (!path || window.innerWidth <= 768) return;
@@ -1596,23 +1596,25 @@ footer a:hover { color: var(--gold); }
     svg.setAttribute('width', containerRect.width);
     svg.setAttribute('height', containerRect.height);
 
-    const points = dots.map(function(dot) {
-      const r = dot.getBoundingClientRect();
+    const data = items.map(function(item) {
+      const dot = item.querySelector('.timeline-dot');
+      const dotRect = dot.getBoundingClientRect();
+      const itemRect = item.getBoundingClientRect();
       return {
-        x: r.left + r.width / 2 - containerRect.left,
-        y: r.top + r.height / 2 - containerRect.top
+        x: dotRect.left + dotRect.width / 2 - containerRect.left,
+        topY: dotRect.top + dotRect.height / 2 - containerRect.top,
+        bottomY: itemRect.bottom - containerRect.top
       };
     });
-    if (points.length === 0) return;
+    if (data.length === 0) return;
 
-    let d = 'M ' + points[0].x + ' ' + points[0].y;
-    for (let i = 1; i < points.length; i++) {
-      const prev = points[i - 1];
-      const cur = points[i];
-      const midY = (prev.y + cur.y) / 2;
-      d += ' L ' + prev.x + ' ' + midY;
-      d += ' L ' + cur.x + ' ' + midY;
-      d += ' L ' + cur.x + ' ' + cur.y;
+    let d = 'M ' + data[0].x + ' ' + data[0].topY;
+    for (let i = 0; i < data.length; i++) {
+      d += ' L ' + data[i].x + ' ' + data[i].bottomY;
+      if (data[i + 1]) {
+        d += ' L ' + data[i + 1].x + ' ' + data[i].bottomY;
+        d += ' L ' + data[i + 1].x + ' ' + data[i + 1].topY;
+      }
     }
     path.setAttribute('d', d);
 
