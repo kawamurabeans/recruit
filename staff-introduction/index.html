@@ -1518,7 +1518,7 @@ footer a:hover { color: var(--gold); }
   const lines = section ? section.querySelectorAll('.lead-line-item') : [];
   const centerTriggerEls = section ? section.querySelectorAll('.center-trigger') : [];
   if (!scrollRoot || !section || !bg) return;
-  const introThreshold = 0.3;
+  const introThreshold = window.matchMedia('(max-width: 768px)').matches ? 0.18 : 0.3;
   const MIN_DWELL = 260;
   let current = -1;
   let introHidden = null;
