@@ -570,6 +570,23 @@ header {
   aspect-ratio: 4/3;
   object-fit: cover;
 }
+.timeline-photo-placeholder {
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.5);
+  border: 2px dashed var(--orange);
+  box-shadow: none;
+}
+.timeline-photo-placeholder span {
+  color: var(--orange);
+  font-size: 0.85em;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  line-height: 1.7;
+  text-align: center;
+}
 .timeline-note {
   background: var(--white);
   border-left: 4px solid var(--orange);
@@ -1148,7 +1165,11 @@ footer a:hover { color: var(--gold); }
         <div class="timeline-dot"></div>
         <div class="timeline-year">2026年</div>
         <div class="timeline-desc">泉に【工場＋店舗】<br>移転・拡張</div>
-        <div class="timeline-photo"><img src="/recruit/assets/img/shop_exterior02.jpg" alt="" loading="lazy"></div>
+        <div class="timeline-photo-group">
+          <div class="timeline-photo timeline-photo-placeholder"><span>写真<br>差し込み予定</span></div>
+          <div class="timeline-photo timeline-photo-placeholder"><span>写真<br>差し込み予定</span></div>
+          <div class="timeline-photo timeline-photo-placeholder"><span>写真<br>差し込み予定</span></div>
+        </div>
       </div>
     </div>
     <div class="timeline-note fade-up">
