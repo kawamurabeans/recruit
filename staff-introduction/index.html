@@ -991,7 +991,7 @@ footer a:hover { color: var(--gold); }
   .innovation-box p { font-size: 0.92em; line-height: 1.6; }
   .innovation-x { width: 40px; height: 40px; font-size: 1.2em; }
   .timeline { gap: 88px; padding-left: 40px; }
-  .timeline::before { left: 6px; }
+  .timeline::before { left: 8px; }
   .timeline-dot { left: -40px; }
   .timeline-photo { max-width: 100%; }
 
@@ -1607,13 +1607,16 @@ footer a:hover { color: var(--gold); }
   let ticking = false;
   let maxProgress = 0;
 
+  const lastDotOffset = items.length ? items[items.length - 1].offsetTop + 2 : 0;
+
   function update() {
     ticking = false;
     const rect = timeline.getBoundingClientRect();
     const vh = window.innerHeight;
-    const startY = vh * 0.85;
-    const endY = vh * 0.4;
-    const total = rect.height + (startY - endY);
+    const startY = vh * 1.1;
+    // finish growing once the last item's dot reaches the middle of the screen
+    const finishScreenY = vh * 0.5;
+    const total = startY - (finishScreenY - lastDotOffset);
     const scrolled = startY - rect.top;
     let progress = total > 0 ? scrolled / total : 0;
     progress = Math.max(0, Math.min(1, progress));
