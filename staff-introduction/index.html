@@ -470,7 +470,12 @@ header {
   font-weight: bold;
 }
 .innovation-x-spin {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em; height: 1em;
+  line-height: 1;
+  transform-origin: 50% 50%;
   animation: innovation-spin 6s linear infinite;
 }
 @keyframes innovation-spin {
