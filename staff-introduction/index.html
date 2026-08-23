@@ -517,7 +517,7 @@ header {
   gap: 96px;
   position: relative;
   margin-bottom: 48px;
-  padding: 0 0 0 32px;
+  padding: 0 32px;
 }
 .timeline-line-svg {
   position: absolute;
@@ -536,12 +536,27 @@ header {
 .timeline-item {
   text-align: left;
   padding-left: 32px;
+  padding-right: 0;
   position: relative;
   z-index: 1;
 }
 .timeline-item:nth-of-type(even) {
-  margin-left: calc(100% - 300px);
-  width: 300px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  column-gap: 32px;
+  padding-left: 0;
+  padding-right: 32px;
+}
+.timeline-item:nth-of-type(even) .timeline-year,
+.timeline-item:nth-of-type(even) .timeline-desc {
+  grid-column: 2;
+  text-align: right;
+}
+.timeline-item:nth-of-type(even) .timeline-photo-group {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  align-self: start;
+  justify-content: flex-end;
 }
 .timeline-dot {
   width: 18px; height: 18px;
@@ -550,6 +565,10 @@ header {
   position: absolute;
   top: 2px; left: 0;
   z-index: 1;
+}
+.timeline-item:nth-of-type(even) .timeline-dot {
+  left: auto;
+  right: 0;
 }
 .timeline-year {
   color: var(--orange);
@@ -572,22 +591,6 @@ header {
 .timeline-photo-group .timeline-photo {
   margin-top: 0;
   flex: 1 1 200px;
-}
-.timeline-item:nth-of-type(even) .timeline-photo-group {
-  position: absolute;
-  top: 0;
-  right: 100%;
-  margin-top: 0;
-  margin-right: 32px;
-  width: 580px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-.timeline-item:nth-of-type(even) .timeline-photo-group .timeline-photo {
-  flex: 1 1 250px;
-}
-.timeline-item:nth-of-type(even) {
-  padding-bottom: 220px;
 }
 .timeline-photo {
   margin-top: 32px;
@@ -993,13 +996,23 @@ footer a:hover { color: var(--gold); }
     transition: transform 1.3s cubic-bezier(0.16,1,0.3,1);
   }
   .timeline.line-draw::before { transform: scaleY(1); }
-  .timeline-item:nth-of-type(even) { margin-left: 0; width: auto; padding-bottom: 0; }
+  .timeline-item:nth-of-type(even) {
+    display: block;
+    padding-left: 40px;
+    padding-right: 0;
+  }
+  .timeline-item:nth-of-type(even) .timeline-year,
+  .timeline-item:nth-of-type(even) .timeline-desc {
+    text-align: left;
+  }
+  .timeline-item:nth-of-type(even) .timeline-dot {
+    left: -40px;
+    right: auto;
+  }
   .timeline-item:nth-of-type(even) .timeline-photo-group {
-    position: static;
-    width: auto;
-    margin-top: 32px;
-    margin-right: 0;
+    grid-row: auto;
     justify-content: flex-start;
+    margin-top: 32px;
   }
   .timeline-item:nth-of-type(even) .timeline-photo-group .timeline-photo {
     flex: 1 1 200px;
