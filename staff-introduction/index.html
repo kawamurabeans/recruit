@@ -469,6 +469,14 @@ header {
   font-size: 1.6em;
   font-weight: bold;
 }
+.innovation-x-spin {
+  display: inline-block;
+  animation: innovation-spin 6s linear infinite;
+}
+@keyframes innovation-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 .innovation-result {
   text-align: center;
   color: var(--brown);
@@ -1039,7 +1047,7 @@ footer a:hover { color: var(--gold); }
         <h3 class="fade-up from-left" style="transition-delay: 1.3s;">甘納豆</h3>
         <p>創業以来24年間<br>磨いてきた当店の強み</p>
       </div>
-      <div class="innovation-x fade-up rotate-in" style="transition-delay: 0.8s;">×</div>
+      <div class="innovation-x fade-up rotate-in" style="transition-delay: 0.8s;"><span class="innovation-x-spin">×</span></div>
       <div class="innovation-box fade-up from-right delay-slow" style="transition-delay: 0.5s;">
         <div class="innovation-box-header"><span class="fade-up from-left" style="transition-delay: 1.3s;">WESTERN SWEETS</span></div>
         <h3 class="fade-up from-right" style="transition-delay: 1.3s;">洋菓子</h3>
