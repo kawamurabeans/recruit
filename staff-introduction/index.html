@@ -519,17 +519,19 @@ header {
   margin-bottom: 48px;
   padding-left: 56px;
 }
+.timeline {
+  --line-progress: 0;
+}
 .timeline::before {
   content: '';
   position: absolute;
   top: 8px; bottom: 8px; left: 8px;
   width: 2px;
   background: var(--orange);
-  transform: scaleY(0);
+  transform: scaleY(var(--line-progress));
   transform-origin: top center;
-  transition: transform 1.3s cubic-bezier(0.16,1,0.3,1);
+  transition: transform 0.1s linear;
 }
-.timeline.line-draw::before { transform: scaleY(1); }
 .timeline-item {
   text-align: left;
   padding: 0;
@@ -1449,7 +1451,7 @@ footer a:hover { color: var(--gold); }
 })();
 
 (function() {
-  const els = document.querySelectorAll('.fade-up:not(.center-trigger):not(.staff-card), .title-mask');
+  const els = document.querySelectorAll('.fade-up:not(.center-trigger):not(.staff-card):not(.timeline-item), .title-mask');
   const observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
@@ -1599,15 +1601,44 @@ footer a:hover { color: var(--gold); }
 (function() {
   const timeline = document.querySelector('.timeline');
   if (!timeline) return;
-  const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('line-draw');
-        observer.unobserve(entry.target);
+  const items = Array.from(timeline.querySelectorAll('.timeline-item'));
+  const dots = items.map(function(item) { return item.querySelector('.timeline-dot'); });
+  const revealDelay = 220; // ms after the line reaches a dot before its content fades in
+  let ticking = false;
+
+  function update() {
+    ticking = false;
+    const rect = timeline.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const startY = vh * 0.85;
+    const endY = vh * 0.4;
+    const total = rect.height + (startY - endY);
+    const scrolled = startY - rect.top;
+    let progress = total > 0 ? scrolled / total : 0;
+    progress = Math.max(0, Math.min(1, progress));
+    timeline.style.setProperty('--line-progress', progress);
+
+    dots.forEach(function(dot, i) {
+      const item = items[i];
+      if (item.classList.contains('line-reached')) return;
+      const dotRect = dot.getBoundingClientRect();
+      const dotFraction = rect.height > 0 ? (dotRect.top - rect.top) / rect.height : 0;
+      if (progress >= dotFraction) {
+        item.classList.add('line-reached');
+        setTimeout(function() { item.classList.add('visible'); }, revealDelay);
       }
     });
-  }, { threshold: 0.3 });
-  observer.observe(timeline);
+  }
+
+  const scrollRoot = document.getElementById('scroll-root') || window;
+  scrollRoot.addEventListener('scroll', function() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
 })();
 
 (function() {
