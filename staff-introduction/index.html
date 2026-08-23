@@ -1605,6 +1605,7 @@ footer a:hover { color: var(--gold); }
   const dots = items.map(function(item) { return item.querySelector('.timeline-dot'); });
   const revealDelay = 220; // ms after the line reaches a dot before its content fades in
   let ticking = false;
+  let maxProgress = 0;
 
   function update() {
     ticking = false;
@@ -1616,14 +1617,17 @@ footer a:hover { color: var(--gold); }
     const scrolled = startY - rect.top;
     let progress = total > 0 ? scrolled / total : 0;
     progress = Math.max(0, Math.min(1, progress));
-    timeline.style.setProperty('--line-progress', progress);
+    // the line only ever grows — scrolling back up doesn't retract it
+    maxProgress = Math.max(maxProgress, progress);
+    timeline.style.setProperty('--line-progress', maxProgress);
 
     dots.forEach(function(dot, i) {
       const item = items[i];
       if (item.classList.contains('line-reached')) return;
-      const dotRect = dot.getBoundingClientRect();
-      const dotFraction = rect.height > 0 ? (dotRect.top - rect.top) / rect.height : 0;
-      if (progress >= dotFraction) {
+      // offsetTop ignores the item's own reveal transform, so this stays
+      // stable instead of drifting while earlier items are still animating in
+      const dotFraction = timeline.offsetHeight > 0 ? (item.offsetTop + 2) / timeline.offsetHeight : 0;
+      if (maxProgress >= dotFraction) {
         item.classList.add('line-reached');
         setTimeout(function() { item.classList.add('visible'); }, revealDelay);
       }
