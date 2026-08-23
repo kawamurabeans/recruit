@@ -584,13 +584,15 @@ header {
 }
 .timeline-photo-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 24px;
   margin-top: 32px;
 }
 .timeline-photo-group .timeline-photo {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
   margin-top: 0;
-  flex: 1 1 200px;
 }
 .timeline-photo {
   margin-top: 32px;
@@ -949,6 +951,8 @@ footer a:hover { color: var(--gold); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
+  .timeline-photo-group { flex-wrap: wrap; }
+  .timeline-photo-group .timeline-photo { flex: 1 1 200px; min-width: 140px; }
   .loader-logo { width: 300px; height: auto; }
   header { padding: 14px 20px; }
   .page-hero { height: 100vh; min-height: 560px; padding: 0 20px 56px; }
