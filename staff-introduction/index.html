@@ -512,26 +512,28 @@ header {
 
 /* ── TIMELINE ── */
 .timeline {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   position: relative;
   margin-bottom: 48px;
+  padding-left: 44px;
 }
 .timeline::before {
   content: '';
   position: absolute;
-  top: 8px; left: 12.5%; right: 12.5%;
-  height: 2px;
+  top: 8px; bottom: 8px; left: 8px;
+  width: 2px;
   background: var(--orange);
 }
-.timeline-item { text-align: center; padding: 0 8px; }
+.timeline-item { text-align: left; padding: 0; position: relative; }
 .timeline-dot {
   width: 18px; height: 18px;
   border-radius: 50%;
   background: var(--orange);
-  margin: 0 auto 20px;
-  position: relative; z-index: 1;
+  position: absolute;
+  top: 2px; left: -44px;
+  z-index: 1;
 }
 .timeline-year {
   color: var(--orange);
@@ -865,8 +867,8 @@ footer a:hover { color: var(--gold); }
 .fade-up.spin-in.visible { transform: none; }
 
 /* ── TIMELINE DRAW-IN ── */
-.timeline::before { transform: scaleX(0); transform-origin: left center; transition: transform 1.3s cubic-bezier(0.16,1,0.3,1); }
-.timeline.line-draw::before { transform: scaleX(1); }
+.timeline::before { transform: scaleY(0); transform-origin: top center; transition: transform 1.3s cubic-bezier(0.16,1,0.3,1); }
+.timeline.line-draw::before { transform: scaleY(1); }
 
 /* ── BENEFIT / INFO CARD LIFT ON HOVER ── */
 .info-card, .benefit-card, .customer-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
@@ -908,8 +910,9 @@ footer a:hover { color: var(--gold); }
   .innovation-box h3 { display: inline-block; font-size: 1.2em; margin-bottom: 10px; padding-bottom: 10px; }
   .innovation-box p { font-size: 0.92em; line-height: 1.6; }
   .innovation-x { width: 40px; height: 40px; font-size: 1.2em; }
-  .timeline { grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
-  .timeline::before { display: none; }
+  .timeline { gap: 28px; padding-left: 36px; }
+  .timeline::before { left: 6px; }
+  .timeline-dot { left: -36px; }
 
   .two-col { grid-template-columns: 1fr; }
   .highlight-banner { flex-direction: column; text-align: center; }
