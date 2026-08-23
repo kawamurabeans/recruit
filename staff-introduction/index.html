@@ -912,6 +912,24 @@ footer a:hover { color: var(--gold); }
 .fade-up-d3 { transition-delay: 0.3s; }
 .fade-up-d4 { transition-delay: 0.4s; }
 
+.timeline-item.fade-up {
+  opacity: 0;
+  transform: translateY(52px);
+  transition: opacity 1.1s cubic-bezier(0.16,1,0.3,1), transform 1.1s cubic-bezier(0.16,1,0.3,1);
+}
+.timeline-item.fade-up.visible { opacity: 1; transform: translateY(0); }
+.timeline-item.fade-up .timeline-photo,
+.timeline-item.fade-up .timeline-photo-group {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s;
+}
+.timeline-item.fade-up.visible .timeline-photo,
+.timeline-item.fade-up.visible .timeline-photo-group {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .fade-up.from-left { transform: translateX(-56px); }
 .fade-up.from-left.visible { transform: translateX(0); }
 .fade-up.from-right { transform: translateX(56px); }
@@ -1161,7 +1179,7 @@ footer a:hover { color: var(--gold); }
         <div class="timeline-desc">西茶屋街にて<br>【甘納豆専門店】として創業</div>
         <div class="timeline-photo"><img src="/recruit/assets/img/202001-founding.jpg" alt="西茶屋街の創業当時の店舗外観" loading="lazy"></div>
       </div>
-      <div class="timeline-item fade-up fade-up-d1">
+      <div class="timeline-item fade-up">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2013年</div>
         <div class="timeline-desc">店舗改装<br>モダンな店構えに</div>
@@ -1171,7 +1189,7 @@ footer a:hover { color: var(--gold); }
           <div class="timeline-photo"><img src="/recruit/assets/img/shop_interior02.jpg" alt="" loading="lazy"></div>
         </div>
       </div>
-      <div class="timeline-item fade-up fade-up-d3">
+      <div class="timeline-item fade-up">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2018年</div>
         <div class="timeline-desc">併設カフェ<br>【 サロン・ド・テ・カワムラ 】営業開始</div>
@@ -1181,7 +1199,7 @@ footer a:hover { color: var(--gold); }
           <div class="timeline-photo timeline-photo-natural"><img src="/recruit/assets/img/201803-salon03.jpg" alt="サロン・ド・テ・カワムラのパルフェ" loading="lazy"></div>
         </div>
       </div>
-      <div class="timeline-item fade-up fade-up-d3">
+      <div class="timeline-item fade-up">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2026年</div>
         <div class="timeline-desc">泉に【工場＋店舗】<br>移転・拡張</div>
