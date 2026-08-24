@@ -2263,6 +2263,13 @@ Yuria.Tによって生み出されたこのモナカは
     // value out via setScrollLeft.
     let pos = 0;
     function setScrollLeft(x) { pos = x; el.scrollLeft = Math.round(x); }
+    // Any scroll not driven by setScrollLeft() — a trackpad/wheel swipe,
+    // or native touch momentum — moves el.scrollLeft directly and leaves
+    // pos stale. When auto-play later resumes (e.g. on mouseleave) it
+    // would then jump back to that stale pos, which read as the image
+    // teleporting to an unrelated position. Every scroll, from any
+    // source including our own writes, resyncs pos to the true DOM value.
+    el.addEventListener('scroll', function() { pos = el.scrollLeft; });
     function wrap() {
       const w = copyWidth();
       if (w <= 0) return;
@@ -2295,11 +2302,6 @@ Yuria.Tによって生み出されたこのモナカは
       if (navPaused) return;
       if (!dragging && !pending && !hovered && !touching) {
         setScrollLeft(pos + (row.reverse ? -SPEED : SPEED));
-      } else if (touching) {
-        // native touch scrolling moves el.scrollLeft directly, bypassing
-        // setScrollLeft() — resync pos so wrap() below acts on the real
-        // position instead of fighting the in-progress native scroll
-        pos = el.scrollLeft;
       }
       // checked every tick regardless of interaction state — with a full
       // copy-width of buffer either side this rarely fires mid-gesture,
