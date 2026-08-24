@@ -1652,7 +1652,9 @@ footer a:hover { color: var(--gold); }
     const startY = vh * (isMobile ? 0.8 : 1.1); // SP: line starts growing a bit later, after more scrolling
     // finish growing once the last item's dot reaches the middle of the screen
     const finishScreenY = vh * 0.5;
-    const total = startY - (finishScreenY - lastDotOffset);
+    // SP: stretch the growth distance so the line doesn't race ahead of scrolling
+    const speedFactor = isMobile ? 2.2 : 1;
+    const total = (startY - (finishScreenY - lastDotOffset)) * speedFactor;
     const scrolled = startY - rect.top;
     let progress = total > 0 ? scrolled / total : 0;
     progress = Math.max(0, Math.min(1, progress));
