@@ -2288,13 +2288,6 @@ Yuria.Tによって生み出されたこのモナカは
       // copy-width of buffer either side this rarely fires mid-gesture,
       // but it's the safety net that keeps things truly endless
       wrap();
-      // TEMP DEBUG: remove once Safari auto-scroll freeze is confirmed fixed
-      window.__worksDebug = window.__worksDebug || {};
-      window.__worksDebug[el.id] = {
-        tickCount: (window.__worksDebug[el.id] && window.__worksDebug[el.id].tickCount || 0) + 1,
-        scrollLeft: el.scrollLeft, dragging: dragging, pending: pending,
-        hovered: hovered, touching: touching, navPaused: navPaused
-      };
     }
     // requestAnimationFrame is the primary driver — it's synced to the
     // browser's paint cycle, which matters on Safari: mutating scrollLeft
