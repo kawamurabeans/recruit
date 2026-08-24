@@ -689,6 +689,134 @@ header {
   letter-spacing: 0.03em;
 }
 
+/* ── WORKS (patissier creations) ── */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.work-card {
+  cursor: pointer;
+  background: var(--white);
+  border: none;
+  padding: 0;
+  text-align: left;
+  font-family: inherit;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.work-card:hover, .work-card:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(65,33,7,0.1);
+}
+.work-card-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--gray);
+  position: relative;
+}
+.work-card-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.work-card:hover .work-card-photo img { transform: scale(1.06); }
+.work-card-photo-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%;
+  color: var(--brown-light);
+  font-size: 0.75em;
+  font-family: sans-serif;
+  letter-spacing: 0.05em;
+  text-align: center;
+  line-height: 1.6;
+}
+.work-card-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  border: 1px solid rgba(65,33,7,0.08);
+  pointer-events: none;
+}
+.work-card-body {
+  padding: 18px 4px 0;
+}
+.work-card-name {
+  color: var(--brown);
+  font-size: 0.98em;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.work-card-maker {
+  color: var(--orange);
+  font-size: 0.72em;
+  letter-spacing: 0.08em;
+  font-family: sans-serif;
+}
+
+.work-modal {
+  position: fixed; inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(42,26,14,0.72);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.work-modal.open { opacity: 1; pointer-events: auto; }
+.work-modal-panel {
+  background: var(--white);
+  max-width: 640px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.work-modal.open .work-modal-panel { transform: translateY(0) scale(1); }
+.work-modal-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 36px; height: 36px;
+  border: none;
+  background: rgba(255,255,255,0.85);
+  color: var(--brown);
+  font-size: 1.2em;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1;
+  border-radius: 50%;
+}
+.work-modal-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--gray);
+  overflow: hidden;
+}
+.work-modal-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.work-modal-body { padding: 32px 36px 40px; }
+.work-modal-maker {
+  color: var(--orange);
+  font-size: 0.75em;
+  letter-spacing: 0.1em;
+  font-family: sans-serif;
+  display: block;
+  margin-bottom: 10px;
+}
+.work-modal-title {
+  color: var(--brown);
+  font-size: 1.3em;
+  letter-spacing: 0.06em;
+  margin-bottom: 18px;
+}
+.work-modal-desc {
+  color: var(--text-sub);
+  font-size: 0.9em;
+  line-height: 2;
+}
+
 /* ── WORLD (locations / customers) ── */
 .world-banner {
   background: var(--brown);
@@ -1021,6 +1149,9 @@ footer a:hover { color: var(--gold); }
   .two-col { grid-template-columns: 1fr; }
   .highlight-banner { flex-direction: column; text-align: center; }
 
+  .works-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .work-modal-body { padding: 24px 22px 32px; }
+
   .world-banner { flex-direction: column; text-align: center; }
   .customer-grid { grid-template-columns: 1fr; }
 
@@ -1254,8 +1385,52 @@ footer a:hover { color: var(--gold); }
   </div>
 </section>
 
-<!-- チーム構成と活躍できる環境 -->
+<!-- パティシエ達の作品（クリックで詳細ポップアップ） -->
 <section class="sec">
+  <div class="sec-inner">
+    <span class="sec-eyebrow fade-up">WORKS</span>
+    <h2 class="sec-title fade-up from-left">パティシエ達の作品</h2>
+    <p class="sec-lead fade-up">和洋の垣根を越え、それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると、詳しいストーリーがご覧いただけます。</p>
+    <div class="works-grid">
+      <button type="button" class="work-card fade-up" data-img="" data-title="いちごモナカ" data-maker="池田 / パティシエ" data-desc="新人パティシエが考案した一品。もなかの香ばしさと苺の酸味、生クリームの甘さが重なり合う、和と洋を掛け合わせたオリジナルスイーツです。発売以来、歴代1番人気を記録しています。">
+        <div class="work-card-photo"><div class="work-card-photo-placeholder">写真<br>差し込み予定</div></div>
+        <div class="work-card-body">
+          <div class="work-card-name">いちごモナカ</div>
+          <div class="work-card-maker">池田 / パティシエ</div>
+        </div>
+      </button>
+      <button type="button" class="work-card fade-up fade-up-d1" data-img="" data-title="いちじくパルフェ" data-maker="山本 / パティシエ" data-desc="サロン・ド・テ・カワムラで提供する季節限定パルフェ。旬のいちじくを贅沢に使い、素材の見た目と食感を活かした盛り付けにこだわりました。">
+        <div class="work-card-photo"><div class="work-card-photo-placeholder">写真<br>差し込み予定</div></div>
+        <div class="work-card-body">
+          <div class="work-card-name">いちじくパルフェ</div>
+          <div class="work-card-maker">山本 / パティシエ</div>
+        </div>
+      </button>
+      <button type="button" class="work-card fade-up fade-up-d2" data-img="" data-title="ふわ雪かき氷" data-maker="中村 / パティシエ" data-desc="口に入れた瞬間に溶けるふわふわの氷に、自家製シロップを合わせた夏の看板メニュー。トレンドを取り入れつつ、甘納豆かわむららしい上品な甘さに仕上げています。">
+        <div class="work-card-photo"><div class="work-card-photo-placeholder">写真<br>差し込み予定</div></div>
+        <div class="work-card-body">
+          <div class="work-card-name">ふわ雪かき氷</div>
+          <div class="work-card-maker">中村 / パティシエ</div>
+        </div>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="work-modal" id="work-modal">
+  <div class="work-modal-panel">
+    <button type="button" class="work-modal-close" aria-label="閉じる">×</button>
+    <div class="work-modal-img"><img src="" alt=""></div>
+    <div class="work-modal-body">
+      <span class="work-modal-maker"></span>
+      <h3 class="work-modal-title"></h3>
+      <p class="work-modal-desc"></p>
+    </div>
+  </div>
+</div>
+
+<!-- チーム構成と活躍できる環境 -->
+<section class="sec" style="background: var(--white);">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">TEAM & ENVIRONMENT</span>
     <h2 class="sec-title fade-up from-left">チーム構成と活躍できる環境</h2>
@@ -1288,7 +1463,7 @@ footer a:hover { color: var(--gold); }
 </section>
 
 <!-- あなたのスイーツが世界へ届く -->
-<section class="sec">
+<section class="sec" style="background: var(--beige);">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">GLOBAL REACH</span>
     <h2 class="sec-title fade-up from-left">あなたのスイーツが世界へ届く</h2>
@@ -1314,7 +1489,7 @@ footer a:hover { color: var(--gold); }
 </section>
 
 <!-- 求める人材像 -->
-<section class="sec">
+<section class="sec" style="background: var(--white);">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">WHO WE WANT</span>
     <h2 class="sec-title fade-up from-left">求める人材像</h2>
@@ -1344,7 +1519,7 @@ footer a:hover { color: var(--gold); }
 </section>
 
 <!-- 待遇・福利厚生 -->
-<section class="sec">
+<section class="sec" style="background: var(--beige);">
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">BENEFITS</span>
     <h2 class="sec-title fade-up from-left">待遇・福利厚生</h2>
@@ -1640,50 +1815,37 @@ footer a:hover { color: var(--gold); }
   const dots = items.map(function(item) { return item.querySelector('.timeline-dot'); });
   let ticking = false;
   let maxProgress = 0;
-  // how many items have already been fully "reached" — the line only ever
-  // grows forward through this pointer, one dot at a time
-  let reachedCount = 0;
 
-  // Each dot's growth is driven purely by ITS OWN position crossing the
-  // viewport (startY -> finishY), not by total scroll distance since page
-  // top. This keeps the pace consistent even when an earlier section (e.g.
-  // one with tall photos) is much taller than the viewport — the line simply
-  // waits until the next dot approaches, instead of racing to catch up.
+  const lastDotOffset = items.length ? items[items.length - 1].offsetTop + 2 : 0;
+
   function update() {
     ticking = false;
     const isMobile = window.innerWidth <= 768;
     const revealDelay = isMobile ? 420 : 220; // ms after the line reaches a dot before its content fades in — a touch slower on SP
+    const rect = timeline.getBoundingClientRect();
     const vh = window.innerHeight;
-    const startY = vh * (isMobile ? 0.85 : 1.0); // dot starts pulling the line once it's this far below the top of the viewport
-    const finishY = vh * 0.5; // dot is fully "reached" once it hits the middle of the viewport
-    const span = startY - finishY;
-    const timelineHeight = timeline.offsetHeight;
-
-    while (reachedCount < items.length) {
-      const dot = dots[reachedCount];
-      const dotTop = dot.getBoundingClientRect().top;
-      const prevFraction = reachedCount > 0
-        ? (items[reachedCount - 1].offsetTop + 2) / timelineHeight
-        : 0;
-      const curFraction = timelineHeight > 0
-        ? (items[reachedCount].offsetTop + 2) / timelineHeight
-        : 0;
-      let localProgress = span > 0 ? (startY - dotTop) / span : 0;
-      localProgress = Math.max(0, Math.min(1, localProgress));
-      const overall = prevFraction + (curFraction - prevFraction) * localProgress;
-      maxProgress = Math.max(maxProgress, overall);
-
-      if (localProgress >= 1) {
-        const item = items[reachedCount];
-        item.classList.add('line-reached');
-        (function(it) { setTimeout(function() { it.classList.add('visible'); }, revealDelay); })(item);
-        reachedCount++;
-        continue; // in case of a fast scroll, catch up through multiple dots
-      }
-      break;
-    }
-
+    const startY = vh * (isMobile ? 0.8 : 1.1); // SP: line starts growing a bit later, after more scrolling
+    // finish growing once the last item's dot reaches the middle of the screen
+    const finishScreenY = vh * 0.5;
+    const total = startY - (finishScreenY - lastDotOffset);
+    const scrolled = startY - rect.top;
+    let progress = total > 0 ? scrolled / total : 0;
+    progress = Math.max(0, Math.min(1, progress));
+    // the line only ever grows — scrolling back up doesn't retract it
+    maxProgress = Math.max(maxProgress, progress);
     timeline.style.setProperty('--line-progress', maxProgress);
+
+    dots.forEach(function(dot, i) {
+      const item = items[i];
+      if (item.classList.contains('line-reached')) return;
+      // offsetTop ignores the item's own reveal transform, so this stays
+      // stable instead of drifting while earlier items are still animating in
+      const dotFraction = timeline.offsetHeight > 0 ? (item.offsetTop + 2) / timeline.offsetHeight : 0;
+      if (maxProgress >= dotFraction) {
+        item.classList.add('line-reached');
+        setTimeout(function() { item.classList.add('visible'); }, revealDelay);
+      }
+    });
   }
 
   const scrollRoot = document.getElementById('scroll-root') || window;
@@ -1695,6 +1857,41 @@ footer a:hover { color: var(--gold); }
   }, { passive: true });
   window.addEventListener('resize', update);
   update();
+})();
+
+(function() {
+  const modal = document.getElementById('work-modal');
+  const cards = document.querySelectorAll('.work-card');
+  if (!modal || !cards.length) return;
+  const scrollRoot = document.getElementById('scroll-root');
+  const img = modal.querySelector('.work-modal-img img');
+  const maker = modal.querySelector('.work-modal-maker');
+  const title = modal.querySelector('.work-modal-title');
+  const desc = modal.querySelector('.work-modal-desc');
+  const closeBtn = modal.querySelector('.work-modal-close');
+
+  function openModal(card) {
+    const hasImg = !!card.dataset.img;
+    img.src = hasImg ? card.dataset.img : '';
+    img.alt = card.dataset.title || '';
+    img.style.display = hasImg ? '' : 'none';
+    maker.textContent = card.dataset.maker || '';
+    title.textContent = card.dataset.title || '';
+    desc.textContent = card.dataset.desc || '';
+    modal.classList.add('open');
+    if (scrollRoot) scrollRoot.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    modal.classList.remove('open');
+    if (scrollRoot) scrollRoot.style.overflow = '';
+  }
+
+  cards.forEach(function(card) {
+    card.addEventListener('click', function() { openModal(card); });
+  });
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
 })();
 
 (function() {
