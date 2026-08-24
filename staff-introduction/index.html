@@ -770,8 +770,17 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   width: 500px;
   transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
 }
+/* it's a <button> (for the drag-to-scroll pointer capture), so a plain
+   mouse click gives it the browser's default square focus outline —
+   clashing with the rounded photo inside. :focus-visible below still
+   shows a real focus indicator for keyboard users. */
+.work-card:focus { outline: none; }
 .work-card:hover, .work-card:focus-visible {
   transform: translateY(-6px);
+}
+.work-card:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
 }
 .work-card:hover .work-card-photo, .work-card:focus-visible .work-card-photo {
   box-shadow: 0 20px 36px -12px rgba(65,33,7,0.32);
@@ -2231,7 +2240,10 @@ Yuria.Tによって生み出されたこのモナカは
         startScroll = el.scrollLeft;
         el.classList.add('is-dragging');
         try { el.setPointerCapture(e.pointerId); } catch (err) {}
-        e.preventDefault();
+        // NOTE: no preventDefault() here — doing so on pointerdown
+        // suppressed the button's native click, so a plain click (no
+        // drag) never opened the modal. user-select:none on .works-marquee
+        // already stops text-selection ghosting during an actual drag.
       } else {
         // touch: let native overflow-x scrolling drive it, just pause autoplay
         touching = true;
