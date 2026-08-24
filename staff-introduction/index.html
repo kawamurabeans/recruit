@@ -774,6 +774,14 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   gap: 28px;
   width: max-content;
 }
+.work-card-photo img {
+  /* promotes each photo to its own compositor layer so the browser
+     composites it in place during the constant auto-scroll instead of
+     re-rasterizing it every frame — without this the images read as
+     motion-blurred while moving, even at a steady frame rate */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
 /* mobile splits into two independently-scrolling rows (JS-populated,
    see the script near the bottom of <body>); hidden on PC */
 .works-marquee-mobile { display: none; }
@@ -830,7 +838,7 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   user-drag: none;
   pointer-events: none;
 }
-.work-card:hover .work-card-photo img { transform: scale(1.06); }
+.work-card:hover .work-card-photo img { transform: scale(1.06) translateZ(0); }
 /* portrait photos keep their own width instead of stretching to the card's
    default width — the card itself narrows to match, so no letterboxing */
 .work-card:has(.work-card-photo.is-portrait) { width: auto; }
