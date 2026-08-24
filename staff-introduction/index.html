@@ -2237,20 +2237,24 @@ Yuria.Tによって生み出されたこのモナカは
     // there's always at least one full extra copy-width of untouched
     // buffer beyond wherever it wraps, before the true 0/max edge.
     function copyWidth() { return track.scrollWidth / 5; }
-    // Confirmed via live Safari debugging (2026-08-24): calling
-    // el.scrollTo({left, top:0, behavior:'auto'}) once from the console
-    // works fine, but calling it every rAF frame from tick() below made
-    // Safari silently stop applying it — scrollLeft itself stayed frozen
-    // (not just a repaint issue) even though tick() kept firing every
-    // frame. Direct property assignment does not have that failure mode
-    // and was confirmed to apply instantly in the same session, so all
-    // scrollLeft mutation in this row goes through this one function.
-    function setScrollLeft(x) { el.scrollLeft = x; }
+    // Root cause of the Safari auto-scroll freeze (confirmed 2026-08-24):
+    // SPEED is 0.75px/frame, and every tick read the *current* el.scrollLeft
+    // back from the DOM and added SPEED to it. Safari stores scrollLeft as
+    // an integer and truncates fractional writes, so 4844 + 0.75 = 4844.75
+    // got written and read back as 4844 — the next frame started from 4844
+    // again and repeated forever, never accumulating enough to cross a
+    // whole pixel. Chrome apparently rounds instead of truncating, which is
+    // why this only showed up on Safari. Fix: keep the true sub-pixel
+    // position in this closure variable (pos) instead of round-tripping
+    // it through the DOM every frame, and only write the rounded pixel
+    // value out via setScrollLeft.
+    let pos = 0;
+    function setScrollLeft(x) { pos = x; el.scrollLeft = Math.round(x); }
     function wrap() {
       const w = copyWidth();
       if (w <= 0) return;
-      if (el.scrollLeft >= w * 3) setScrollLeft(el.scrollLeft - w);
-      else if (el.scrollLeft <= w * 1) setScrollLeft(el.scrollLeft + w);
+      if (pos >= w * 3) setScrollLeft(pos - w);
+      else if (pos <= w * 1) setScrollLeft(pos + w);
     }
 
     // start at the middle (3rd) copy
@@ -2273,7 +2277,12 @@ Yuria.Tによって生み出されたこのモナカは
       // backwards; wrap() runs once instead right after it finishes
       if (navPaused) return;
       if (!dragging && !pending && !hovered && !touching) {
-        setScrollLeft(el.scrollLeft + (row.reverse ? -SPEED : SPEED));
+        setScrollLeft(pos + (row.reverse ? -SPEED : SPEED));
+      } else if (touching) {
+        // native touch scrolling moves el.scrollLeft directly, bypassing
+        // setScrollLeft() — resync pos so wrap() below acts on the real
+        // position instead of fighting the in-progress native scroll
+        pos = el.scrollLeft;
       }
       // checked every tick regardless of interaction state — with a full
       // copy-width of buffer either side this rarely fires mid-gesture,
@@ -2351,6 +2360,7 @@ Yuria.Tによって生み出されたこのモナカは
         try { el.setPointerCapture(pointerId); } catch (err) {}
       }
       el.scrollLeft = startScroll - dx;
+      pos = el.scrollLeft; // keep pos in sync — this write bypasses setScrollLeft()
       wrap();
     });
     function endMouseDrag() {
@@ -2363,7 +2373,10 @@ Yuria.Tによって生み出されたこのモナカは
       endMouseDrag();
       if (e.pointerType !== 'mouse') {
         // give momentum scrolling a moment to settle before auto-advance resumes
-        setTimeout(function() { touching = false; }, 700);
+        setTimeout(function() {
+          touching = false;
+          pos = el.scrollLeft; // native touch scroll bypassed setScrollLeft()
+        }, 700);
       }
     });
     el.addEventListener('pointercancel', function(e) {
