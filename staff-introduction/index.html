@@ -739,30 +739,6 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
    cards themselves, not in the blank margin */
 .works-nav-prev { left: 32px; }
 .works-nav-next { right: 32px; }
-/* PC only: reference-image reproduction — a wide checkmark-shaped line
-   (flat, then up to a peak, then a long diagonal down to bottom-right)
-   with an italic serif "Scroll" drawn on top of it, so the line is only
-   visible in the gaps between/around the letters (line painted first,
-   text painted after in the same SVG, no background box). Static. */
-.works-scroll-hint {
-  position: absolute;
-  top: -14px;
-  right: 40px;
-  z-index: 4;
-  pointer-events: none;
-}
-.works-scroll-hint svg { display: block; width: 220px; height: 60px; overflow: visible; }
-.works-scroll-hint polyline {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.25;
-}
-.works-scroll-hint text {
-  fill: var(--orange);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-style: italic;
-  font-size: 30px;
-}
 .works-marquee {
   overflow-x: auto;
   /* overflow-x:auto forces overflow-y to compute as 'auto' too (CSS
@@ -1313,7 +1289,6 @@ footer a:hover { color: var(--gold); }
   .works-nav { width: 36px; height: 36px; font-size: 1.1em; }
   .works-nav-prev { left: 24px; }
   .works-nav-next { right: 24px; }
-  .works-scroll-hint { display: none; }
   .works-marquee-desktop { display: none; }
   /* match the gap below row 2 (= .sec's own bottom padding, 64px) so the
      lead-to-row1 and row1-to-row2 gaps read the same as row2-to-bottom */
@@ -1569,12 +1544,6 @@ footer a:hover { color: var(--gold); }
     <p class="sec-lead fade-up works-lead-sp">和洋の垣根を越え、<br>それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると<br>詳しいストーリーがご覧いただけます。</p>
   </div>
   <div class="works-marquee-outer works-marquee-desktop">
-  <div class="works-scroll-hint works-scroll-hint-top" aria-hidden="true">
-    <svg viewBox="0 0 220 60">
-      <polyline points="0,44 40,44 68,6 216,54" />
-      <text x="46" y="42">Scroll</text>
-    </svg>
-  </div>
   <button type="button" class="works-nav works-nav-prev" data-target="works-marquee-pc" aria-label="前の作品へ">&lsaquo;</button>
   <button type="button" class="works-nav works-nav-next" data-target="works-marquee-pc" aria-label="次の作品へ">&rsaquo;</button>
   <div class="works-marquee" id="works-marquee-pc">
