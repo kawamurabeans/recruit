@@ -705,12 +705,40 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
    overflow-x:auto scrolling element. No edge gradient curtains anymore
    — decided against them. */
 .works-marquee-outer {
+  position: relative;
   width: calc(100% + 80px);
   margin-left: -40px;
   margin-right: -40px;
   padding-left: 24px;
   padding-right: 24px;
 }
+/* semi-transparent prev/next buttons for anyone who doesn't notice the
+   row is drag/swipe-scrollable — jump ~3 cards per click */
+.works-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(65,33,7,0.4);
+  color: var(--white);
+  font-size: 1.3em;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+.works-nav:hover, .works-nav:focus-visible { background: rgba(65,33,7,0.7); }
+/* .works-marquee-outer has 24px of side padding (the white margin before
+   the row's own edge) — offset past that so the buttons sit over the
+   cards themselves, not in the blank margin */
+.works-nav-prev { left: 32px; }
+.works-nav-next { right: 32px; }
 .works-marquee {
   overflow-x: auto;
   /* overflow-x:auto forces overflow-y to compute as 'auto' too (CSS
@@ -1258,6 +1286,9 @@ footer a:hover { color: var(--gold); }
     padding-left: 20px;
     padding-right: 20px;
   }
+  .works-nav { width: 36px; height: 36px; font-size: 1.1em; }
+  .works-nav-prev { left: 24px; }
+  .works-nav-next { right: 24px; }
   .works-marquee-desktop { display: none; }
   /* match the gap below row 2 (= .sec's own bottom padding, 64px) so the
      lead-to-row1 and row1-to-row2 gaps read the same as row2-to-bottom */
@@ -1513,6 +1544,8 @@ footer a:hover { color: var(--gold); }
     <p class="sec-lead fade-up works-lead-sp">和洋の垣根を越え、<br>それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると<br>詳しいストーリーがご覧いただけます。</p>
   </div>
   <div class="works-marquee-outer works-marquee-desktop">
+  <button type="button" class="works-nav works-nav-prev" data-target="works-marquee-pc" aria-label="前の作品へ">&lsaquo;</button>
+  <button type="button" class="works-nav works-nav-next" data-target="works-marquee-pc" aria-label="次の作品へ">&rsaquo;</button>
   <div class="works-marquee" id="works-marquee-pc">
     <div class="works-grid" id="works-track">
       <button type="button" class="work-card fade-up" data-group="dessert" data-img="/recruit/assets/img/202502-strawberry-monaka-yuria.jpg" data-title="いちごモナカ" data-maker="Yuria.T / パティシエ" data-desc="食べた瞬間に広がるいちごのフレッシュな味わい
@@ -1650,11 +1683,15 @@ Yuria.Tによって生み出されたこのモナカは
        (desserts flow one way, kakigori the other). Populated by JS from
        the desktop track above — see the script near the bottom of <body>. -->
   <div class="works-marquee-outer works-marquee-mobile works-marquee-mobile-1">
+  <button type="button" class="works-nav works-nav-prev" data-target="works-marquee-sp-1" aria-label="前の作品へ">&lsaquo;</button>
+  <button type="button" class="works-nav works-nav-next" data-target="works-marquee-sp-1" aria-label="次の作品へ">&rsaquo;</button>
   <div class="works-marquee" id="works-marquee-sp-1">
     <div class="works-grid" id="works-track-mobile-1"></div>
   </div>
   </div>
   <div class="works-marquee-outer works-marquee-mobile works-marquee-mobile-2">
+  <button type="button" class="works-nav works-nav-prev" data-target="works-marquee-sp-2" aria-label="前の作品へ">&lsaquo;</button>
+  <button type="button" class="works-nav works-nav-next" data-target="works-marquee-sp-2" aria-label="次の作品へ">&rsaquo;</button>
   <div class="works-marquee" id="works-marquee-sp-2">
     <div class="works-grid" id="works-track-mobile-2"></div>
   </div>
@@ -2222,11 +2259,17 @@ Yuria.Tによって生み出されたこのモナカは
     let hovered = false;
     let touching = false;
     let moved = false;
+    let navPaused = false; // true briefly while a nav-button smooth-scroll plays out
     let startX = 0;
     let startScroll = 0;
     let pointerId = null;
     const SPEED = 0.75; // px per frame
     function tick() {
+      // while a nav-button smooth-scroll is in flight, don't touch
+      // scrollLeft at all (including wrap()) — a mid-flight instant
+      // wrap() jump would fight the animation and look like a stutter
+      // backwards; wrap() runs once instead right after it finishes
+      if (navPaused) return;
       if (!dragging && !pending && !hovered && !touching) {
         setScrollLeft(el.scrollLeft + (row.reverse ? -SPEED : SPEED));
       }
@@ -2320,6 +2363,51 @@ Yuria.Tによって生み出されたこのモナカは
         moved = false;
       }
     }, true);
+
+    // prev/next nav buttons: jump ~3 cards at a time, for anyone who
+    // doesn't realize the row is drag/swipe-scrollable
+    const navSelector = '.works-nav[data-target="' + el.id + '"]';
+    document.querySelectorAll(navSelector).forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const first = track.children[0];
+        const second = track.children[1];
+        const step = second ? (second.getBoundingClientRect().left - first.getBoundingClientRect().left) : 300;
+        const distance = step * 3;
+        const dir = btn.classList.contains('works-nav-prev') ? -1 : 1;
+        // pick the landing spot up front, pre-shifted by whole copy-widths
+        // to stay inside the safe [w, 3w] band — doing the wrap correction
+        // as part of the initial target (instead of snapping afterward)
+        // avoids a jarring backward jump once the smooth scroll finishes
+        const w = copyWidth();
+        let target = el.scrollLeft + dir * distance;
+        if (w > 0) {
+          while (target >= w * 3) target -= w;
+          while (target <= w * 1) target += w;
+        }
+        // Animate it ourselves (repeated instant setScrollLeft() writes
+        // driven by rAF) instead of el.scrollTo({behavior:'smooth'}) —
+        // the browser's own smooth-scroll has been unreliable in
+        // Safari/WebKit in this project already (see the auto-play fix
+        // above), so this reuses the same setScrollLeft()+rAF combo
+        // that's already proven to work everywhere.
+        navPaused = true;
+        const navStart = el.scrollLeft;
+        const navDelta = target - navStart;
+        const navDuration = 420;
+        const navStartTime = performance.now();
+        function navStep(now) {
+          const t = Math.min(1, (now - navStartTime) / navDuration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          setScrollLeft(navStart + navDelta * eased);
+          if (t < 1) {
+            requestAnimationFrame(navStep);
+          } else {
+            navPaused = false;
+          }
+        }
+        requestAnimationFrame(navStep);
+      });
+    });
   });
 })();
 
