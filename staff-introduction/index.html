@@ -2284,17 +2284,25 @@ Yuria.Tによって生み出されたこのモナカは
     // repaint (the value changes but nothing visibly moves). A slow
     // setInterval is kept only as a fallback for backgrounded/inactive
     // tabs, where rAF itself gets throttled to near-zero.
-    let rafRunning = true;
+    //
+    // IMPORTANT: this chain is started exactly once, here, and never
+    // restarted. An earlier version paused it on visibilitychange (hidden)
+    // and explicitly kicked off a fresh requestAnimationFrame(raf) again
+    // on return — but a stale callback queued *before* the tab was hidden
+    // can still be sitting in the queue, delayed by the browser's
+    // background-tab throttling, and fire *after* focus returns (by which
+    // point the flag was already flipped back to "running"). That stale
+    // callback then kept rescheduling itself too, so every tab-switch
+    // could leave behind an extra parallel loop — each one independently
+    // advancing scrollLeft, which is exactly why the auto-scroll sped up
+    // more with every switch. A single perpetual chain that's never
+    // manually restarted can't duplicate like that; the browser already
+    // throttles rAF on its own while the tab is hidden.
     function raf() {
-      if (!rafRunning) return;
       tick();
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
-    document.addEventListener('visibilitychange', function() {
-      rafRunning = document.visibilityState === 'visible';
-      if (rafRunning) requestAnimationFrame(raf);
-    });
     setInterval(function() {
       if (document.visibilityState !== 'visible') tick();
     }, 500);
