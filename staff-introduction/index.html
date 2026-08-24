@@ -2430,8 +2430,14 @@ Yuria.Tによって生み出されたこのモナカは
   const desc = modal.querySelector('.work-modal-desc');
   const link = modal.querySelector('.work-modal-link');
   const closeBtn = modal.querySelector('.work-modal-close');
+  const panel = modal.querySelector('.work-modal-panel');
 
   function openModal(card) {
+    // .work-modal-panel keeps its own scroll position between opens (it's
+    // never removed from the DOM) — without resetting it, reopening after
+    // having scrolled down in a previous card landed mid-way instead of
+    // at the top
+    if (panel) panel.scrollTop = 0;
     const hasImg = !!card.dataset.img;
     img.src = hasImg ? card.dataset.img : '';
     img.alt = card.dataset.title || '';
