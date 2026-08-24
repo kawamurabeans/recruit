@@ -749,7 +749,7 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
      -6px, see .work-card:hover) never reaches that clip edge in the
      first place. Compensated by an equal reduction in the outer
      wrapper's margin-top so the visible gap above the row is unchanged. */
-  padding-top: 24px;
+  padding-top: 40px;
   touch-action: pan-x;
   /* without this, hitting the real scrollLeft:0 edge triggers the
      browser's own rubber-band bounce, which then fights our JS wrap()
@@ -772,7 +772,7 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 /* mobile splits into two independently-scrolling rows (JS-populated,
    see the script near the bottom of <body>); hidden on PC */
 .works-marquee-mobile { display: none; }
-.works-marquee-desktop { margin-top: 76px; } /* 100px - the row's own 24px top padding */
+.works-marquee-desktop { margin-top: 60px; } /* 100px - the row's own 40px top padding */
 .works-lead-sp { display: none; }
 .work-card {
   appearance: none;
@@ -1292,7 +1292,7 @@ footer a:hover { color: var(--gold); }
   .works-marquee-desktop { display: none; }
   /* match the gap below row 2 (= .sec's own bottom padding, 64px) so the
      lead-to-row1 and row1-to-row2 gaps read the same as row2-to-bottom */
-  .works-marquee-mobile { display: block; margin-top: 40px; margin-bottom: 0; } /* 64px - the row's own 24px top padding */
+  .works-marquee-mobile { display: block; margin-top: 24px; margin-bottom: 0; } /* 64px - the row's own 40px top padding */
   .works-lead-pc { display: none; }
   .works-lead-sp { display: block; }
   /* smaller than PC's 500x380, same 4:3 ratio (500:380 ≈ 300:228) */
