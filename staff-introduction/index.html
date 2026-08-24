@@ -713,8 +713,15 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 }
 .works-marquee {
   overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
+  /* overflow-x:auto forces overflow-y to compute as 'auto' too (CSS
+     doesn't allow x:auto + y:visible) — and 'auto' clips painted content
+     the same as 'hidden' when there's no real layout overflow, transform
+     or not. So the fix isn't the overflow-y value at all: it's giving
+     the box enough top padding that a hover-lifted card (translateY
+     -6px, see .work-card:hover) never reaches that clip edge in the
+     first place. Compensated by an equal reduction in the outer
+     wrapper's margin-top so the visible gap above the row is unchanged. */
+  padding-top: 24px;
   touch-action: pan-x;
   /* without this, hitting the real scrollLeft:0 edge triggers the
      browser's own rubber-band bounce, which then fights our JS wrap()
@@ -737,7 +744,7 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 /* mobile splits into two independently-scrolling rows (JS-populated,
    see the script near the bottom of <body>); hidden on PC */
 .works-marquee-mobile { display: none; }
-.works-marquee-desktop { margin-top: 100px; }
+.works-marquee-desktop { margin-top: 76px; } /* 100px - the row's own 24px top padding */
 .works-lead-sp { display: none; }
 .work-card {
   appearance: none;
@@ -1254,7 +1261,7 @@ footer a:hover { color: var(--gold); }
   .works-marquee-desktop { display: none; }
   /* match the gap below row 2 (= .sec's own bottom padding, 64px) so the
      lead-to-row1 and row1-to-row2 gaps read the same as row2-to-bottom */
-  .works-marquee-mobile { display: block; margin-top: 64px; margin-bottom: 0; }
+  .works-marquee-mobile { display: block; margin-top: 40px; margin-bottom: 0; } /* 64px - the row's own 24px top padding */
   .works-lead-pc { display: none; }
   .works-lead-sp { display: block; }
   /* smaller than PC's 500x380, same 4:3 ratio (500:380 ≈ 300:228) */
@@ -2193,15 +2200,22 @@ Yuria.Tによって生み出されたこのモナカは
     // there's always at least one full extra copy-width of untouched
     // buffer beyond wherever it wraps, before the true 0/max edge.
     function copyWidth() { return track.scrollWidth / 5; }
+    // Safari has been unreliable about visually reflecting plain
+    // `el.scrollLeft = x` writes made from a script (the value changes,
+    // but nothing repaints) — routing every write through scrollTo()
+    // (the modern, standardized scroll API) has been the reliable fix
+    // for that class of bug elsewhere, so all scrollLeft mutation in
+    // this row goes through this one function.
+    function setScrollLeft(x) { el.scrollTo(x, 0); }
     function wrap() {
       const w = copyWidth();
       if (w <= 0) return;
-      if (el.scrollLeft >= w * 3) el.scrollLeft -= w;
-      else if (el.scrollLeft <= w * 1) el.scrollLeft += w;
+      if (el.scrollLeft >= w * 3) setScrollLeft(el.scrollLeft - w);
+      else if (el.scrollLeft <= w * 1) setScrollLeft(el.scrollLeft + w);
     }
 
     // start at the middle (3rd) copy
-    el.scrollLeft = copyWidth() * 2;
+    setScrollLeft(copyWidth() * 2);
 
     let dragging = false;
     let pending = false;
@@ -2214,7 +2228,7 @@ Yuria.Tによって生み出されたこのモナカは
     const SPEED = 0.75; // px per frame
     function tick() {
       if (!dragging && !pending && !hovered && !touching) {
-        el.scrollLeft += row.reverse ? -SPEED : SPEED;
+        setScrollLeft(el.scrollLeft + (row.reverse ? -SPEED : SPEED));
       }
       // checked every tick regardless of interaction state — with a full
       // copy-width of buffer either side this rarely fires mid-gesture,
