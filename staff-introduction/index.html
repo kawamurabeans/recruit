@@ -2127,22 +2127,30 @@ Yuria.Tによって生み出されたこのモナカは
     el.setAttribute('aria-hidden', 'true');
     el.setAttribute('tabindex', '-1');
   }
+  // Three copies (not two) of each row's cards, so a manual drag/swipe has
+  // a full copy-width of buffer in both directions before the real
+  // scrollLeft boundary (0, or max) is ever reached — in practice that's
+  // far more than one swipe covers, so it reads as endlessly scrollable.
   function fillLoop(track, sourceCards) {
     if (!track || !sourceCards.length) return;
     sourceCards.forEach(function(card) { track.appendChild(prepareClone(card)); });
-    sourceCards.forEach(function(card) {
-      const clone = prepareClone(card);
-      markInert(clone);
-      track.appendChild(clone);
-    });
+    for (let copy = 0; copy < 2; copy++) {
+      sourceCards.forEach(function(card) {
+        const clone = prepareClone(card);
+        markInert(clone);
+        track.appendChild(clone);
+      });
+    }
   }
 
-  // PC row: duplicate the existing 6 cards in place
-  originalCards.forEach(function(card) {
-    const clone = prepareClone(card);
-    markInert(clone);
-    desktopTrack.appendChild(clone);
-  });
+  // PC row: duplicate the existing 6 cards twice more (3 copies total)
+  for (let copy = 0; copy < 2; copy++) {
+    originalCards.forEach(function(card) {
+      const clone = prepareClone(card);
+      markInert(clone);
+      desktopTrack.appendChild(clone);
+    });
+  }
 
   // Mobile rows: split by data-group, each row independently looped
   const dessertCards = originalCards.filter(function(c) { return c.dataset.group !== 'kakigori'; });
@@ -2168,18 +2176,22 @@ Yuria.Tによって生み出されたこのモナカは
     const track = el.querySelector('.works-grid');
     if (!track || !track.children.length) return;
 
-    function halfWidth() { return track.scrollWidth / 2; }
+    // 3 identical copies sit back to back; copyWidth is the width of one
+    function copyWidth() { return track.scrollWidth / 3; }
+    // keep scrollLeft within the middle copy's span whenever it's safe to
+    // silently jump (i.e. not mid-drag) — this is checked every tick, but
+    // with a full copy-width of buffer on each side it's rarely needed
     function wrap() {
-      const half = halfWidth();
-      if (half <= 0) return;
-      if (el.scrollLeft >= half) el.scrollLeft -= half;
-      else if (el.scrollLeft <= 0) el.scrollLeft += half;
+      const w = copyWidth();
+      if (w <= 0) return;
+      if (el.scrollLeft >= w * 2) el.scrollLeft -= w;
+      else if (el.scrollLeft <= 0) el.scrollLeft += w;
     }
 
-    // start mid-track (not 0) so there's room to drag either direction —
-    // scrollLeft can never go negative, so starting at 0 made "scroll
-    // further left" hit a hard wall immediately
-    el.scrollLeft = halfWidth() / 2;
+    // start at the second copy so there's a full copy-width of scroll
+    // buffer in both directions — scrollLeft can never go negative, so
+    // starting at/near 0 made "scroll further left" hit a hard wall
+    el.scrollLeft = copyWidth();
 
     let dragging = false;
     let hovered = false;
@@ -2193,8 +2205,11 @@ Yuria.Tによって生み出されたこのモナカは
     function tick() {
       if (!dragging && !hovered && !touching) {
         el.scrollLeft += row.reverse ? -SPEED : SPEED;
-        wrap();
       }
+      // checked every tick regardless of interaction state — with a full
+      // copy-width of buffer either side this rarely fires mid-gesture,
+      // but it's the safety net that keeps things truly endless
+      wrap();
     }
     setInterval(tick, 16);
 
