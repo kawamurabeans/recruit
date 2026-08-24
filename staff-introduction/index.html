@@ -821,7 +821,19 @@ header {
   color: var(--text-sub);
   font-size: 0.9em;
   line-height: 2;
+  white-space: pre-line;
 }
+.work-modal-link {
+  display: inline-block;
+  margin-top: 24px;
+  color: var(--orange);
+  font-size: 0.82em;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--orange);
+  padding-bottom: 2px;
+}
+.work-modal-link:hover { opacity: 0.7; }
 
 /* ── WORLD (locations / customers) ── */
 .world-banner {
@@ -1405,11 +1417,17 @@ footer a:hover { color: var(--gold); }
           <div class="work-card-maker">池田 / パティシエ</div>
         </div>
       </button>
-      <button type="button" class="work-card fade-up fade-up-d1" data-img="" data-title="いちじくパルフェ" data-maker="山本 / パティシエ" data-desc="サロン・ド・テ・カワムラで提供する季節限定パルフェ。旬のいちじくを贅沢に使い、素材の見た目と食感を活かした盛り付けにこだわりました。">
+      <button type="button" class="work-card fade-up fade-up-d1" data-img="" data-title="いちごパルフェ" data-maker="Yuka.N" data-desc="いちごを中心とする真紅のパルフェです。
+
+チュイールやラングドシャも細部にまでこだわり、一切手抜きのないパルフェとなっております。
+
+ラズベリーをはじめとする多様な果実のフレーバーも入っており、食べ進めるごとに味が変化していく魅惑のパルフェです。
+
+まさに芸術品のような美しさ。" data-link="/recruit/staff-introduction/patissier/202607-yuka.html">
         <div class="work-card-photo"><div class="work-card-photo-placeholder">写真<br>差し込み予定</div></div>
         <div class="work-card-body">
-          <div class="work-card-name">いちじくパルフェ</div>
-          <div class="work-card-maker">山本 / パティシエ</div>
+          <div class="work-card-name">いちごパルフェ</div>
+          <div class="work-card-maker">Yuka.N</div>
         </div>
       </button>
       <button type="button" class="work-card fade-up fade-up-d2" data-img="" data-title="ふわ雪かき氷" data-maker="中村 / パティシエ" data-desc="口に入れた瞬間に溶けるふわふわの氷に、自家製シロップを合わせた夏の看板メニュー。トレンドを取り入れつつ、甘納豆かわむららしい上品な甘さに仕上げています。">
@@ -1431,6 +1449,7 @@ footer a:hover { color: var(--gold); }
       <span class="work-modal-maker"></span>
       <h3 class="work-modal-title"></h3>
       <p class="work-modal-desc"></p>
+      <a class="work-modal-link" href="#" target="_blank" rel="noopener">インタビューを読む &rarr;</a>
     </div>
   </div>
 </div>
@@ -1875,6 +1894,7 @@ footer a:hover { color: var(--gold); }
   const maker = modal.querySelector('.work-modal-maker');
   const title = modal.querySelector('.work-modal-title');
   const desc = modal.querySelector('.work-modal-desc');
+  const link = modal.querySelector('.work-modal-link');
   const closeBtn = modal.querySelector('.work-modal-close');
 
   function openModal(card) {
@@ -1885,6 +1905,12 @@ footer a:hover { color: var(--gold); }
     maker.textContent = card.dataset.maker || '';
     title.textContent = card.dataset.title || '';
     desc.textContent = card.dataset.desc || '';
+    if (card.dataset.link) {
+      link.href = card.dataset.link;
+      link.style.display = '';
+    } else {
+      link.style.display = 'none';
+    }
     modal.classList.add('open');
     if (scrollRoot) scrollRoot.style.overflow = 'hidden';
   }
