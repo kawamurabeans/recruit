@@ -2274,7 +2274,11 @@ Yuria.Tによって生み出されたこのモナカは
     let startX = 0;
     let startScroll = 0;
     let pointerId = null;
-    const SPEED = 0.75; // px per frame
+    // an integer speed avoids the rounding step-pattern that a sub-pixel
+    // value produces once every write gets rounded to a whole pixel
+    // (0.75/frame rounds as 1,1,0,1,1,0,... — a repeating skip that reads
+    // as a wobble at 60fps, in every browser, not just Safari)
+    const SPEED = 1; // px per frame
     function tick() {
       // while a nav-button smooth-scroll is in flight, don't touch
       // scrollLeft at all (including wrap()) — a mid-flight instant
