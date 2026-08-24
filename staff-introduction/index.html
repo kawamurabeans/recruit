@@ -1250,8 +1250,11 @@ footer a:hover { color: var(--gold); }
   .works-marquee-mobile-1 .works-grid { animation-direction: reverse; }
   /* SP requested no edge fade/blur curtains — just a clean hard clip */
   .works-marquee-mobile::before, .works-marquee-mobile::after { content: none; }
-  /* card/photo size stays identical to PC (500x380) per request — only
-     the layout (two rows instead of one) differs on mobile */
+  /* smaller than PC's 500x380, same 4:3 ratio (500:380 ≈ 300:228) */
+  .work-card { width: 300px; }
+  .work-card-photo { height: 228px; }
+  .work-card-photo.is-portrait ~ .work-card-body,
+  .work-card-photo.is-portrait + .work-card-body { width: 152px; }
   .work-modal-body { padding: 24px 22px 32px; }
 
   .world-banner { flex-direction: column; text-align: center; }
