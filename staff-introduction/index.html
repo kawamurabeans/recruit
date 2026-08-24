@@ -799,6 +799,13 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   width: 100%; height: 100%; object-fit: cover;
   display: block;
   transition: transform 0.5s ease;
+  /* without this, dragging over an <img> triggers the browser's own
+     native "drag this image" ghost preview (a white card-like floating
+     thumbnail) — since pointerdown no longer calls preventDefault
+     (that broke clicking), this is needed instead to suppress it */
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
 }
 .work-card:hover .work-card-photo img { transform: scale(1.06); }
 /* portrait photos keep their own width instead of stretching to the card's
@@ -2217,9 +2224,7 @@ Yuria.Tによって生み出されたこのモナカは
     let startX = 0;
     let startScroll = 0;
     let pointerId = null;
-    const SPEED = 0.5; // px per tick (~16ms) — setInterval rather than
-    // requestAnimationFrame, since rAF is throttled to near-zero in
-    // backgrounded/inactive tabs and this should keep drifting regardless
+    const SPEED = 0.75; // px per frame
     function tick() {
       if (!dragging && !pending && !hovered && !touching) {
         el.scrollLeft += row.reverse ? -SPEED : SPEED;
@@ -2229,7 +2234,26 @@ Yuria.Tによって生み出されたこのモナカは
       // but it's the safety net that keeps things truly endless
       wrap();
     }
-    setInterval(tick, 16);
+    // requestAnimationFrame is the primary driver — it's synced to the
+    // browser's paint cycle, which matters on Safari: mutating scrollLeft
+    // from inside a plain setInterval callback there can silently fail to
+    // repaint (the value changes but nothing visibly moves). A slow
+    // setInterval is kept only as a fallback for backgrounded/inactive
+    // tabs, where rAF itself gets throttled to near-zero.
+    let rafRunning = true;
+    function raf() {
+      if (!rafRunning) return;
+      tick();
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+    document.addEventListener('visibilitychange', function() {
+      rafRunning = document.visibilityState === 'visible';
+      if (rafRunning) requestAnimationFrame(raf);
+    });
+    setInterval(function() {
+      if (document.visibilityState !== 'visible') tick();
+    }, 500);
 
     el.addEventListener('mouseenter', function() { hovered = true; });
     el.addEventListener('mouseleave', function() { hovered = false; });
