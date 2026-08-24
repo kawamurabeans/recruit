@@ -256,6 +256,10 @@ header {
   padding: 0;
   overflow: visible;
 }
+/* local-preview convenience only — see the script tag near the bottom of
+   <body> for why this must never affect production */
+html.local-dev .sec.sec-philosophy { height: auto; }
+html.local-dev .philosophy-sticky { position: static; height: auto; }
 .philosophy-sticky {
   position: sticky;
   top: 0;
@@ -691,8 +695,9 @@ header {
 
 /* ── WORKS (patissier creations) ── */
 .works-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   gap: 28px;
 }
 .work-card {
@@ -702,6 +707,8 @@ header {
   padding: 0;
   text-align: left;
   font-family: inherit;
+  flex: 0 0 auto;
+  width: 280px;
   transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
 }
 .work-card:hover, .work-card:focus-visible {
@@ -712,7 +719,7 @@ header {
 }
 .work-card-photo {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 210px;
   overflow: hidden;
   background: var(--gray);
   position: relative;
@@ -726,7 +733,12 @@ header {
   transition: transform 0.5s ease;
 }
 .work-card:hover .work-card-photo img { transform: scale(1.06); }
-.work-card-photo.is-portrait img { object-fit: contain; }
+/* portrait photos keep their own width instead of stretching to the card's
+   default width — the card itself narrows to match, so no letterboxing */
+.work-card:has(.work-card-photo.is-portrait) { width: auto; }
+.work-card-photo.is-portrait { width: auto; aspect-ratio: 2 / 3; }
+.work-card-photo.is-portrait ~ .work-card-body,
+.work-card-photo.is-portrait + .work-card-body { width: 140px; }
 .work-card-photo-placeholder {
   display: flex; align-items: center; justify-content: center;
   height: 100%;
@@ -1169,7 +1181,12 @@ footer a:hover { color: var(--gold); }
   .two-col { grid-template-columns: 1fr; }
   .highlight-banner { flex-direction: column; text-align: center; }
 
-  .works-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .works-grid { gap: 16px; }
+  .work-card { width: calc(50% - 8px); }
+  .work-card-photo { height: 34vw; }
+  .work-card-photo.is-portrait { width: auto; }
+  .work-card-photo.is-portrait ~ .work-card-body,
+  .work-card-photo.is-portrait + .work-card-body { width: calc(34vw * 2 / 3); }
   .work-modal-body { padding: 24px 22px 32px; }
 
   .world-banner { flex-direction: column; text-align: center; }
@@ -1657,13 +1674,25 @@ footer a:hover { color: var(--gold); }
 
 <script>
 (function() {
+  // Local-preview convenience only: skips the loader animation and the long
+  // philosophy scroll-jack section when running on localhost, so checking
+  // changes doesn't require waiting/scrolling through them every time.
+  // This never applies on a real deployment — production hostnames won't
+  // match, so this MUST NOT be removed before pushing to production.
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+    document.documentElement.classList.add('local-dev');
+  }
+})();
+
+(function() {
   document.body.classList.add('loading');
   const logo = document.querySelector('.loader-logo');
   const text = document.querySelector('.loader-text');
   const loader = document.getElementById('page-loader');
   if (!logo || !loader) return;
 
-  setTimeout(finishLoader, 1800);
+  const isLocalDev = document.documentElement.classList.contains('local-dev');
+  setTimeout(finishLoader, isLocalDev ? 0 : 1800);
 
   function finishLoader() {
     text.classList.add('loader-fade');
