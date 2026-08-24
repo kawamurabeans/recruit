@@ -748,6 +748,9 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+/* mobile splits into two independently-scrolling rows (JS-populated,
+   see the script near the bottom of <body>); hidden on PC */
+.works-marquee-mobile { display: none; }
 .work-card {
   cursor: pointer;
   background: var(--white);
@@ -1229,26 +1232,22 @@ footer a:hover { color: var(--gold); }
   .two-col { grid-template-columns: 1fr; }
   .highlight-banner { flex-direction: column; text-align: center; }
 
-  /* mobile: the endless marquee is PC-only — fall back to a normal
-     wrapping grid and hide the JS-duplicated clone cards */
+  /* mobile: two independent marquee rows instead of PC's single row —
+     row 1 (desserts) flows left-to-right, row 2 (kakigori) flows the
+     opposite way. The PC row (#works-track) is hidden entirely and the
+     two mobile rows (populated by JS, see the script near the bottom of
+     <body>) take over. */
   .works-marquee {
-    overflow: visible;
     width: calc(100% + 40px);
     margin-left: -20px;
     margin-right: -20px;
     padding-left: 20px;
     padding-right: 20px;
   }
-  .works-marquee::before, .works-marquee::after { content: none; }
-  .works-grid {
-    flex-wrap: wrap;
-    width: auto;
-    animation: none;
-    transform: none;
-    gap: 16px;
-  }
-  .work-card-clone { display: none; }
-  .work-card { width: calc(50% - 8px); }
+  .works-marquee-desktop { display: none; }
+  .works-marquee-mobile { display: block; margin-bottom: 20px; }
+  .works-marquee-mobile:last-child { margin-bottom: 0; }
+  .works-marquee-mobile-1 .works-grid { animation-direction: reverse; }
   .work-card-photo { height: 34vw; }
   .work-card-photo.is-portrait { width: auto; }
   .work-card-photo.is-portrait ~ .work-card-body,
@@ -1495,9 +1494,9 @@ footer a:hover { color: var(--gold); }
     <h2 class="sec-title fade-up from-left">パティシエ達の作品</h2>
     <p class="sec-lead fade-up">和洋の垣根を越え、それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると、詳しいストーリーがご覧いただけます。</p>
   </div>
-  <div class="works-marquee">
+  <div class="works-marquee works-marquee-desktop">
     <div class="works-grid" id="works-track">
-      <button type="button" class="work-card fade-up" data-img="/recruit/assets/img/202502-strawberry-monaka-yuria.jpg" data-title="いちごモナカ" data-maker="Yuria.T / パティシエ" data-desc="食べた瞬間に広がるいちごのフレッシュな味わい
+      <button type="button" class="work-card fade-up" data-group="dessert" data-img="/recruit/assets/img/202502-strawberry-monaka-yuria.jpg" data-title="いちごモナカ" data-maker="Yuria.T / パティシエ" data-desc="食べた瞬間に広がるいちごのフレッシュな味わい
 たまらないモナカの「サクッ」とした食感
 モナカの底にはピスタチオ餡を使いました
 
@@ -1514,7 +1513,7 @@ Yuria.Tによって生み出されたこのモナカは
           <div class="work-card-maker">Yuria.T / パティシエ</div>
         </div>
       </button>
-      <button type="button" class="work-card fade-up fade-up-d1" data-img="/recruit/assets/img/202412-strawberry-parfait-yuka.jpg" data-orientation="portrait" data-title="いちごパルフェ" data-maker="Yuka.N / パティシエ" data-desc="いちごを中心とする真紅のパルフェです。
+      <button type="button" class="work-card fade-up fade-up-d1" data-group="dessert" data-img="/recruit/assets/img/202412-strawberry-parfait-yuka.jpg" data-orientation="portrait" data-title="いちごパルフェ" data-maker="Yuka.N / パティシエ" data-desc="いちごを中心とする真紅のパルフェです。
 
 チュイールやラングドシャも細部にまでこだわり、
 一切手抜きのないパルフェとなっております。
@@ -1531,7 +1530,7 @@ Yuria.Tによって生み出されたこのモナカは
           <div class="work-card-maker">Yuka.N / パティシエ</div>
         </div>
       </button>
-      <button type="button" class="work-card fade-up fade-up-d2" data-img="/recruit/assets/img/202509-fig-parfait-yuko.jpg" data-orientation="portrait" data-title="無花果のパルフェ" data-maker="Yuko.K / パティシエ" data-desc="魅力あふれる秋の果実
+      <button type="button" class="work-card fade-up fade-up-d2" data-group="dessert" data-img="/recruit/assets/img/202509-fig-parfait-yuko.jpg" data-orientation="portrait" data-title="無花果のパルフェ" data-maker="Yuko.K / パティシエ" data-desc="魅力あふれる秋の果実
 《 無花果(いちじく) 》の
 良さを最大限に引き出した、
 ゴージャスで秋の色彩に満ちた
@@ -1551,7 +1550,7 @@ Yuria.Tによって生み出されたこのモナカは
           <div class="work-card-maker">Yuko.K / パティシエ</div>
         </div>
       </button>
-      <button type="button" class="work-card fade-up fade-up-d2" data-img="/recruit/assets/img/202506-mame-kinako-kori-yuria.jpg" data-title="《 かき氷 》豆きな粉氷" data-maker="Yuria.T / パティシエ" data-desc="豆の美味しさを最大限に引き出した
+      <button type="button" class="work-card fade-up fade-up-d2" data-group="kakigori" data-img="/recruit/assets/img/202506-mame-kinako-kori-yuria.jpg" data-title="《 かき氷 》豆きな粉氷" data-maker="Yuria.T / パティシエ" data-desc="豆の美味しさを最大限に引き出した
 新人パティシエの渾身の力作です。
 
 地元で有名な【 中谷とうふ店 】の豆乳を
@@ -1575,7 +1574,7 @@ Yuria.Tによって生み出されたこのモナカは
           <div class="work-card-maker">Yuria.T / パティシエ</div>
         </div>
       </button>
-      <button type="button" class="work-card fade-up fade-up-d1" data-img="/recruit/assets/img/202506-ajihei-kabocha-kori-yuka.jpg" data-orientation="portrait" data-title="【 かき氷 】味平かぼちゃとココミックスナッツ" data-maker="Yuka.N / パティシエ" data-desc="加賀市産・味平かぼちゃと
+      <button type="button" class="work-card fade-up fade-up-d1" data-group="kakigori" data-img="/recruit/assets/img/202506-ajihei-kabocha-kori-yuka.jpg" data-orientation="portrait" data-title="【 かき氷 】味平かぼちゃとココミックスナッツ" data-maker="Yuka.N / パティシエ" data-desc="加賀市産・味平かぼちゃと
 ミックスナッツ、ココナッツを
 掛け合わせたここにしかない一杯です。
 
@@ -1599,7 +1598,7 @@ Yuria.Tによって生み出されたこのモナカは
           <div class="work-card-maker">Yuka.N / パティシエ</div>
         </div>
       </button>
-      <button type="button" class="work-card fade-up fade-up-d2" data-img="/recruit/assets/img/202507-momo-neige-yuko.jpg" data-title="《 かき氷 》桃のかき氷 - モモネージュ -" data-maker="Yuko.K / パティシエ" data-desc="焼菓子やケーキの経験は豊富ながら、
+      <button type="button" class="work-card fade-up fade-up-d2" data-group="kakigori" data-img="/recruit/assets/img/202507-momo-neige-yuko.jpg" data-title="《 かき氷 》桃のかき氷 - モモネージュ -" data-maker="Yuko.K / パティシエ" data-desc="焼菓子やケーキの経験は豊富ながら、
 かき氷には初挑戦だったYuko.K。
 その第一作目にして、当店にとって
 伝説となったかき氷です。
@@ -1626,6 +1625,15 @@ Yuria.Tによって生み出されたこのモナカは
         </div>
       </button>
     </div>
+  </div>
+  <!-- SP-only: same 6 cards split into two independently-scrolling rows
+       (desserts flow one way, kakigori the other). Populated by JS from
+       the desktop track above — see the script near the bottom of <body>. -->
+  <div class="works-marquee works-marquee-mobile works-marquee-mobile-1">
+    <div class="works-grid" id="works-track-mobile-1"></div>
+  </div>
+  <div class="works-marquee works-marquee-mobile works-marquee-mobile-2">
+    <div class="works-grid" id="works-track-mobile-2"></div>
   </div>
 </section>
 
@@ -2086,24 +2094,51 @@ Yuria.Tによって生み出されたこのモナカは
 })();
 
 (function() {
-  // PC-only endless marquee: duplicate the card row once so the CSS
-  // animation (translateX 0 -> -50%) loops seamlessly. Clones are inert
-  // for assistive tech/keyboard nav and hidden on mobile via CSS
-  // (.work-card-clone), where the marquee is disabled entirely.
-  const track = document.getElementById('works-track');
-  if (!track) return;
-  const originalCards = Array.from(track.children);
-  originalCards.forEach(function(card) {
+  // Endless marquee(s): PC shows all 6 cards in one row; mobile splits the
+  // same 6 into two independently-scrolling rows by data-group (desserts /
+  // kakigori), flowing in opposite directions. Every row's card list is
+  // duplicated once so the CSS animation (translateX 0 -> -50%) loops
+  // seamlessly. Duplicate-set cards are inert for assistive tech/keyboard
+  // nav via .work-card-clone (aria-hidden + tabindex=-1).
+  const desktopTrack = document.getElementById('works-track');
+  if (!desktopTrack) return;
+  const originalCards = Array.from(desktopTrack.children);
+
+  function prepareClone(card) {
     const clone = card.cloneNode(true);
     // clones are never scroll-observed, so drop the fade-up scroll-reveal
     // classes (they'd otherwise sit at opacity:0 forever) and show them
     // immediately instead
     clone.classList.remove('fade-up', 'fade-up-d1', 'fade-up-d2', 'visible');
-    clone.classList.add('work-card-clone');
-    clone.setAttribute('aria-hidden', 'true');
-    clone.setAttribute('tabindex', '-1');
-    track.appendChild(clone);
+    return clone;
+  }
+  function markInert(el) {
+    el.classList.add('work-card-clone');
+    el.setAttribute('aria-hidden', 'true');
+    el.setAttribute('tabindex', '-1');
+  }
+  function fillLoop(track, sourceCards) {
+    if (!track || !sourceCards.length) return;
+    sourceCards.forEach(function(card) { track.appendChild(prepareClone(card)); });
+    sourceCards.forEach(function(card) {
+      const clone = prepareClone(card);
+      markInert(clone);
+      track.appendChild(clone);
+    });
+  }
+
+  // PC row: duplicate the existing 6 cards in place
+  originalCards.forEach(function(card) {
+    const clone = prepareClone(card);
+    markInert(clone);
+    desktopTrack.appendChild(clone);
   });
+
+  // Mobile rows: split by data-group, each row independently looped
+  const dessertCards = originalCards.filter(function(c) { return c.dataset.group !== 'kakigori'; });
+  const kakigoriCards = originalCards.filter(function(c) { return c.dataset.group === 'kakigori'; });
+  fillLoop(document.getElementById('works-track-mobile-1'), dessertCards);
+  fillLoop(document.getElementById('works-track-mobile-2'), kakigoriCards);
 })();
 
 (function() {
