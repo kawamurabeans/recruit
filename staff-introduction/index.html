@@ -751,7 +751,6 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   pointer-events: none;
 }
 .works-scroll-hint-top { top: -40px; right: 40px; }
-.works-scroll-hint-bottom { bottom: -40px; left: 40px; }
 .works-scroll-hint span {
   position: absolute;
   top: 50%;
@@ -782,24 +781,6 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   transform: translateY(-50%) rotate(45deg);
 }
 .works-scroll-hint-top span { left: 14px; }
-/* bottom-left: mirrored — arrowhead points left, label sits after it */
-.works-scroll-hint-bottom::before {
-  content: '';
-  position: absolute;
-  left: 12px; right: 0; top: 50%;
-  height: 1.5px;
-  background: currentColor;
-}
-.works-scroll-hint-bottom::after {
-  content: '';
-  position: absolute;
-  left: 0; top: 50%;
-  width: 9px; height: 9px;
-  border-bottom: 1.5px solid currentColor;
-  border-left: 1.5px solid currentColor;
-  transform: translateY(-50%) rotate(45deg);
-}
-.works-scroll-hint-bottom span { right: 14px; }
 .works-marquee {
   overflow-x: auto;
   /* overflow-x:auto forces overflow-y to compute as 'auto' too (CSS
@@ -1607,7 +1588,6 @@ footer a:hover { color: var(--gold); }
   </div>
   <div class="works-marquee-outer works-marquee-desktop">
   <div class="works-scroll-hint works-scroll-hint-top" aria-hidden="true"><span>Scroll</span></div>
-  <div class="works-scroll-hint works-scroll-hint-bottom" aria-hidden="true"><span>Scroll</span></div>
   <button type="button" class="works-nav works-nav-prev" data-target="works-marquee-pc" aria-label="前の作品へ">&lsaquo;</button>
   <button type="button" class="works-nav works-nav-next" data-target="works-marquee-pc" aria-label="次の作品へ">&rsaquo;</button>
   <div class="works-marquee" id="works-marquee-pc">
