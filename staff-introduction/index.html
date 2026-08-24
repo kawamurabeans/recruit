@@ -759,6 +759,11 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   user-select: none;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  /* hints the browser to keep this element's scroll on its own
+     compositor layer, so every scrollLeft write during auto-play
+     doesn't force a full repaint — Safari in particular can otherwise
+     drop frames and read as stutter under a continuous per-frame write */
+  will-change: scroll-position;
 }
 .works-marquee::-webkit-scrollbar { display: none; }
 .works-marquee.is-dragging { cursor: grabbing; }
