@@ -701,6 +701,14 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 .works-marquee {
   position: relative;
   overflow: hidden;
+  /* break out of .sec-inner's 980px cap — .sec itself has no side margins,
+     so escaping just its own 40px padding puts this flush with the
+     viewport edges instead of looking centered/narrow */
+  width: calc(100% + 80px);
+  margin-left: -40px;
+  margin-right: -40px;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 /* Solid-color curtains over the edges, instead of fading the cards
    themselves transparent — a card sitting mid-fade under mask-image
@@ -730,7 +738,7 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   align-items: flex-start;
   gap: 28px;
   width: max-content;
-  animation: works-marquee-scroll 42s linear infinite;
+  animation: works-marquee-scroll 64s linear infinite;
 }
 .works-marquee:hover .works-grid,
 .works-grid:focus-within {
@@ -748,7 +756,7 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   text-align: left;
   font-family: inherit;
   flex: 0 0 auto;
-  width: 280px;
+  width: 500px;
   transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
 }
 .work-card:hover, .work-card:focus-visible {
@@ -759,7 +767,7 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 }
 .work-card-photo {
   width: 100%;
-  height: 210px;
+  height: 380px;
   overflow: hidden;
   background: var(--gray);
   position: relative;
@@ -778,7 +786,7 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 .work-card:has(.work-card-photo.is-portrait) { width: auto; }
 .work-card-photo.is-portrait { width: auto; aspect-ratio: 2 / 3; }
 .work-card-photo.is-portrait ~ .work-card-body,
-.work-card-photo.is-portrait + .work-card-body { width: 140px; }
+.work-card-photo.is-portrait + .work-card-body { width: 253px; }
 .work-card-photo-placeholder {
   display: flex; align-items: center; justify-content: center;
   height: 100%;
@@ -1223,7 +1231,14 @@ footer a:hover { color: var(--gold); }
 
   /* mobile: the endless marquee is PC-only — fall back to a normal
      wrapping grid and hide the JS-duplicated clone cards */
-  .works-marquee { overflow: visible; }
+  .works-marquee {
+    overflow: visible;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
   .works-marquee::before, .works-marquee::after { content: none; }
   .works-grid {
     flex-wrap: wrap;
@@ -1479,7 +1494,8 @@ footer a:hover { color: var(--gold); }
     <span class="sec-eyebrow fade-up">WORKS</span>
     <h2 class="sec-title fade-up from-left">パティシエ達の作品</h2>
     <p class="sec-lead fade-up">和洋の垣根を越え、それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると、詳しいストーリーがご覧いただけます。</p>
-    <div class="works-marquee">
+  </div>
+  <div class="works-marquee">
     <div class="works-grid" id="works-track">
       <button type="button" class="work-card fade-up" data-img="/recruit/assets/img/202502-strawberry-monaka-yuria.jpg" data-title="いちごモナカ" data-maker="Yuria.T / パティシエ" data-desc="食べた瞬間に広がるいちごのフレッシュな味わい
 たまらないモナカの「サクッ」とした食感
@@ -1609,7 +1625,6 @@ Yuria.Tによって生み出されたこのモナカは
           <div class="work-card-maker">Yuko.K / パティシエ</div>
         </div>
       </button>
-    </div>
     </div>
   </div>
 </section>
