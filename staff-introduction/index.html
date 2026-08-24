@@ -739,56 +739,67 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
    cards themselves, not in the blank margin */
 .works-nav-prev { left: 32px; }
 .works-nav-next { right: 32px; }
-/* PC only: a "Scroll" hint with a self-drawing diagonal arrow, same idea
-   as .philosophy-scroll-hint's pulsing line but horizontal + arrowhead */
+/* PC only: a plain straight arrow with the "Scroll" label sitting on top
+   of it (white background breaking the line under the text) — no
+   animation, just a static line + arrowhead per the reference image. */
 .works-scroll-hint {
   position: absolute;
   z-index: 4;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  width: 150px;
+  height: 20px;
   color: var(--orange);
   pointer-events: none;
 }
+.works-scroll-hint-top { top: -40px; right: 40px; }
+.works-scroll-hint-bottom { bottom: -40px; left: 40px; }
 .works-scroll-hint span {
-  border: 1.5px solid currentColor;
-  padding: 3px 12px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   background: var(--white);
+  padding: 2px 10px;
   font-family: sans-serif;
   font-size: 0.78em;
   font-weight: 600;
   letter-spacing: 0.04em;
   white-space: nowrap;
 }
-.works-scroll-hint svg { display: block; width: 64px; height: 22px; overflow: visible; }
-.works-scroll-hint-top { top: -46px; right: 40px; }
-.works-scroll-hint-bottom { bottom: -46px; left: 40px; flex-direction: row-reverse; }
-.works-scroll-hint-bottom svg { transform: scaleX(-1); }
-.works-scroll-arrow {
-  stroke: currentColor;
-  stroke-width: 1.5;
-  fill: none;
-  stroke-dasharray: 64;
-  stroke-dashoffset: 64;
-  animation: works-scroll-draw 2.2s infinite;
+/* top-right: label first, line trails off to an arrowhead pointing right */
+.works-scroll-hint-top::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 12px; top: 50%;
+  height: 1.5px;
+  background: currentColor;
 }
-.works-scroll-arrowhead {
-  stroke: currentColor;
-  stroke-width: 1.5;
-  fill: none;
-  opacity: 0;
-  animation: works-scroll-head 2.2s infinite;
+.works-scroll-hint-top::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 50%;
+  width: 9px; height: 9px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
 }
-@keyframes works-scroll-draw {
-  0% { stroke-dashoffset: 64; }
-  55% { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: 0; }
+.works-scroll-hint-top span { left: 14px; }
+/* bottom-left: mirrored — arrowhead points left, label sits after it */
+.works-scroll-hint-bottom::before {
+  content: '';
+  position: absolute;
+  left: 12px; right: 0; top: 50%;
+  height: 1.5px;
+  background: currentColor;
 }
-@keyframes works-scroll-head {
-  0%, 45% { opacity: 0; }
-  60%, 90% { opacity: 1; }
-  100% { opacity: 0; }
+.works-scroll-hint-bottom::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%;
+  width: 9px; height: 9px;
+  border-bottom: 1.5px solid currentColor;
+  border-left: 1.5px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
 }
+.works-scroll-hint-bottom span { right: 14px; }
 .works-marquee {
   overflow-x: auto;
   /* overflow-x:auto forces overflow-y to compute as 'auto' too (CSS
@@ -1595,14 +1606,8 @@ footer a:hover { color: var(--gold); }
     <p class="sec-lead fade-up works-lead-sp">和洋の垣根を越え、<br>それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると<br>詳しいストーリーがご覧いただけます。</p>
   </div>
   <div class="works-marquee-outer works-marquee-desktop">
-  <div class="works-scroll-hint works-scroll-hint-top" aria-hidden="true">
-    <span>Scroll</span>
-    <svg viewBox="0 0 64 22"><path class="works-scroll-arrow" d="M2 4 L58 18"/><path class="works-scroll-arrowhead" d="M58 18 L46 15 M58 18 L53 6"/></svg>
-  </div>
-  <div class="works-scroll-hint works-scroll-hint-bottom" aria-hidden="true">
-    <span>Scroll</span>
-    <svg viewBox="0 0 64 22"><path class="works-scroll-arrow" d="M2 4 L58 18"/><path class="works-scroll-arrowhead" d="M58 18 L46 15 M58 18 L53 6"/></svg>
-  </div>
+  <div class="works-scroll-hint works-scroll-hint-top" aria-hidden="true"><span>Scroll</span></div>
+  <div class="works-scroll-hint works-scroll-hint-bottom" aria-hidden="true"><span>Scroll</span></div>
   <button type="button" class="works-nav works-nav-prev" data-target="works-marquee-pc" aria-label="前の作品へ">&lsaquo;</button>
   <button type="button" class="works-nav works-nav-next" data-target="works-marquee-pc" aria-label="次の作品へ">&rsaquo;</button>
   <div class="works-marquee" id="works-marquee-pc">
