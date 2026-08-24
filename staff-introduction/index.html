@@ -694,13 +694,22 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 }
 
 /* ── WORKS (patissier creations) ── */
-/* PC: an endless left-to-right marquee — the card list is duplicated once
-   by JS so the loop is seamless, and the whole track pauses on hover so a
-   visitor can actually read/click a card. Disabled on mobile (see the
-   max-width:768px block below), where it's a normal wrapping row. */
+/* An endless marquee that auto-scrolls, but is also a real horizontally
+   scrollable element: touch drag works natively (overflow-x:auto), and
+   a small pointer-drag script (see bottom of <body>) adds the same for
+   mouse. The card list is duplicated once by JS so the loop wraps
+   seamlessly in either direction. Disabled on mobile in the sense that
+   PC uses one row and mobile uses two — see max-width:768px below. */
 .works-marquee {
   position: relative;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  cursor: grab;
+  user-select: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   /* break out of .sec-inner's 980px cap — .sec itself has no side margins,
      so escaping just its own 40px padding puts this flush with the
      viewport edges instead of looking centered/narrow */
@@ -710,6 +719,8 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   padding-left: 24px;
   padding-right: 24px;
 }
+.works-marquee::-webkit-scrollbar { display: none; }
+.works-marquee.is-dragging { cursor: grabbing; }
 /* Solid-color curtains over the edges, instead of fading the cards
    themselves transparent — a card sitting mid-fade under mask-image
    looked like a graphical glitch (rounded corners + shadow going
@@ -738,15 +749,6 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   align-items: flex-start;
   gap: 28px;
   width: max-content;
-  animation: works-marquee-scroll 64s linear infinite;
-}
-.works-marquee:hover .works-grid,
-.works-grid:focus-within {
-  animation-play-state: paused;
-}
-@keyframes works-marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
 }
 /* mobile splits into two independently-scrolling rows (JS-populated,
    see the script near the bottom of <body>); hidden on PC */
@@ -1250,7 +1252,6 @@ footer a:hover { color: var(--gold); }
   /* match the gap below row 2 (= .sec's own bottom padding, 64px) so the
      lead-to-row1 and row1-to-row2 gaps read the same as row2-to-bottom */
   .works-marquee-mobile { display: block; margin-top: 64px; margin-bottom: 0; }
-  .works-marquee-mobile-1 .works-grid { animation-direction: reverse; }
   .works-lead-pc { display: none; }
   .works-lead-sp { display: block; }
   /* SP requested no edge fade/blur curtains — just a clean hard clip */
@@ -1503,7 +1504,7 @@ footer a:hover { color: var(--gold); }
     <p class="sec-lead fade-up works-lead-pc">和洋の垣根を越え、それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると、詳しいストーリーがご覧いただけます。</p>
     <p class="sec-lead fade-up works-lead-sp">和洋の垣根を越え、<br>それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると<br>詳しいストーリーがご覧いただけます。</p>
   </div>
-  <div class="works-marquee works-marquee-desktop">
+  <div class="works-marquee works-marquee-desktop" id="works-marquee-pc">
     <div class="works-grid" id="works-track">
       <button type="button" class="work-card fade-up" data-group="dessert" data-img="/recruit/assets/img/202502-strawberry-monaka-yuria.jpg" data-title="いちごモナカ" data-maker="Yuria.T / パティシエ" data-desc="食べた瞬間に広がるいちごのフレッシュな味わい
 たまらないモナカの「サクッ」とした食感
@@ -1638,10 +1639,10 @@ Yuria.Tによって生み出されたこのモナカは
   <!-- SP-only: same 6 cards split into two independently-scrolling rows
        (desserts flow one way, kakigori the other). Populated by JS from
        the desktop track above — see the script near the bottom of <body>. -->
-  <div class="works-marquee works-marquee-mobile works-marquee-mobile-1">
+  <div class="works-marquee works-marquee-mobile works-marquee-mobile-1" id="works-marquee-sp-1">
     <div class="works-grid" id="works-track-mobile-1"></div>
   </div>
-  <div class="works-marquee works-marquee-mobile works-marquee-mobile-2">
+  <div class="works-marquee works-marquee-mobile works-marquee-mobile-2" id="works-marquee-sp-2">
     <div class="works-grid" id="works-track-mobile-2"></div>
   </div>
 </section>
@@ -2148,6 +2149,104 @@ Yuria.Tによって生み出されたこのモナカは
   const kakigoriCards = originalCards.filter(function(c) { return c.dataset.group === 'kakigori'; });
   fillLoop(document.getElementById('works-track-mobile-1'), dessertCards);
   fillLoop(document.getElementById('works-track-mobile-2'), kakigoriCards);
+})();
+
+(function() {
+  // Auto-scroll + manual drag for each marquee row. Rows are real
+  // horizontally-scrollable elements (overflow-x:auto), so touch drag
+  // works natively on mobile; this adds the same for mouse via Pointer
+  // Events, plus the constant auto-advance and its pause/resume rules.
+  const rows = [
+    { el: document.getElementById('works-marquee-pc'), reverse: false },
+    { el: document.getElementById('works-marquee-sp-1'), reverse: true },
+    { el: document.getElementById('works-marquee-sp-2'), reverse: false }
+  ];
+
+  rows.forEach(function(row) {
+    const el = row.el;
+    if (!el) return;
+    const track = el.querySelector('.works-grid');
+    if (!track || !track.children.length) return;
+
+    function halfWidth() { return track.scrollWidth / 2; }
+    function wrap() {
+      const half = halfWidth();
+      if (half <= 0) return;
+      if (el.scrollLeft >= half) el.scrollLeft -= half;
+      else if (el.scrollLeft <= 0) el.scrollLeft += half;
+    }
+
+    // start mid-track for reverse rows so there's room to count down
+    el.scrollLeft = row.reverse ? halfWidth() : 0;
+
+    let dragging = false;
+    let hovered = false;
+    let touching = false;
+    let moved = false;
+    let startX = 0;
+    let startScroll = 0;
+    const SPEED = 0.5; // px per tick (~16ms) — setInterval rather than
+    // requestAnimationFrame, since rAF is throttled to near-zero in
+    // backgrounded/inactive tabs and this should keep drifting regardless
+    function tick() {
+      if (!dragging && !hovered && !touching) {
+        el.scrollLeft += row.reverse ? -SPEED : SPEED;
+        wrap();
+      }
+    }
+    setInterval(tick, 16);
+
+    el.addEventListener('mouseenter', function() { hovered = true; });
+    el.addEventListener('mouseleave', function() { hovered = false; });
+
+    el.addEventListener('pointerdown', function(e) {
+      if (e.pointerType === 'mouse') {
+        dragging = true;
+        moved = false;
+        startX = e.clientX;
+        startScroll = el.scrollLeft;
+        el.classList.add('is-dragging');
+        try { el.setPointerCapture(e.pointerId); } catch (err) {}
+        e.preventDefault();
+      } else {
+        // touch: let native overflow-x scrolling drive it, just pause autoplay
+        touching = true;
+      }
+    });
+    el.addEventListener('pointermove', function(e) {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 3) moved = true;
+      el.scrollLeft = startScroll - dx;
+      wrap();
+    });
+    function endMouseDrag() {
+      if (!dragging) return;
+      dragging = false;
+      el.classList.remove('is-dragging');
+    }
+    el.addEventListener('pointerup', function(e) {
+      endMouseDrag();
+      if (e.pointerType !== 'mouse') {
+        // give momentum scrolling a moment to settle before auto-advance resumes
+        setTimeout(function() { touching = false; }, 700);
+      }
+    });
+    el.addEventListener('pointercancel', function(e) {
+      endMouseDrag();
+      touching = false;
+    });
+
+    // a drag that actually moved the row shouldn't also trigger the
+    // card's click-to-open-modal handler
+    el.addEventListener('click', function(e) {
+      if (moved) {
+        e.stopPropagation();
+        e.preventDefault();
+        moved = false;
+      }
+    }, true);
+  });
 })();
 
 (function() {
