@@ -2237,17 +2237,15 @@ Yuria.Tによって生み出されたこのモナカは
     // there's always at least one full extra copy-width of untouched
     // buffer beyond wherever it wraps, before the true 0/max edge.
     function copyWidth() { return track.scrollWidth / 5; }
-    // Safari has been unreliable about visually reflecting plain
-    // `el.scrollLeft = x` writes made from a script (the value changes,
-    // but nothing repaints) — routing every write through scrollTo()
-    // (the modern, standardized scroll API) has been the reliable fix
-    // for that class of bug elsewhere, so all scrollLeft mutation in
-    // this row goes through this one function.
-    // the options-object form is used deliberately, not el.scrollTo(x, 0)
-    // — Safari/WebKit's support for the two-number-argument overload of
-    // Element.scrollTo (as opposed to window.scrollTo) has historically
-    // been inconsistent, while the object form is unambiguous everywhere
-    function setScrollLeft(x) { el.scrollTo({ left: x, top: 0, behavior: 'auto' }); }
+    // Confirmed via live Safari debugging (2026-08-24): calling
+    // el.scrollTo({left, top:0, behavior:'auto'}) once from the console
+    // works fine, but calling it every rAF frame from tick() below made
+    // Safari silently stop applying it — scrollLeft itself stayed frozen
+    // (not just a repaint issue) even though tick() kept firing every
+    // frame. Direct property assignment does not have that failure mode
+    // and was confirmed to apply instantly in the same session, so all
+    // scrollLeft mutation in this row goes through this one function.
+    function setScrollLeft(x) { el.scrollLeft = x; }
     function wrap() {
       const w = copyWidth();
       if (w <= 0) return;
