@@ -2210,16 +2210,18 @@ Yuria.Tによって生み出されたこのモナカは
     el.scrollLeft = copyWidth() * 2;
 
     let dragging = false;
+    let pending = false;
     let hovered = false;
     let touching = false;
     let moved = false;
     let startX = 0;
     let startScroll = 0;
+    let pointerId = null;
     const SPEED = 0.5; // px per tick (~16ms) — setInterval rather than
     // requestAnimationFrame, since rAF is throttled to near-zero in
     // backgrounded/inactive tabs and this should keep drifting regardless
     function tick() {
-      if (!dragging && !hovered && !touching) {
+      if (!dragging && !pending && !hovered && !touching) {
         el.scrollLeft += row.reverse ? -SPEED : SPEED;
       }
       // checked every tick regardless of interaction state — with a full
@@ -2232,31 +2234,42 @@ Yuria.Tによって生み出されたこのモナカは
     el.addEventListener('mouseenter', function() { hovered = true; });
     el.addEventListener('mouseleave', function() { hovered = false; });
 
+    // "pending" (declared above) = mouse button is down but we haven't
+    // yet decided this is a drag; only once the pointer actually moves
+    // past a small threshold do we call setPointerCapture and start
+    // treating it as a drag. Doing setPointerCapture unconditionally on
+    // pointerdown (the previous approach) interfered with the button's
+    // native click in real browsers (Chrome/Safari) even though it
+    // looked fine when testing via manually-dispatched synthetic events
+    // — so a plain click must never touch capture/scrollLeft at all.
+
     el.addEventListener('pointerdown', function(e) {
       if (e.pointerType === 'mouse') {
-        dragging = true;
+        pending = true;
         moved = false;
         startX = e.clientX;
         startScroll = el.scrollLeft;
-        el.classList.add('is-dragging');
-        try { el.setPointerCapture(e.pointerId); } catch (err) {}
-        // NOTE: no preventDefault() here — doing so on pointerdown
-        // suppressed the button's native click, so a plain click (no
-        // drag) never opened the modal. user-select:none on .works-marquee
-        // already stops text-selection ghosting during an actual drag.
+        pointerId = e.pointerId;
       } else {
         // touch: let native overflow-x scrolling drive it, just pause autoplay
         touching = true;
       }
     });
     el.addEventListener('pointermove', function(e) {
-      if (!dragging) return;
+      if (!pending && !dragging) return;
       const dx = e.clientX - startX;
-      if (Math.abs(dx) > 3) moved = true;
+      if (!dragging) {
+        if (Math.abs(dx) <= 3) return; // still within click tolerance
+        dragging = true;
+        moved = true;
+        el.classList.add('is-dragging');
+        try { el.setPointerCapture(pointerId); } catch (err) {}
+      }
       el.scrollLeft = startScroll - dx;
       wrap();
     });
     function endMouseDrag() {
+      pending = false;
       if (!dragging) return;
       dragging = false;
       el.classList.remove('is-dragging');
