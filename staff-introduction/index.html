@@ -1640,39 +1640,50 @@ footer a:hover { color: var(--gold); }
   const dots = items.map(function(item) { return item.querySelector('.timeline-dot'); });
   let ticking = false;
   let maxProgress = 0;
+  // how many items have already been fully "reached" — the line only ever
+  // grows forward through this pointer, one dot at a time
+  let reachedCount = 0;
 
-  const lastDotOffset = items.length ? items[items.length - 1].offsetTop + 2 : 0;
-
+  // Each dot's growth is driven purely by ITS OWN position crossing the
+  // viewport (startY -> finishY), not by total scroll distance since page
+  // top. This keeps the pace consistent even when an earlier section (e.g.
+  // one with tall photos) is much taller than the viewport — the line simply
+  // waits until the next dot approaches, instead of racing to catch up.
   function update() {
     ticking = false;
     const isMobile = window.innerWidth <= 768;
     const revealDelay = isMobile ? 420 : 220; // ms after the line reaches a dot before its content fades in — a touch slower on SP
-    const rect = timeline.getBoundingClientRect();
     const vh = window.innerHeight;
-    const startY = vh * (isMobile ? 0.8 : 1.1); // SP: line starts growing a bit later, after more scrolling
-    // finish growing once the last item's dot reaches the middle of the screen
-    const finishScreenY = vh * 0.5;
-    // SP: stretch the growth distance so the line doesn't race ahead of scrolling
-    const speedFactor = isMobile ? 2.2 : 1;
-    const total = (startY - (finishScreenY - lastDotOffset)) * speedFactor;
-    const scrolled = startY - rect.top;
-    let progress = total > 0 ? scrolled / total : 0;
-    progress = Math.max(0, Math.min(1, progress));
-    // the line only ever grows — scrolling back up doesn't retract it
-    maxProgress = Math.max(maxProgress, progress);
-    timeline.style.setProperty('--line-progress', maxProgress);
+    const startY = vh * (isMobile ? 0.85 : 1.0); // dot starts pulling the line once it's this far below the top of the viewport
+    const finishY = vh * 0.5; // dot is fully "reached" once it hits the middle of the viewport
+    const span = startY - finishY;
+    const timelineHeight = timeline.offsetHeight;
 
-    dots.forEach(function(dot, i) {
-      const item = items[i];
-      if (item.classList.contains('line-reached')) return;
-      // offsetTop ignores the item's own reveal transform, so this stays
-      // stable instead of drifting while earlier items are still animating in
-      const dotFraction = timeline.offsetHeight > 0 ? (item.offsetTop + 2) / timeline.offsetHeight : 0;
-      if (maxProgress >= dotFraction) {
+    while (reachedCount < items.length) {
+      const dot = dots[reachedCount];
+      const dotTop = dot.getBoundingClientRect().top;
+      const prevFraction = reachedCount > 0
+        ? (items[reachedCount - 1].offsetTop + 2) / timelineHeight
+        : 0;
+      const curFraction = timelineHeight > 0
+        ? (items[reachedCount].offsetTop + 2) / timelineHeight
+        : 0;
+      let localProgress = span > 0 ? (startY - dotTop) / span : 0;
+      localProgress = Math.max(0, Math.min(1, localProgress));
+      const overall = prevFraction + (curFraction - prevFraction) * localProgress;
+      maxProgress = Math.max(maxProgress, overall);
+
+      if (localProgress >= 1) {
+        const item = items[reachedCount];
         item.classList.add('line-reached');
-        setTimeout(function() { item.classList.add('visible'); }, revealDelay);
+        (function(it) { setTimeout(function() { it.classList.add('visible'); }, revealDelay); })(item);
+        reachedCount++;
+        continue; // in case of a fast scroll, catch up through multiple dots
       }
-    });
+      break;
+    }
+
+    timeline.style.setProperty('--line-progress', maxProgress);
   }
 
   const scrollRoot = document.getElementById('scroll-root') || window;
