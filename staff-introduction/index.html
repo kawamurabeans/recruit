@@ -694,11 +694,30 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 }
 
 /* ── WORKS (patissier creations) ── */
+/* PC: an endless left-to-right marquee — the card list is duplicated once
+   by JS so the loop is seamless, and the whole track pauses on hover so a
+   visitor can actually read/click a card. Disabled on mobile (see the
+   max-width:768px block below), where it's a normal wrapping row. */
+.works-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent);
+          mask-image: linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent);
+}
 .works-grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: flex-start;
   gap: 28px;
+  width: max-content;
+  animation: works-marquee-scroll 42s linear infinite;
+}
+.works-marquee:hover .works-grid,
+.works-grid:focus-within {
+  animation-play-state: paused;
+}
+@keyframes works-marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 .work-card {
   cursor: pointer;
@@ -1181,7 +1200,17 @@ footer a:hover { color: var(--gold); }
   .two-col { grid-template-columns: 1fr; }
   .highlight-banner { flex-direction: column; text-align: center; }
 
-  .works-grid { gap: 16px; }
+  /* mobile: the endless marquee is PC-only — fall back to a normal
+     wrapping grid and hide the JS-duplicated clone cards */
+  .works-marquee { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+  .works-grid {
+    flex-wrap: wrap;
+    width: auto;
+    animation: none;
+    transform: none;
+    gap: 16px;
+  }
+  .work-card-clone { display: none; }
   .work-card { width: calc(50% - 8px); }
   .work-card-photo { height: 34vw; }
   .work-card-photo.is-portrait { width: auto; }
@@ -1428,7 +1457,8 @@ footer a:hover { color: var(--gold); }
     <span class="sec-eyebrow fade-up">WORKS</span>
     <h2 class="sec-title fade-up from-left">パティシエ達の作品</h2>
     <p class="sec-lead fade-up">和洋の垣根を越え、それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると、詳しいストーリーがご覧いただけます。</p>
-    <div class="works-grid">
+    <div class="works-marquee">
+    <div class="works-grid" id="works-track">
       <button type="button" class="work-card fade-up" data-img="/recruit/assets/img/202502-strawberry-monaka-yuria.jpg" data-title="いちごモナカ" data-maker="Yuria.T / パティシエ" data-desc="食べた瞬間に広がるいちごのフレッシュな味わい
 たまらないモナカの「サクッ」とした食感
 モナカの底にはピスタチオ餡を使いました
@@ -1550,13 +1580,14 @@ Yuria.Tによって生み出されたこのモナカは
 
 素材ひとつひとつが響きあい、
 雪のような口どけとともに溶けていく
-夏だけの贅沢なひとときです。">
+夏だけの贅沢なひとときを演出してくれます。">
         <div class="work-card-photo"><img src="/recruit/assets/img/202507-momo-neige-yuko.jpg" alt="桃のかき氷 - モモネージュ -" loading="lazy"></div>
         <div class="work-card-body">
           <div class="work-card-name">《 かき氷 》桃のかき氷 - モモネージュ -</div>
           <div class="work-card-maker">Yuko.K / パティシエ</div>
         </div>
       </button>
+    </div>
     </div>
   </div>
 </section>
@@ -2015,6 +2046,27 @@ Yuria.Tによって生み出されたこのモナカは
   }, { passive: true });
   window.addEventListener('resize', update);
   update();
+})();
+
+(function() {
+  // PC-only endless marquee: duplicate the card row once so the CSS
+  // animation (translateX 0 -> -50%) loops seamlessly. Clones are inert
+  // for assistive tech/keyboard nav and hidden on mobile via CSS
+  // (.work-card-clone), where the marquee is disabled entirely.
+  const track = document.getElementById('works-track');
+  if (!track) return;
+  const originalCards = Array.from(track.children);
+  originalCards.forEach(function(card) {
+    const clone = card.cloneNode(true);
+    // clones are never scroll-observed, so drop the fade-up scroll-reveal
+    // classes (they'd otherwise sit at opacity:0 forever) and show them
+    // immediately instead
+    clone.classList.remove('fade-up', 'fade-up-d1', 'fade-up-d2', 'visible');
+    clone.classList.add('work-card-clone');
+    clone.setAttribute('aria-hidden', 'true');
+    clone.setAttribute('tabindex', '-1');
+    track.appendChild(clone);
+  });
 })();
 
 (function() {
