@@ -2243,7 +2243,11 @@ Yuria.Tによって生み出されたこのモナカは
     // (the modern, standardized scroll API) has been the reliable fix
     // for that class of bug elsewhere, so all scrollLeft mutation in
     // this row goes through this one function.
-    function setScrollLeft(x) { el.scrollTo(x, 0); }
+    // the options-object form is used deliberately, not el.scrollTo(x, 0)
+    // — Safari/WebKit's support for the two-number-argument overload of
+    // Element.scrollTo (as opposed to window.scrollTo) has historically
+    // been inconsistent, while the object form is unambiguous everywhere
+    function setScrollLeft(x) { el.scrollTo({ left: x, top: 0, behavior: 'auto' }); }
     function wrap() {
       const w = copyWidth();
       if (w <= 0) return;
