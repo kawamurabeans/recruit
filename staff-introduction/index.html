@@ -751,6 +751,7 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 /* mobile splits into two independently-scrolling rows (JS-populated,
    see the script near the bottom of <body>); hidden on PC */
 .works-marquee-mobile { display: none; }
+.works-lead-sp { display: none; }
 .work-card {
   cursor: pointer;
   background: var(--white);
@@ -1248,6 +1249,8 @@ footer a:hover { color: var(--gold); }
   .works-marquee-mobile { display: block; margin-bottom: 20px; }
   .works-marquee-mobile:last-child { margin-bottom: 0; }
   .works-marquee-mobile-1 .works-grid { animation-direction: reverse; }
+  .works-lead-pc { display: none; }
+  .works-lead-sp { display: block; }
   /* SP requested no edge fade/blur curtains — just a clean hard clip */
   .works-marquee-mobile::before, .works-marquee-mobile::after { content: none; }
   /* smaller than PC's 500x380, same 4:3 ratio (500:380 ≈ 300:228) */
@@ -1495,7 +1498,8 @@ footer a:hover { color: var(--gold); }
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">WORKS</span>
     <h2 class="sec-title fade-up from-left">パティシエ達の作品</h2>
-    <p class="sec-lead fade-up">和洋の垣根を越え、それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると、詳しいストーリーがご覧いただけます。</p>
+    <p class="sec-lead fade-up works-lead-pc">和洋の垣根を越え、それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると、詳しいストーリーがご覧いただけます。</p>
+    <p class="sec-lead fade-up works-lead-sp">和洋の垣根を越え、<br>それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると<br>詳しいストーリーがご覧いただけます。</p>
   </div>
   <div class="works-marquee works-marquee-desktop">
     <div class="works-grid" id="works-track">
