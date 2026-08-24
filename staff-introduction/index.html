@@ -726,6 +726,7 @@ header {
   transition: transform 0.5s ease;
 }
 .work-card:hover .work-card-photo img { transform: scale(1.06); }
+.work-card-photo.is-portrait { aspect-ratio: 2 / 3; }
 .work-card-photo-placeholder {
   display: flex; align-items: center; justify-content: center;
   height: 100%;
@@ -801,6 +802,7 @@ header {
   background: var(--gray);
   overflow: hidden;
 }
+.work-modal-img.is-portrait { aspect-ratio: 2 / 3; }
 .work-modal-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .work-modal-body { padding: 32px 36px 40px; }
 .work-modal-maker {
@@ -1417,14 +1419,14 @@ footer a:hover { color: var(--gold); }
           <div class="work-card-maker">池田 / パティシエ</div>
         </div>
       </button>
-      <button type="button" class="work-card fade-up fade-up-d1" data-img="" data-title="いちごパルフェ" data-maker="Yuka.N" data-desc="いちごを中心とする真紅のパルフェです。
+      <button type="button" class="work-card fade-up fade-up-d1" data-img="/recruit/assets/img/202412-strawberry-parfait-yuka.jpg" data-orientation="portrait" data-title="いちごパルフェ" data-maker="Yuka.N" data-desc="いちごを中心とする真紅のパルフェです。
 
 チュイールやラングドシャも細部にまでこだわり、一切手抜きのないパルフェとなっております。
 
 ラズベリーをはじめとする多様な果実のフレーバーも入っており、食べ進めるごとに味が変化していく魅惑のパルフェです。
 
 まさに芸術品のような美しさ。" data-link="/recruit/staff-introduction/patissier/202607-yuka.html">
-        <div class="work-card-photo"><div class="work-card-photo-placeholder">写真<br>差し込み予定</div></div>
+        <div class="work-card-photo is-portrait"><img src="/recruit/assets/img/202412-strawberry-parfait-yuka.jpg" alt="いちごパルフェ" loading="lazy"></div>
         <div class="work-card-body">
           <div class="work-card-name">いちごパルフェ</div>
           <div class="work-card-maker">Yuka.N</div>
@@ -1902,6 +1904,7 @@ footer a:hover { color: var(--gold); }
     img.src = hasImg ? card.dataset.img : '';
     img.alt = card.dataset.title || '';
     img.style.display = hasImg ? '' : 'none';
+    img.parentElement.classList.toggle('is-portrait', card.dataset.orientation === 'portrait');
     maker.textContent = card.dataset.maker || '';
     title.textContent = card.dataset.title || '';
     desc.textContent = card.dataset.desc || '';
