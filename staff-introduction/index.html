@@ -700,8 +700,18 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
    mouse. The card list is duplicated once by JS so the loop wraps
    seamlessly in either direction. Disabled on mobile in the sense that
    PC uses one row and mobile uses two — see max-width:768px below. */
+/* .works-marquee-outer just holds the full-bleed width (breaking out of
+   .sec-inner's 980px cap); .works-marquee (inner) is the actual
+   overflow-x:auto scrolling element. No edge gradient curtains anymore
+   — decided against them. */
+.works-marquee-outer {
+  width: calc(100% + 80px);
+  margin-left: -40px;
+  margin-right: -40px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
 .works-marquee {
-  position: relative;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -714,39 +724,9 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
   user-select: none;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  /* break out of .sec-inner's 980px cap — .sec itself has no side margins,
-     so escaping just its own 40px padding puts this flush with the
-     viewport edges instead of looking centered/narrow */
-  width: calc(100% + 80px);
-  margin-left: -40px;
-  margin-right: -40px;
-  padding-left: 24px;
-  padding-right: 24px;
 }
 .works-marquee::-webkit-scrollbar { display: none; }
 .works-marquee.is-dragging { cursor: grabbing; }
-/* Solid-color curtains over the edges, instead of fading the cards
-   themselves transparent — a card sitting mid-fade under mask-image
-   looked like a graphical glitch (rounded corners + shadow going
-   half-transparent mid-card). This keeps every card fully opaque and
-   just visually emerges from / recedes into the section's own white. */
-.works-marquee::before,
-.works-marquee::after {
-  content: '';
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 96px;
-  z-index: 2;
-  pointer-events: none;
-}
-.works-marquee::before {
-  left: 0;
-  background: linear-gradient(to right, var(--white), rgba(255,255,255,0));
-}
-.works-marquee::after {
-  right: 0;
-  background: linear-gradient(to left, var(--white), rgba(255,255,255,0));
-}
 .works-grid {
   display: flex;
   flex-wrap: nowrap;
@@ -760,9 +740,12 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 .works-marquee-desktop { margin-top: 100px; }
 .works-lead-sp { display: none; }
 .work-card {
+  appearance: none;
+  -webkit-appearance: none;
   cursor: pointer;
   background: var(--white);
   border: none;
+  border-radius: 0;
   padding: 0;
   text-align: left;
   font-family: inherit;
@@ -1261,7 +1244,7 @@ footer a:hover { color: var(--gold); }
      opposite way. The PC row (#works-track) is hidden entirely and the
      two mobile rows (populated by JS, see the script near the bottom of
      <body>) take over. */
-  .works-marquee {
+  .works-marquee-outer {
     width: calc(100% + 40px);
     margin-left: -20px;
     margin-right: -20px;
@@ -1274,8 +1257,6 @@ footer a:hover { color: var(--gold); }
   .works-marquee-mobile { display: block; margin-top: 64px; margin-bottom: 0; }
   .works-lead-pc { display: none; }
   .works-lead-sp { display: block; }
-  /* SP requested no edge fade/blur curtains — just a clean hard clip */
-  .works-marquee-mobile::before, .works-marquee-mobile::after { content: none; }
   /* smaller than PC's 500x380, same 4:3 ratio (500:380 ≈ 300:228) */
   .work-card { width: 300px; }
   .work-card-photo { height: 228px; }
@@ -1524,7 +1505,8 @@ footer a:hover { color: var(--gold); }
     <p class="sec-lead fade-up works-lead-pc">和洋の垣根を越え、それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると、詳しいストーリーがご覧いただけます。</p>
     <p class="sec-lead fade-up works-lead-sp">和洋の垣根を越え、<br>それぞれの感性で生み出したお菓子たち。<br>気になる作品をクリックすると<br>詳しいストーリーがご覧いただけます。</p>
   </div>
-  <div class="works-marquee works-marquee-desktop" id="works-marquee-pc">
+  <div class="works-marquee-outer works-marquee-desktop">
+  <div class="works-marquee" id="works-marquee-pc">
     <div class="works-grid" id="works-track">
       <button type="button" class="work-card fade-up" data-group="dessert" data-img="/recruit/assets/img/202502-strawberry-monaka-yuria.jpg" data-title="いちごモナカ" data-maker="Yuria.T / パティシエ" data-desc="食べた瞬間に広がるいちごのフレッシュな味わい
 たまらないモナカの「サクッ」とした食感
@@ -1656,14 +1638,19 @@ Yuria.Tによって生み出されたこのモナカは
       </button>
     </div>
   </div>
+  </div>
   <!-- SP-only: same 6 cards split into two independently-scrolling rows
        (desserts flow one way, kakigori the other). Populated by JS from
        the desktop track above — see the script near the bottom of <body>. -->
-  <div class="works-marquee works-marquee-mobile works-marquee-mobile-1" id="works-marquee-sp-1">
+  <div class="works-marquee-outer works-marquee-mobile works-marquee-mobile-1">
+  <div class="works-marquee" id="works-marquee-sp-1">
     <div class="works-grid" id="works-track-mobile-1"></div>
   </div>
-  <div class="works-marquee works-marquee-mobile works-marquee-mobile-2" id="works-marquee-sp-2">
+  </div>
+  <div class="works-marquee-outer works-marquee-mobile works-marquee-mobile-2">
+  <div class="works-marquee" id="works-marquee-sp-2">
     <div class="works-grid" id="works-track-mobile-2"></div>
+  </div>
   </div>
 </section>
 
