@@ -1247,8 +1247,9 @@ footer a:hover { color: var(--gold); }
     padding-right: 20px;
   }
   .works-marquee-desktop { display: none; }
-  .works-marquee-mobile { display: block; margin-bottom: 20px; }
-  .works-marquee-mobile:last-child { margin-bottom: 0; }
+  /* match the gap below row 2 (= .sec's own bottom padding, 64px) so the
+     lead-to-row1 and row1-to-row2 gaps read the same as row2-to-bottom */
+  .works-marquee-mobile { display: block; margin-top: 64px; margin-bottom: 0; }
   .works-marquee-mobile-1 .works-grid { animation-direction: reverse; }
   .works-lead-pc { display: none; }
   .works-lead-sp { display: block; }
