@@ -699,9 +699,30 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
    visitor can actually read/click a card. Disabled on mobile (see the
    max-width:768px block below), where it's a normal wrapping row. */
 .works-marquee {
+  position: relative;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent);
-          mask-image: linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent);
+}
+/* Solid-color curtains over the edges, instead of fading the cards
+   themselves transparent — a card sitting mid-fade under mask-image
+   looked like a graphical glitch (rounded corners + shadow going
+   half-transparent mid-card). This keeps every card fully opaque and
+   just visually emerges from / recedes into the section's own white. */
+.works-marquee::before,
+.works-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 96px;
+  z-index: 2;
+  pointer-events: none;
+}
+.works-marquee::before {
+  left: 0;
+  background: linear-gradient(to right, var(--white), rgba(255,255,255,0));
+}
+.works-marquee::after {
+  right: 0;
+  background: linear-gradient(to left, var(--white), rgba(255,255,255,0));
 }
 .works-grid {
   display: flex;
@@ -1202,7 +1223,8 @@ footer a:hover { color: var(--gold); }
 
   /* mobile: the endless marquee is PC-only — fall back to a normal
      wrapping grid and hide the JS-duplicated clone cards */
-  .works-marquee { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+  .works-marquee { overflow: visible; }
+  .works-marquee::before, .works-marquee::after { content: none; }
   .works-grid {
     flex-wrap: wrap;
     width: auto;
