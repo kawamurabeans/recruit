@@ -2176,8 +2176,10 @@ Yuria.Tによって生み出されたこのモナカは
       else if (el.scrollLeft <= 0) el.scrollLeft += half;
     }
 
-    // start mid-track for reverse rows so there's room to count down
-    el.scrollLeft = row.reverse ? halfWidth() : 0;
+    // start mid-track (not 0) so there's room to drag either direction —
+    // scrollLeft can never go negative, so starting at 0 made "scroll
+    // further left" hit a hard wall immediately
+    el.scrollLeft = halfWidth() / 2;
 
     let dragging = false;
     let hovered = false;
