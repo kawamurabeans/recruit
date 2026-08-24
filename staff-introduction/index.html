@@ -2366,6 +2366,11 @@ Yuria.Tによって生み出されたこのモナカは
 
     // prev/next nav buttons: jump ~3 cards at a time, for anyone who
     // doesn't realize the row is drag/swipe-scrollable
+    let navGen = 0; // bumped on every click; a stale in-flight animation
+    // checks this and bails instead of continuing to fight a newer one —
+    // without it, clicking again before the ~420ms animation finished
+    // left two rAF loops both writing scrollLeft at once, which looked
+    // like random left/right jitter regardless of which button was hit
     const navSelector = '.works-nav[data-target="' + el.id + '"]';
     document.querySelectorAll(navSelector).forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -2374,16 +2379,16 @@ Yuria.Tによって生み出されたこのモナカは
         const step = second ? (second.getBoundingClientRect().left - first.getBoundingClientRect().left) : 300;
         const distance = step * 3;
         const dir = btn.classList.contains('works-nav-prev') ? -1 : 1;
-        // pick the landing spot up front, pre-shifted by whole copy-widths
-        // to stay inside the safe [w, 3w] band — doing the wrap correction
-        // as part of the initial target (instead of snapping afterward)
-        // avoids a jarring backward jump once the smooth scroll finishes
-        const w = copyWidth();
-        let target = el.scrollLeft + dir * distance;
-        if (w > 0) {
-          while (target >= w * 3) target -= w;
-          while (target <= w * 1) target += w;
-        }
+        // NOT pre-wrapped to the safe band here — doing that shifted the
+        // target by a whole copy-width whenever a click (or several rapid
+        // clicks) pushed near the band edge, which could outweigh the
+        // intended 3-card nudge and make the animation visibly run the
+        // *opposite* way from the button that was pressed. Instead: just
+        // animate the raw, unwrapped distance in the requested direction
+        // (always correct), and run the one wrap() correction as a single
+        // instant, imperceptible jump exactly when our own animation
+        // finishes — never mid-flight, never guessed via a timeout.
+        const target = el.scrollLeft + dir * distance;
         // Animate it ourselves (repeated instant setScrollLeft() writes
         // driven by rAF) instead of el.scrollTo({behavior:'smooth'}) —
         // the browser's own smooth-scroll has been unreliable in
@@ -2391,17 +2396,20 @@ Yuria.Tによって生み出されたこのモナカは
         // above), so this reuses the same setScrollLeft()+rAF combo
         // that's already proven to work everywhere.
         navPaused = true;
+        const myGen = ++navGen;
         const navStart = el.scrollLeft;
         const navDelta = target - navStart;
         const navDuration = 420;
         const navStartTime = performance.now();
         function navStep(now) {
+          if (myGen !== navGen) return; // superseded by a newer click
           const t = Math.min(1, (now - navStartTime) / navDuration);
           const eased = 1 - Math.pow(1 - t, 3);
           setScrollLeft(navStart + navDelta * eased);
           if (t < 1) {
             requestAnimationFrame(navStep);
           } else {
+            wrap(); // safe now: our own animation has just fully stopped
             navPaused = false;
           }
         }
