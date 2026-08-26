@@ -784,7 +784,11 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 }
 /* mobile splits into two independently-scrolling rows (JS-populated,
    see the script near the bottom of <body>); hidden on PC */
-.works-marquee-mobile { display: none; }
+/* SP no longer auto-scrolls — all works are laid out at once in a static
+   grid instead (see .works-static-mobile below), which also sidesteps the
+   Safari auto-scroll freeze entirely on mobile since there's no autoplay
+   loop to fail. */
+.works-static-mobile { display: none; }
 .works-marquee-desktop { margin-top: 30px; } /* 100px - the row's own 70px top padding */
 .works-lead-sp { display: none; }
 .work-card {
@@ -1287,32 +1291,29 @@ footer a:hover { color: var(--gold); }
   .two-col { grid-template-columns: 1fr; }
   .highlight-banner { flex-direction: column; text-align: center; }
 
-  /* mobile: two independent marquee rows instead of PC's single row —
-     row 1 (desserts) flows left-to-right, row 2 (kakigori) flows the
-     opposite way. The PC row (#works-track) is hidden entirely and the
-     two mobile rows (populated by JS, see the script near the bottom of
-     <body>) take over. */
-  .works-marquee-outer {
-    width: calc(100% + 40px);
-    margin-left: -20px;
-    margin-right: -20px;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  .works-nav { width: 36px; height: 36px; font-size: 1.1em; }
-  .works-nav-prev { left: 24px; }
-  .works-nav-next { right: 24px; }
+  /* mobile: PC's single scrolling row is hidden entirely, and a static
+     grid (populated by JS from the same source cards, see the script near
+     the bottom of <body>) shows all works already laid out — no
+     auto-scroll, no drag, nothing to swipe through. */
   .works-marquee-desktop { display: none; }
-  /* match the gap below row 2 (= .sec's own bottom padding, 64px) so the
-     lead-to-row1 and row1-to-row2 gaps read the same as row2-to-bottom */
-  .works-marquee-mobile { display: block; margin-top: 0; margin-bottom: 0; } /* 70px padding alone already exceeds the 64px target gap */
+  .works-static-mobile {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-top: 32px;
+    margin-bottom: 24px;
+    padding: 0 20px;
+  }
   .works-lead-pc { display: none; }
   .works-lead-sp { display: block; }
-  /* smaller than PC's 500x380, same 4:3 ratio (500:380 ≈ 300:228) */
-  .work-card { width: 300px; }
-  .work-card-photo { height: 228px; }
-  .work-card-photo.is-portrait ~ .work-card-body,
-  .work-card-photo.is-portrait + .work-card-body { width: 152px; }
+  /* static grid: cards fill their column width instead of the marquee's
+     fixed 500px */
+  .works-static-mobile .work-card,
+  .works-static-mobile .work-card:has(.work-card-photo.is-portrait) { width: 100%; }
+  .works-static-mobile .work-card-photo { height: auto; aspect-ratio: 4/3; }
+  .works-static-mobile .work-card-photo.is-portrait { aspect-ratio: 2/3; }
+  .works-static-mobile .work-card-photo.is-portrait ~ .work-card-body,
+  .works-static-mobile .work-card-photo.is-portrait + .work-card-body { width: auto; }
   .work-modal-body { padding: 24px 22px 32px; }
 
   .world-banner { flex-direction: column; text-align: center; }
@@ -1692,23 +1693,10 @@ Yuria.Tによって生み出されたこのモナカは
     </div>
   </div>
   </div>
-  <!-- SP-only: same 6 cards split into two independently-scrolling rows
-       (desserts flow one way, kakigori the other). Populated by JS from
-       the desktop track above — see the script near the bottom of <body>. -->
-  <div class="works-marquee-outer works-marquee-mobile works-marquee-mobile-1">
-  <button type="button" class="works-nav works-nav-prev" data-target="works-marquee-sp-1" aria-label="前の作品へ">&lsaquo;</button>
-  <button type="button" class="works-nav works-nav-next" data-target="works-marquee-sp-1" aria-label="次の作品へ">&rsaquo;</button>
-  <div class="works-marquee" id="works-marquee-sp-1">
-    <div class="works-grid" id="works-track-mobile-1"></div>
-  </div>
-  </div>
-  <div class="works-marquee-outer works-marquee-mobile works-marquee-mobile-2">
-  <button type="button" class="works-nav works-nav-prev" data-target="works-marquee-sp-2" aria-label="前の作品へ">&lsaquo;</button>
-  <button type="button" class="works-nav works-nav-next" data-target="works-marquee-sp-2" aria-label="次の作品へ">&rsaquo;</button>
-  <div class="works-marquee" id="works-marquee-sp-2">
-    <div class="works-grid" id="works-track-mobile-2"></div>
-  </div>
-  </div>
+  <!-- SP-only: all 6 cards laid out at once, no scrolling row. Populated
+       by JS from the desktop track above — see the script near the
+       bottom of <body>. -->
+  <div class="works-static-mobile" id="works-static-mobile"></div>
 </section>
 
 <div class="work-modal" id="work-modal">
@@ -2168,11 +2156,11 @@ Yuria.Tによって生み出されたこのモナカは
 })();
 
 (function() {
-  // Endless marquee(s): PC shows all 6 cards in one row; mobile splits the
-  // same 6 into two independently-scrolling rows by data-group (desserts /
-  // kakigori), flowing in opposite directions. Every row's card list is
-  // duplicated once so the CSS animation (translateX 0 -> -50%) loops
-  // seamlessly. Duplicate-set cards are inert for assistive tech/keyboard
+  // PC: endless auto-scrolling marquee showing all 6 cards in one row.
+  // Mobile: no scrolling at all — a plain static grid with one copy of
+  // each card (built below, after the PC loop is set up). The PC row's
+  // card list is duplicated several times so the CSS/JS auto-scroll loops
+  // seamlessly; duplicate-set cards are inert for assistive tech/keyboard
   // nav via .work-card-clone (aria-hidden + tabindex=-1).
   const desktopTrack = document.getElementById('works-track');
   if (!desktopTrack) return;
@@ -2221,22 +2209,23 @@ Yuria.Tによって生み出されたこのモナカは
     });
   }
 
-  // Mobile rows: split by data-group, each row independently looped
-  const dessertCards = originalCards.filter(function(c) { return c.dataset.group !== 'kakigori'; });
-  const kakigoriCards = originalCards.filter(function(c) { return c.dataset.group === 'kakigori'; });
-  fillLoop(document.getElementById('works-track-mobile-1'), dessertCards);
-  fillLoop(document.getElementById('works-track-mobile-2'), kakigoriCards);
+  // Mobile: one copy of each card, in original order, no looping/cloning —
+  // everything is visible at once so there's nothing to auto-scroll.
+  const staticMobile = document.getElementById('works-static-mobile');
+  if (staticMobile) {
+    originalCards.forEach(function(card) { staticMobile.appendChild(prepareClone(card)); });
+  }
 })();
 
 (function() {
-  // Auto-scroll + manual drag for each marquee row. Rows are real
-  // horizontally-scrollable elements (overflow-x:auto), so touch drag
-  // works natively on mobile; this adds the same for mouse via Pointer
-  // Events, plus the constant auto-advance and its pause/resume rules.
+  // Auto-scroll + manual drag for the PC marquee row only — mobile shows
+  // a static grid instead (see the IIFE above), so there's no row to
+  // auto-scroll or drag there. Kept as a real horizontally-scrollable
+  // element (overflow-x:auto): this adds mouse drag via Pointer Events on
+  // top of the browser's native touch scrolling, plus the constant
+  // auto-advance and its pause/resume rules.
   const rows = [
-    { el: document.getElementById('works-marquee-pc'), reverse: false },
-    { el: document.getElementById('works-marquee-sp-1'), reverse: true },
-    { el: document.getElementById('works-marquee-sp-2'), reverse: false }
+    { el: document.getElementById('works-marquee-pc'), reverse: false }
   ];
 
   rows.forEach(function(row) {
