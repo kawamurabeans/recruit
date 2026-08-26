@@ -871,13 +871,15 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 }
 .work-card-name {
   color: var(--brown);
-  font-size: 0.98em;
+  font-size: 1.05em;
+  font-weight: 600;
   letter-spacing: 0.05em;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .work-card-maker {
-  color: var(--orange);
-  font-size: 0.72em;
+  color: #a3480f;
+  font-weight: 700;
+  font-size: 0.76em;
   letter-spacing: 0.08em;
   font-family: sans-serif;
 }
@@ -1314,6 +1316,14 @@ footer a:hover { color: var(--gold); }
   .works-static-mobile .work-card-photo.is-portrait { aspect-ratio: 2/3; }
   .works-static-mobile .work-card-photo.is-portrait ~ .work-card-body,
   .works-static-mobile .work-card-photo.is-portrait + .work-card-body { width: auto; }
+  .works-static-mobile .work-card-name {
+    font-size: 1.15em;
+    font-weight: 700;
+    -webkit-text-stroke: 0.2px currentColor;
+  }
+  .works-static-mobile .work-card-maker {
+    font-size: 0.85em;
+  }
   .work-modal-body { padding: 24px 22px 32px; }
 
   .world-banner { flex-direction: column; text-align: center; }
