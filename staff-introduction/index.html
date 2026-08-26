@@ -964,45 +964,186 @@ html.local-dev .philosophy-sticky { position: static; height: auto; }
 .work-modal-link:hover { opacity: 0.7; }
 
 /* ── WORLD (locations / customers) ── */
+/* section background: photo split left/right (inbound tourists / the
+   shop itself), dimmed so the white text and cards stay readable */
+.sec.sec-global-reach {
+  position: relative;
+  overflow: hidden;
+  min-height: 75vh;
+  display: flex;
+  align-items: center;
+}
+/* two full-size layers clipped into a diagonal band each, meeting with no
+   gap — the seam runs top-right to bottom-left. Each layer slides in from
+   its own side (left layer from the left, right layer from the right)
+   once the section scrolls into view, see the script near the bottom of
+   <body>. */
+.global-reach-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--beige);
+}
+.global-reach-bg > div {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transition: transform 1.1s cubic-bezier(0.16,1,0.3,1);
+}
+.global-reach-bg > div:nth-child(1) {
+  clip-path: polygon(0 0, 59% 0, 41% 100%, 0 100%);
+  transform: translateX(-100%);
+}
+.global-reach-bg > div:nth-child(2) {
+  clip-path: polygon(59% 0, 100% 0, 100% 100%, 41% 100%);
+  transform: translateX(100%);
+}
+.sec-global-reach.reach-visible .global-reach-bg > div {
+  transform: translateX(0);
+}
+.global-reach-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: saturate(1.05) contrast(1.05) brightness(0.8);
+}
+.global-reach-bg > div:nth-child(2) img {
+  /* object-fit:cover leaves no horizontal slack here (the scaled image's
+     width already matches the container's exactly), so object-position
+     alone can't pan it — scale up first, then shift so the shop's own
+     signboard (left-of-center in the source photo) lands inside this
+     layer's visible (right-hand) clipped area */
+  transform: scale(1.4) translate(38%, 3%);
+}
+.global-reach-dim {
+  position: absolute; inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(10,4,1,0.72) 0%, rgba(10,4,1,0.55) 40%, rgba(10,4,1,0.78) 100%),
+    linear-gradient(to right, rgba(10,4,1,0.2) 0%, rgba(10,4,1,0.35) 50%, rgba(10,4,1,0.2) 100%);
+}
+.sec.sec-global-reach .sec-inner {
+  position: relative;
+  z-index: 2;
+  /* .sec-global-reach is display:flex (for the min-height match with
+     INNOVATION) — a flex item shrinks to its content's width by default,
+     so without this the whole card column ends up narrower than the
+     980px content width every other section gets from plain block flow */
+  width: 100%;
+}
+.sec.sec-global-reach .sec-eyebrow { color: var(--gold); }
+.sec.sec-global-reach .sec-title { color: var(--beige-light); }
+/* styled like .innovation-box: a bordered card with a ribbon header
+   bleeding past the card's own edges, and the same hover lift+shadow */
 .world-banner {
+  position: relative;
   background: var(--brown);
   color: var(--white);
-  padding: 32px 36px;
-  margin-bottom: 32px;
-  display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+  border: 2px solid var(--beige-light);
+  border-radius: 20px;
+  padding: 40px 44px;
+  margin: 0 auto;
+  max-width: 520px;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+.world-banner-ribbon {
+  display: block;
+  margin: -41px -45px 24px;
+  padding: 7px 20px;
+  background: var(--beige-light);
+  border-radius: 18px 18px 0 0;
+  color: rgba(42,26,14,0.55);
+  font-size: 0.78em;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  font-family: sans-serif;
 }
 .world-banner h3 {
   color: var(--gold);
-  font-size: 1.3em;
+  font-size: 1.5em;
   font-weight: normal;
-  letter-spacing: 0.1em;
-  white-space: nowrap;
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--beige-light);
 }
 .world-banner p {
-  color: rgba(255,255,255,0.75);
-  font-size: 0.85em;
+  color: rgba(255,255,255,0.95);
+  font-weight: 700;
+  font-size: 0.92em;
   line-height: 1.9;
 }
+/* tree connector linking the FLAGSHIP STORE card above down to the 3
+   customer cards below — a trunk down from its bottom-center, a
+   horizontal bar spanning the row, then a stem to each card's top-center.
+   Drawn as SVG (not CSS border-radius corners, which rendered as an odd
+   bulge) so the elbow curves are exact quarter-circle-ish bends. */
+.customer-connector {
+  position: relative;
+  height: 90px;
+}
+.customer-connector-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.customer-connector-path {
+  fill: none;
+  stroke: var(--beige-light);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
 .customer-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: space-between;
+  /* flex's default align-items:stretch was forcing every card to the
+     height of the tallest one, leaving a big blank gap under the
+     shorter cards' text — size each to its own content instead */
+  align-items: flex-start;
   gap: 20px;
 }
 .customer-card {
-  background: var(--white);
-  border: 1px solid var(--gray);
+  position: relative;
+  flex: 0 0 230px;
+  background: var(--beige-light);
+  border: 2px solid var(--white);
+  border-radius: 12px;
   padding: 24px 20px;
   text-align: center;
+  overflow: hidden;
+}
+/* same ribbon-header treatment as .world-banner-ribbon, but in brown
+   (the card's own border color) since the card face is already off-white */
+.customer-card-ribbon {
+  display: block;
+  margin: -25px -21px 20px;
+  padding: 6px 16px;
+  background: var(--brown);
+  /* match the card's own corner radius so the ribbon's square corners
+     don't leave a sliver of the card's off-white background peeking
+     through at the top of the (rounded, overflow:hidden) card */
+  border-radius: 12px 12px 0 0;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.68em;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  font-family: sans-serif;
 }
 .customer-card h4 {
   color: var(--orange);
-  font-size: 0.85em;
+  font-size: 0.95em;
   letter-spacing: 0.08em;
   margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--brown);
   font-weight: normal;
 }
 .customer-card p {
   color: var(--text-sub);
+  font-weight: 700;
   font-size: 0.78em;
   line-height: 1.8;
 }
@@ -1237,8 +1378,8 @@ footer a:hover { color: var(--gold); }
 /* ── TIMELINE DRAW-IN ── */
 
 /* ── BENEFIT / INFO CARD LIFT ON HOVER ── */
-.info-card, .benefit-card, .customer-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-.info-card:hover, .benefit-card:hover, .customer-card:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(65,33,7,0.1); }
+.info-card, .benefit-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.info-card:hover, .benefit-card:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(65,33,7,0.1); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
@@ -1332,8 +1473,31 @@ footer a:hover { color: var(--gold); }
     -webkit-text-stroke: 0.2px currentColor;
   }
 
-  .world-banner { flex-direction: column; text-align: center; }
-  .customer-grid { grid-template-columns: 1fr; }
+  .customer-grid { flex-direction: column; gap: 32px; margin-top: 32px; }
+  /* mobile only: INBOUND leads right under the FLAGSHIP STORE card
+     (desktop keeps the DOMESTIC / INBOUND / ONLINE source order) */
+  .customer-card:nth-child(2) { order: -1; }
+  /* mobile entrance animation: FLAGSHIP STORE drops in from above, the 3
+     cards below alternate left/right in their mobile (visual) order —
+     INBOUND (nth-child(2), shown first via order:-1 above) from the
+     left, DOMESTIC (nth-child(1), shown second) from the right, ONLINE
+     (nth-child(3), shown last) from the left again */
+  .world-banner.fade-up:not(.visible) { transform: translateY(-40px); }
+  .customer-card:nth-child(1):not(.visible) { transform: translateX(56px); }
+  .customer-card:nth-child(2):not(.visible) { transform: translateX(-56px); }
+  .customer-card:nth-child(3):not(.visible) { transform: translateX(-56px); }
+  .customer-card { flex-basis: auto; width: 100%; max-width: 300px; margin: 0 auto; }
+  /* the 3-way tree connector assumes a 3-column row; on the mobile
+     single-column stack it has nothing meaningful to connect. Its
+     margin-top above compensates for the connector's own spacing that's
+     lost by hiding it here. */
+  .customer-connector { display: none; }
+  .sec-global-reach .sec-title { margin-bottom: 64px; }
+  /* mobile: just the tourists photo, full-bleed — no room for a
+     diagonal split at this width, and the shop signboard crop was
+     tuned for the desktop layer's proportions */
+  .global-reach-bg > div:nth-child(1) { clip-path: none; transform: none; }
+  .global-reach-bg > div:nth-child(2) { display: none; }
 
   .benefit-grid { grid-template-columns: 1fr; }
   .benefit-card.wide { grid-column: auto; }
@@ -1733,26 +1897,42 @@ Yuria.Tによって生み出されたこのモナカは
 
 <!-- チーム構成と活躍できる環境 -->
 <!-- あなたのスイーツが世界へ届く -->
-<section class="sec" style="background: var(--beige);">
+<section class="sec sec-global-reach">
+  <div class="global-reach-bg">
+    <div><img src="/recruit/assets/img/global-reach-tourists.jpg" alt="西茶屋街を散策する外国人観光客" loading="lazy"></div>
+    <div><img src="/recruit/assets/img/global-reach-shop.jpg" alt="甘納豆かわむら 店舗外観" loading="lazy"></div>
+  </div>
+  <div class="global-reach-dim"></div>
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">GLOBAL REACH</span>
     <h2 class="sec-title fade-up from-left">あなたのスイーツが世界へ届く</h2>
     <div class="world-banner fade-up">
+      <span class="world-banner-ribbon">FLAGSHIP STORE</span>
       <h3>西茶屋街</h3>
-      <p>インバウンド需要が急拡大中の金沢・西茶屋街に旗艦店を構えています。</p>
+      <p>インバウンド需要が急拡大中の<br>金沢・西茶屋街に旗艦店を構えています。</p>
+    </div>
+    <div class="customer-connector" aria-hidden="true">
+      <svg class="customer-connector-svg" viewBox="0 0 100 90" preserveAspectRatio="none">
+        <line class="customer-connector-path" x1="45.83" y1="15" x2="18.7" y2="75" />
+        <line class="customer-connector-path" x1="50" y1="15" x2="50" y2="75" />
+        <line class="customer-connector-path" x1="54.17" y1="15" x2="81.3" y2="75" />
+      </svg>
     </div>
     <div class="customer-grid">
       <div class="customer-card fade-up">
+        <span class="customer-card-ribbon">DOMESTIC</span>
         <h4>国内のお客様</h4>
-        <p>地元金沢の方々に愛される老舗専門店として24年の信頼</p>
+        <p>地元金沢の方々に愛される<br>老舗専門店として24年の信頼</p>
       </div>
       <div class="customer-card fade-up fade-up-d1">
+        <span class="customer-card-ribbon">INBOUND</span>
         <h4>インバウンド客</h4>
-        <p>外国人観光客が多数来店。あなたの作ったお菓子が世界へ</p>
+        <p>外国人観光客が多数来店。<br>あなたの作ったお菓子が世界へ</p>
       </div>
       <div class="customer-card fade-up fade-up-d2">
+        <span class="customer-card-ribbon">ONLINE</span>
         <h4>オンライン販路も拡大中</h4>
-        <p>ECサイト・ギフト需要にも対応。全国のお客様へお届け</p>
+        <p>自分用のお菓子から<br>ギフト需要にも対応。<br>全国のお客様へお届け</p>
       </div>
     </div>
   </div>
@@ -2516,6 +2696,52 @@ Yuria.Tによって生み出されたこのモナカは
   closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+})();
+
+(function() {
+  // GLOBAL REACH: the two background photo layers slide in from their own
+  // side (left layer from the left, right layer from the right) once the
+  // section scrolls into view — see .reach-visible in the CSS above.
+  const section = document.querySelector('.sec-global-reach');
+  if (!section) return;
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('reach-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.25 });
+  observer.observe(section);
+})();
+
+(function() {
+  // The 3 customer-card connector lines are drawn with fixed x1/x2
+  // percentages, but the cards themselves are fixed-width with
+  // justify-content:space-between (so their own width stays constant
+  // while the row stretches to fill the section) — meaning the cards'
+  // center-x as a % of the row shifts with viewport width. Recompute the
+  // SVG lines' x2 (and the matching x1 fan-out point) from the cards'
+  // actual positions so the lines keep meeting the cards' top-center.
+  const svg = document.querySelector('.customer-connector-svg');
+  const cards = document.querySelectorAll('.customer-grid .customer-card');
+  const lines = svg ? svg.querySelectorAll('line') : [];
+  if (!svg || cards.length !== 3 || lines.length !== 3) return;
+  function reposition() {
+    const svgRect = svg.getBoundingClientRect();
+    if (svgRect.width === 0) return;
+    const centers = [...cards].map(function(card) {
+      const r = card.getBoundingClientRect();
+      return ((r.left + r.width / 2 - svgRect.left) / svgRect.width) * 100;
+    });
+    lines.forEach(function(line, i) {
+      const x2 = centers[i];
+      const x1 = 50 + (x2 - 50) * 0.25; // fan out from a point just under FLAGSHIP STORE
+      line.setAttribute('x1', x1.toFixed(2));
+      line.setAttribute('x2', x2.toFixed(2));
+    });
+  }
+  reposition();
+  window.addEventListener('resize', reposition);
 })();
 
 (function() {
