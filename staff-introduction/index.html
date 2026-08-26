@@ -1495,23 +1495,13 @@ footer a:hover { color: var(--gold); }
   .sec-global-reach .sec-title { margin-bottom: 64px; }
   /* mobile: just the tourists photo, full-bleed — no room for a
      diagonal split at this width, and the shop signboard crop was
-     tuned for the desktop layer's proportions */
+     tuned for the desktop layer's proportions. The <picture> element
+     already swaps in a portrait-cropped source photo at this width (see
+     the markup), so a plain full-height cover no longer crops the
+     person out the way the landscape source did. */
   .global-reach-bg > div:nth-child(1) { clip-path: none; transform: none; }
   .global-reach-bg > div:nth-child(2) { display: none; }
-  /* the section's own height is driven by its stacked-card content,
-     which is far taller than the source photo's aspect ratio — filling
-     that whole height with object-fit:cover cropped the photo down to a
-     ~20%-wide sliver (people cropped out entirely). Cap the photo to a
-     band close to its own aspect ratio at the top instead, and let the
-     section's solid brown fill the rest below it. */
-  /* .sec:nth-child(odd/even) (white/beige) otherwise outranks a
-     single-class override here — match its specificity and win on
-     later source order instead */
-  .sec.sec-global-reach { background: var(--brown); }
-  .global-reach-bg, .global-reach-dim {
-    top: 0; left: 0; right: 0; bottom: auto;
-    height: 85vw;
-  }
+  .global-reach-bg > div:nth-child(1) img { object-position: center 22%; }
 
   .benefit-grid { grid-template-columns: 1fr; }
   .benefit-card.wide { grid-column: auto; }
@@ -1913,7 +1903,15 @@ Yuria.Tによって生み出されたこのモナカは
 <!-- あなたのスイーツが世界へ届く -->
 <section class="sec sec-global-reach">
   <div class="global-reach-bg">
-    <div><img src="/recruit/assets/img/global-reach-tourists.jpg" alt="西茶屋街を散策する外国人観光客" loading="lazy"></div>
+    <div>
+      <picture>
+        <!-- mobile gets its own portrait-cropped photo — the desktop
+             landscape source can't cover this section's much taller
+             mobile aspect ratio without cropping the person out -->
+        <source media="(max-width: 768px)" srcset="/recruit/assets/img/global-reach-tourists-portrait.jpg">
+        <img src="/recruit/assets/img/global-reach-tourists.jpg" alt="西茶屋街を散策する外国人観光客" loading="lazy">
+      </picture>
+    </div>
     <div><img src="/recruit/assets/img/global-reach-shop.jpg" alt="甘納豆かわむら 店舗外観" loading="lazy"></div>
   </div>
   <div class="global-reach-dim"></div>
