@@ -1498,6 +1498,17 @@ footer a:hover { color: var(--gold); }
      tuned for the desktop layer's proportions */
   .global-reach-bg > div:nth-child(1) { clip-path: none; transform: none; }
   .global-reach-bg > div:nth-child(2) { display: none; }
+  /* the section's own height is driven by its stacked-card content,
+     which is far taller than the source photo's aspect ratio — filling
+     that whole height with object-fit:cover cropped the photo down to a
+     ~20%-wide sliver (people cropped out entirely). Cap the photo to a
+     band close to its own aspect ratio at the top instead, and let the
+     section's solid brown fill the rest below it. */
+  .sec-global-reach { background: var(--brown); }
+  .global-reach-bg, .global-reach-dim {
+    top: 0; left: 0; right: 0; bottom: auto;
+    height: 85vw;
+  }
 
   .benefit-grid { grid-template-columns: 1fr; }
   .benefit-card.wide { grid-column: auto; }
@@ -1905,11 +1916,11 @@ Yuria.Tによって生み出されたこのモナカは
   <div class="global-reach-dim"></div>
   <div class="sec-inner">
     <span class="sec-eyebrow fade-up">GLOBAL REACH</span>
-    <h2 class="sec-title fade-up from-left">あなたのスイーツが世界へ届く</h2>
+    <h2 class="sec-title fade-up from-left">あなたのスイーツが<br class="mobile-br">世界へ届く</h2>
     <div class="world-banner fade-up">
       <span class="world-banner-ribbon">FLAGSHIP STORE</span>
       <h3>西茶屋街</h3>
-      <p>インバウンド需要が急拡大中の<br>金沢・西茶屋街に旗艦店を構えています。</p>
+      <p>インバウンド需要が急拡大中の<br>金沢・西茶屋街に<br class="mobile-br">旗艦店を構えています。</p>
     </div>
     <div class="customer-connector" aria-hidden="true">
       <svg class="customer-connector-svg" viewBox="0 0 100 90" preserveAspectRatio="none">
