@@ -1504,7 +1504,10 @@ footer a:hover { color: var(--gold); }
      ~20%-wide sliver (people cropped out entirely). Cap the photo to a
      band close to its own aspect ratio at the top instead, and let the
      section's solid brown fill the rest below it. */
-  .sec-global-reach { background: var(--brown); }
+  /* .sec:nth-child(odd/even) (white/beige) otherwise outranks a
+     single-class override here — match its specificity and win on
+     later source order instead */
+  .sec.sec-global-reach { background: var(--brown); }
   .global-reach-bg, .global-reach-dim {
     top: 0; left: 0; right: 0; bottom: auto;
     height: 85vw;
