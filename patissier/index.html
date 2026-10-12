@@ -15,7 +15,23 @@
   if (skip) document.documentElement.classList.add('skip-loader');
 })();
 </script>
-<style>html.skip-loader #page-loader { display: none !important; }</style>
+<style>html.skip-loader #page-loader { display: none !important; }
+/* ── スマホのみ：控えめな「上へ戻る」ボタン（左下） ── */
+.to-top-btn { display: none; }
+@media (max-width: 768px) {
+  .to-top-btn {
+    display: flex; align-items: center; justify-content: center;
+    position: fixed; left: 14px; bottom: 20px; z-index: 190;
+    width: 38px; height: 38px; border-radius: 50%; padding: 0; cursor: pointer;
+    background: rgba(65,33,7,0.45); border: 1px solid rgba(255,255,255,0.35);
+    backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .to-top-btn.is-shown { opacity: 0.85; pointer-events: auto; }
+  .to-top-btn svg { width: 20px; height: 20px; fill: var(--white); }
+  body.sp-nav-open .to-top-btn { opacity: 0 !important; pointer-events: none !important; }
+}
+</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>パティシエ求人（正社員）｜金沢・甘納豆かわむら 採用情報</title>
 <link rel="canonical" href="https://kawamurabeans.github.io/recruit/patissier/">
@@ -2467,6 +2483,10 @@ body.sp-nav-open .float-btn { opacity: 0 !important; pointer-events: none !impor
   </div>
 </nav>
 
+<!-- スマホのみ：ページ上部へ戻る小さなボタン（#scroll-root 構造のため iPhone の上部タップで戻れない代わり） -->
+<button type="button" class="to-top-btn" id="to-top" aria-label="ページの先頭へ戻る">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7l-6 6 1.4 1.4L12 9.8l4.6 4.6L18 13z"/></svg>
+</button>
 <!-- 追従ENTRYボタン（大口LP bulk.mame-kawamura.com の float-btn と同じデザイン） -->
 <a href="#entry" class="float-btn" id="float-entry" aria-label="応募フォームへ">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
@@ -2941,7 +2961,6 @@ Yuriaによって生み出されたこのモナカは
         <ul class="env-list">
           <li>1年目から多種多様な仕事に挑戦</li>
           <li>新人のお菓子も【良い】ものはお客様へ積極的に提供</li>
-          <li>入社10ヶ月で幹部に昇進した事例も</li>
           <li>パート・アルバイトから正社員への登用あり</li>
           <li>業界経験豊富な先輩がサポート</li>
         </ul>
@@ -4210,6 +4229,19 @@ const ENTRY_ENDPOINT = /(github\.io|^localhost|^127\.0\.0\.1)/.test(location.hos
   // ローダー終了・画像読み込みで位置がずれるので少し後にも合わせ直す
   setTimeout(jump, 600);
   setTimeout(jump, 2000);
+})();
+</script>
+
+<script>
+// スマホのみ：1画面分スクロールしたら「上へ戻る」ボタンを出し、押すと一瞬で先頭へ
+(function() {
+  const btn = document.getElementById('to-top');
+  const root = document.getElementById('scroll-root');
+  if (!btn || !root) return;
+  function update() { btn.classList.toggle('is-shown', root.scrollTop > window.innerHeight); }
+  root.addEventListener('scroll', update, { passive: true });
+  update();
+  btn.addEventListener('click', function() { root.scrollTo({ top: 0, behavior: 'instant' }); });
 })();
 </script>
 </body>

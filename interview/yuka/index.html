@@ -732,6 +732,36 @@ header.recruit-header, header.recruit-header.scrolled {
   .float-btn strong { font-size: 1.05em; }
   .float-btn svg { width: 17px; height: 17px; }
 }
+
+/* スケジュール：時短勤務の明記 */
+.schedule-tag {
+  display: inline-block; margin-left: 12px; padding: 3px 12px; border-radius: 999px;
+  background: var(--orange); color: var(--white); font-size: 0.45em; font-weight: bold;
+  letter-spacing: 0.12em; vertical-align: middle;
+}
+.schedule-note { text-align: center; font-size: 0.85em; font-weight: 600; color: var(--text-sub); line-height: 1.9; margin: -28px 0 40px; }
+.br-sp { display: none; }
+@media (max-width: 768px) {
+  .br-sp { display: inline; }
+  .schedule-note { font-size: 0.78em; margin-top: -16px; }
+}
+
+.schedule-tag-wrap { text-align: center; margin: -48px 0 48px; }
+.schedule-tag-wrap .schedule-tag { margin-left: 0; font-size: 0.82em; padding: 4px 16px; }
+.schedule-section .schedule-note { margin: 48px 0 0; }
+@media (max-width: 768px) {
+  .schedule-tag-wrap { margin: -36px 0 36px; }
+  .schedule-section .schedule-note { margin-top: 36px; }
+}
+
+/* スケジュール：タグ⇔リスト、リスト⇔注意書きの間隔をそろえる（見た目で80px／スマホ56px） */
+.schedule-tag-wrap { margin-bottom: 64px; }
+.schedule-section .schedule-note { margin-top: 96px; }
+@media (max-width: 768px) {
+  .schedule-tag-wrap { margin-bottom: 40px; }
+  .schedule-section .schedule-note { margin-top: 72px; }
+}
+
 </style>
 </head>
 <body>
@@ -875,6 +905,7 @@ header.recruit-header, header.recruit-header.scrolled {
   <div class="container">
     <span class="sec-eyebrow">A DAY AS A PATISSIER</span>
     <h2 class="sec-title">1日のスケジュール</h2>
+    <p class="schedule-tag-wrap"><span class="schedule-tag">時短勤務</span></p>
     <ul class="schedule-list">
       <li class="schedule-item">
         <span class="schedule-time">08:00</span>
@@ -922,10 +953,11 @@ header.recruit-header, header.recruit-header.scrolled {
         <span class="schedule-time">16:00</span>
         <div class="schedule-body">
           <div class="schedule-task">退勤</div>
-          <div class="schedule-desc">定時でしっかり帰れる。仕事後の時間を大切にできる。</div>
+          <div class="schedule-desc">時短勤務のため16:00に退勤。仕事後の時間を家族と大切にできる。</div>
         </div>
       </li>
     </ul>
+    <p class="schedule-note">※ 育休から復帰し、<br class="br-sp">時短勤務で働く日のスケジュールです。<br>フルタイムの勤務時間は<br class="br-sp">8:00〜17:00（実働8時間）です。</p>
   </div>
 </section>
 
