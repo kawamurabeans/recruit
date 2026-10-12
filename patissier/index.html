@@ -16,7 +16,7 @@
 })();
 </script>
 <style>html.skip-loader #page-loader { display: none !important; }
-/* ── スマホのみ：控えめな「上へ戻る」ボタン（ヘッダー直下・中央。上にスクロールし始めた時だけ出す） ── */
+/* ── スマホのみ：控えめな「上へ戻る」ボタン（ヘッダー直下・中央。1画面分以上スクロールしたら常に表示） ── */
 .to-top-btn { display: none; }
 @media (max-width: 768px) {
   .to-top-btn {
@@ -4235,37 +4235,37 @@ const ENTRY_ENDPOINT = /(github\.io|^localhost|^127\.0\.0\.1)/.test(location.hos
 </script>
 
 <script>
-// スマホのみ：1画面分より下で「上にスクロールし始めた」ときだけ上へ戻るボタンを出す。押すと一瞬で先頭へ
+// スマホのみ：1画面分以上スクロールしたら上へ戻るボタンを常に表示。押すと一瞬で先頭へ
 (function() {
   const btn = document.getElementById('to-top');
   const root = document.getElementById('scroll-root');
   const hdr = document.querySelector('header.recruit-header');
   if (!btn || !root) return;
-  let lastY = root.scrollTop;
-  let hideTimer = null;
   function setHeaderVar() { if (hdr) document.documentElement.style.setProperty('--hdr-h', hdr.offsetHeight + 'px'); }
+  function update() { btn.classList.toggle('is-shown', root.scrollTop > window.innerHeight); }
   setHeaderVar();
   window.addEventListener('resize', setHeaderVar);
-  root.addEventListener('scroll', function() {
-    const y = root.scrollTop;
-    const goingUp = y < lastY - 4;
-    const goingDown = y > lastY + 4;
-    if (y < window.innerHeight) {
-      btn.classList.remove('is-shown');
-    } else if (goingUp) {
-      btn.classList.add('is-shown');
-      clearTimeout(hideTimer);
-      hideTimer = setTimeout(function() { btn.classList.remove('is-shown'); }, 2500);
-    } else if (goingDown) {
-      btn.classList.remove('is-shown');
-    }
-    if (goingUp || goingDown) lastY = y;
-  }, { passive: true });
-  btn.addEventListener('click', function() {
-    root.scrollTo({ top: 0, behavior: 'instant' });
-    btn.classList.remove('is-shown');
-  });
+  root.addEventListener('scroll', update, { passive: true });
+  update();
+  btn.addEventListener('click', function() { root.scrollTo({ top: 0, behavior: 'instant' }); });
 })();
+</script>
+
+<script>
+// ブラウザの「戻る」で復元されたとき（bfcache）、離脱アニメーションの状態（透明・縮小）が
+// 残って白画面になるので、表示を元に戻す
+window.addEventListener('pageshow', function(e) {
+  if (!e.persisted) return;
+  const b = document.body;
+  b.style.transition = 'none';
+  b.style.opacity = '';
+  b.style.transform = '';
+  b.style.transformOrigin = '';
+  b.classList.remove('loading');
+  const loader = document.getElementById('page-loader');
+  if (loader) loader.style.display = 'none';
+  requestAnimationFrame(function() { b.style.transition = ''; });
+});
 </script>
 </body>
 </html>
