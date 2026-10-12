@@ -3319,6 +3319,9 @@ Yuria.Tによって生み出されたこのモナカは
   if (!scrollRoot || !section || !bg) return;
   const introThreshold = window.matchMedia('(max-width: 768px)').matches ? 0.18 : 0.3;
   const MIN_DWELL = 260;
+  // メッセージの切り替えはスクロール量の80%までで終える。残り20%は最後のメッセージを
+  // 表示したままの「余白」にして、勢いよくスクロールしても次のセクションへ一気に飛ばないようにする
+  const LINES_END = 0.8;
   let current = -1;
   let introHidden = null;
   let introRevealed = false;
@@ -3385,7 +3388,7 @@ Yuria.Tによって生み出されたこのモナカは
     if (lines.length) {
       let target = -1;
       if (introRevealed && progress > introThreshold) {
-        let p2 = (progress - introThreshold) / (1 - introThreshold);
+        let p2 = (progress - introThreshold) / (LINES_END - introThreshold);
         if (p2 > 1) p2 = 1;
         target = Math.floor(p2 * lines.length);
         if (target >= lines.length) target = lines.length - 1;
