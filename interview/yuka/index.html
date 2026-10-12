@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yuka | パティシエ | スタッフ紹介 | 甘納豆かわむら</title>
+<meta name="description" content="甘納豆かわむらで働くパティシエ・Yukaのインタビュー。仕事内容・やりがい・職場環境についてリアルな声をお届けします。">
+<link rel="canonical" href="https://kawamurabeans.github.io/recruit/interview/yuka/">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --brown:       #412107;
+  --brown-mid:   #6b3a1f;
+  --brown-light: #9c6240;
+  --gold:        #c9973a;
+  --orange:      #c1622c;
+  --beige:       #f5ede3;
+  --beige-light: #fdf8f3;
+  --text:        #2a1a0e;
+  --text-sub:    #6b5040;
+  --white:       #ffffff;
+  --gray:        #e8ddd4;
+}
+
+body {
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+  color: var(--text);
+  background: var(--white);
+  line-height: 1.9;
+  overflow-x: hidden;
+  opacity: 0;
+  transform: scale(1.15);
+}
+body.page-enter {
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  opacity: 1;
+  /* scale(1) を残すと position:fixed のヘッダーが body 基準になり一緒に流れるため none にする */
+  transform: none;
+}
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; width: 100%;
+  z-index: 100;
+  padding: 18px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.4s, padding 0.4s;
+}
+header.scrolled {
+  background: rgba(65,33,7,0.95);
+  backdrop-filter: blur(4px);
+  padding: 12px 48px;
+}
+.header-logo {
+  color: var(--white);
+  font-size: 0.85em;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+header.scrolled .header-logo { opacity: 1; }
+.header-logo span { color: var(--gold); }
+.header-back {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.75em;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+  opacity: 0;
+  transition: opacity 0.4s, color 0.2s;
+}
+header.scrolled .header-back { opacity: 1; }
+.header-back:hover { color: var(--gold); }
+
+/* ── HERO ── */
+.hero {
+  height: 100vh; min-height: 640px;
+  position: relative;
+  display: flex; align-items: flex-end;
+  overflow: hidden;
+}
+.hero-img-ph {
+  position: absolute; inset: 0;
+  background: var(--brown);
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-img-ph img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center center;
+  filter: saturate(1.3) contrast(1.08) brightness(1.05);
+}
+.hero-img-label {
+  color: rgba(255,255,255,0.2);
+  font-size: 0.75em;
+  letter-spacing: 0.2em;
+  font-family: sans-serif;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(20,8,2,0.85) 0%, rgba(20,8,2,0.2) 55%, transparent 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 0 80px 72px;
+  width: 100%;
+}
+.hero-role {
+  color: var(--gold);
+  font-size: 0.72em;
+  letter-spacing: 0.35em;
+  display: block;
+  margin-bottom: 16px;
+}
+.hero-name {
+  color: var(--white);
+  font-size: clamp(2.4em, 5vw, 3.8em);
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.hero-name-en {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.82em;
+  letter-spacing: 0.18em;
+  display: block;
+  margin-bottom: 28px;
+}
+.hero-meta {
+  display: flex; gap: 32px;
+}
+.hero-meta-item {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.75em;
+  letter-spacing: 0.1em;
+}
+.hero-meta-item strong {
+  display: block;
+  color: var(--white);
+  font-size: 1.1em;
+  font-weight: normal;
+  margin-bottom: 2px;
+}
+.hero-scroll {
+  position: absolute; bottom: 24px; right: 80px;
+  color: rgba(255,255,255,0.35);
+  font-size: 0.65em;
+  letter-spacing: 0.25em;
+  writing-mode: vertical-rl;
+  display: flex; align-items: center; gap: 12px;
+  z-index: 2;
+}
+.hero-scroll::after {
+  content: '';
+  display: block;
+  width: 1px; height: 48px;
+  background: rgba(255,255,255,0.25);
+}
+
+/* ── LEAD ── */
+.lead-section {
+  background: var(--beige-light);
+  padding: 96px 0;
+}
+.lead-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 40px;
+  text-align: center;
+}
+.lead-eyebrow {
+  color: var(--gold);
+  font-size: 0.7em;
+  letter-spacing: 0.3em;
+  display: block;
+  margin-bottom: 28px;
+}
+.lead-text {
+  font-size: 1.12em;
+  line-height: 2.2;
+  color: var(--brown-mid);
+  letter-spacing: 0.06em;
+}
+
+/* ── INTERVIEW SECTIONS ── */
+.interview-section {
+  padding: 120px 0;
+}
+.interview-section:nth-child(odd) { background: var(--white); }
+.interview-section:nth-child(even) { background: var(--beige-light); }
+
+.interview-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.interview-inner.reverse { direction: rtl; }
+.interview-inner.reverse > * { direction: ltr; }
+
+.interview-img-ph {
+  aspect-ratio: 3/4;
+  background: var(--gray);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.interview-img-ph::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--beige) 0%, var(--gray) 100%);
+}
+.interview-img-label {
+  position: relative; z-index: 1;
+  color: var(--text-sub);
+  font-size: 0.7em;
+  letter-spacing: 0.15em;
+  font-family: sans-serif;
+  text-align: center;
+  line-height: 2;
+}
+.interview-img-caption {
+  margin-top: 14px;
+  color: var(--text-sub);
+  font-size: 0.75em;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.interview-body {}
+.section-num {
+  font-size: 4em;
+  color: var(--gray);
+  font-weight: bold;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 8px;
+  font-family: Georgia, serif;
+}
+.section-title {
+  font-size: 1.45em;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  color: var(--brown);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.section-title-en {
+  color: var(--gold);
+  font-size: 0.68em;
+  letter-spacing: 0.25em;
+  display: block;
+  margin-bottom: 28px;
+}
+.divider-line {
+  width: 32px; height: 1px;
+  background: var(--gold);
+  margin-bottom: 28px;
+}
+.interview-q {
+  font-size: 0.82em;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.interview-q::before {
+  content: 'Q.';
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.interview-a {
+  font-size: 0.88em;
+  color: var(--text-sub);
+  line-height: 2.1;
+  margin-bottom: 28px;
+  padding-left: 20px;
+  border-left: 2px solid var(--beige);
+}
+.interview-a:last-child { margin-bottom: 0; }
+
+/* ── HIGHLIGHT QUOTE ── */
+.quote-section {
+  background: var(--brown);
+  padding: 96px 0;
+  text-align: center;
+}
+.quote-text {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 40px;
+  color: var(--white);
+  font-size: clamp(1.15em, 2.5vw, 1.55em);
+  line-height: 2.2;
+  letter-spacing: 0.08em;
+  font-weight: normal;
+}
+.quote-text em {
+  font-style: normal;
+  color: var(--gold);
+}
+.quote-attr {
+  margin-top: 36px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.72em;
+  letter-spacing: 0.2em;
+}
+
+/* ── SCHEDULE ── */
+.schedule-section {
+  background: var(--beige);
+  padding: 120px 0;
+}
+.container { max-width: 860px; margin: 0 auto; padding: 0 60px; }
+.sec-eyebrow {
+  color: var(--gold);
+  font-size: 0.7em;
+  letter-spacing: 0.3em;
+  display: block;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.sec-title {
+  font-size: 1.8em;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  color: var(--brown);
+  text-align: center;
+  margin-bottom: 64px;
+}
+.schedule-list {
+  list-style: none;
+  position: relative;
+}
+.schedule-list::before {
+  content: '';
+  position: absolute;
+  left: 100px; top: 0; bottom: 0;
+  width: 1px;
+  background: var(--gray);
+}
+.schedule-item {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 0 32px;
+  margin-bottom: 36px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.schedule-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.schedule-item::before {
+  content: '';
+  position: absolute;
+  left: 94px; top: 5px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--brown-light);
+  z-index: 1;
+}
+.schedule-time {
+  font-size: 0.8em;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  padding-top: 2px;
+  text-align: right;
+  padding-right: 20px;
+}
+.schedule-body {}
+.schedule-task {
+  font-size: 0.9em;
+  color: var(--brown);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.schedule-desc {
+  font-size: 0.78em;
+  color: var(--text-sub);
+  line-height: 1.8;
+}
+
+/* ── PROFILE CARD ── */
+.profile-section {
+  background: var(--white);
+  padding: 96px 0;
+}
+.profile-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 56px;
+  align-items: start;
+}
+.profile-img-ph {
+  aspect-ratio: 1;
+  background: var(--gray);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.profile-img-label {
+  font-size: 0.65em;
+  color: var(--text-sub);
+  letter-spacing: 0.1em;
+  font-family: sans-serif;
+  text-align: center;
+}
+.profile-name {
+  font-size: 1.5em;
+  font-weight: normal;
+  color: var(--brown);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.profile-name-en {
+  font-size: 0.78em;
+  color: var(--text-sub);
+  letter-spacing: 0.18em;
+  margin-bottom: 24px;
+  display: block;
+}
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82em;
+}
+.profile-table tr {
+  border-bottom: 1px solid var(--gray);
+}
+.profile-table th {
+  width: 100px;
+  padding: 12px 0;
+  color: var(--text-sub);
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  text-align: left;
+  vertical-align: top;
+}
+.profile-table td {
+  padding: 12px 0;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  line-height: 1.8;
+}
+
+/* ── OTHER STAFF ── */
+.other-section {
+  background: var(--brown);
+  padding: 96px 0;
+}
+.other-section .sec-title { color: var(--white); margin-bottom: 48px; }
+.other-section .sec-eyebrow { color: var(--gold); }
+.other-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.other-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s;
+  overflow: hidden;
+}
+.other-card:hover { background: rgba(255,255,255,0.10); }
+.other-card-img {
+  aspect-ratio: 4/3;
+  background: rgba(255,255,255,0.04);
+  display: flex; align-items: center; justify-content: center;
+}
+.other-card-img span {
+  color: rgba(255,255,255,0.2);
+  font-size: 0.65em;
+  letter-spacing: 0.15em;
+  font-family: sans-serif;
+}
+.other-card-body {
+  padding: 20px;
+}
+.other-card-role {
+  color: var(--gold);
+  font-size: 0.65em;
+  letter-spacing: 0.2em;
+  display: block;
+  margin-bottom: 6px;
+}
+.other-card-name {
+  color: var(--white);
+  font-size: 0.92em;
+  letter-spacing: 0.08em;
+}
+.other-card-copy {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.75em;
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #1a0a03;
+  padding: 40px;
+  text-align: center;
+}
+footer p {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.72em;
+  letter-spacing: 0.08em;
+  line-height: 2.2;
+}
+footer a {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+}
+footer a:hover { color: var(--gold); }
+
+/* ── FADE IN ANIMATION ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-up-d1 { transition-delay: 0.1s; }
+.fade-up-d2 { transition-delay: 0.2s; }
+.fade-up-d3 { transition-delay: 0.3s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .lead-text,
+  .interview-q,
+  .interview-a,
+  .quote-text,
+  .schedule-task,
+  .schedule-desc,
+  .profile-table td,
+  .other-card-copy {
+    font-weight: 600;
+    -webkit-text-stroke: 0.2px currentColor;
+  }
+
+  header { padding: 14px 20px; }
+  header.scrolled { padding: 10px 20px; }
+
+  .hero-content { padding: 0 24px 56px; }
+  .hero-name { font-size: clamp(1.8em, 8vw, 2.6em); }
+  .hero-meta { flex-direction: column; gap: 12px; }
+  .hero-scroll { right: 24px; }
+
+  .lead-section { padding: 64px 0; }
+  .lead-line { display: block; }
+  .lead-line + br + .lead-line { margin-top: 12px; }
+
+  .interview-section { padding: 72px 0; }
+  .interview-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 24px;
+  }
+  .interview-inner.reverse { direction: ltr; }
+  .section-num { font-size: 2.8em; }
+
+  .quote-section { padding: 64px 0; }
+
+  .schedule-section { padding: 72px 0; }
+  .container { padding: 0 24px; }
+  .schedule-list::before { left: 80px; }
+  .schedule-item::before { left: 75px; }
+  .schedule-item { grid-template-columns: 80px 1fr; }
+  .schedule-time { padding-right: 16px; }
+
+  .profile-section { padding: 72px 0; }
+  .profile-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0 24px;
+  }
+  .profile-img-ph { width: 120px; height: 120px; margin: 0 auto; }
+
+  .other-section { padding: 72px 0; }
+  .other-grid {
+    grid-template-columns: 1fr;
+    padding: 0 24px;
+    gap: 16px;
+  }
+}
+
+/* ── ヘッダー：常に表示（パティシエ募集ページと同じデザイン） ── */
+header.recruit-header, header.recruit-header.scrolled {
+  background: rgba(65,33,7,0.95); backdrop-filter: blur(4px);
+  padding: 16px max(40px, calc((100% - 1180px) / 2)); min-height: 68px;
+}
+.recruit-header .header-logo, .recruit-header .header-back { opacity: 1; }
+.recruit-header .header-logo { display: flex; align-items: center; gap: 16px; font-size: 1em; letter-spacing: 0.12em; }
+.recruit-header .hl-brand { color: var(--gold); font-weight: bold; font-size: 1.08em; }
+.recruit-header .hl-sep { width: 1px; height: 18px; background: rgba(255,255,255,0.35); }
+.recruit-header .hl-page { color: var(--white); font-size: 0.92em; letter-spacing: 0.16em; }
+.recruit-header .header-back {
+  color: rgba(255,255,255,0.85); font-size: 0.8em; font-weight: bold; letter-spacing: 0.12em;
+  border: 1px solid rgba(255,255,255,0.35); border-radius: 999px; padding: 8px 18px;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.recruit-header .header-back:hover { color: #412107; background: #FFF9EE; border-color: #FFF9EE; }
+@media (max-width: 768px) {
+  header.recruit-header, header.recruit-header.scrolled { padding: 12px 16px; min-height: 0; }
+  .recruit-header .header-logo { gap: 10px; font-size: 0.86em; letter-spacing: 0.08em; }
+  .recruit-header .hl-sep { height: 14px; }
+  .recruit-header .header-back { font-size: 0.7em; padding: 6px 12px; letter-spacing: 0.06em; }
+}
+/* タブレット幅以下では「｜スタッフインタビュー」を省く */
+@media (max-width: 1024px) {
+  .recruit-header .hl-sep, .recruit-header .hl-page { display: none; }
+}
+
+/* 下部の「パティシエ募集ページへ」ボタン：ホバーで白背景＋#412107の文字に反転 */
+.to-recruit-btn {
+  display: inline-block; border: 1px solid rgba(255,255,255,0.5); color: var(--white); text-decoration: none;
+  padding: 16px 48px; font-size: 0.85em; font-weight: bold; letter-spacing: 0.15em; border-radius: 999px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.to-recruit-btn:hover { background: #FFF9EE; color: #412107; border-color: #FFF9EE; }
+
+/* ヘッダーの戻るボタンを大きく・見やすく */
+.recruit-header .header-back {
+  font-size: 0.92em; letter-spacing: 0.14em; color: var(--white);
+  padding: 11px 26px; border: 1.5px solid rgba(255,255,255,0.6);
+}
+@media (max-width: 768px) {
+  .recruit-header .header-back { font-size: 0.8em; padding: 8px 16px; letter-spacing: 0.08em; }
+}
+
+/* ── 追従ENTRYボタン（bulk.mame-kawamura.com の float-btn に合わせる） ── */
+.float-btn {
+  position: fixed; bottom: 28px; right: 24px; z-index: 200;
+  display: flex; align-items: center; gap: 12px; overflow: hidden;
+  background: var(--white); color: var(--brown); text-decoration: none;
+  font-size: 1em; letter-spacing: 0.1em; padding: 17px 28px 17px 24px; border-radius: 50px;
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 4px 0 #b8842e, 0 6px 16px rgba(0,0,0,0.18);
+  transition: transform 0.1s, box-shadow 0.1s, opacity 0.3s, color 0.3s;
+  opacity: 1; pointer-events: auto;
+}
+.float-btn.is-shown { opacity: 1; pointer-events: auto; }
+.float-btn::after {
+  content: ""; position: absolute; inset: 0; background: var(--gold); border-radius: 50px;
+  transform: translateX(-100%); transition: transform 0.35s; z-index: 0;
+}
+.float-btn:hover::after { transform: translateX(0); }
+.float-btn:hover { color: var(--white); }
+.float-btn svg { width: 18px; height: 18px; fill: var(--gold); flex-shrink: 0; position: relative; z-index: 1; transition: fill 0.3s; }
+.float-btn:hover svg { fill: var(--white); }
+.float-divider { width: 1px; height: 1.2em; background: var(--gold); display: inline-block; margin: 0 2px; flex-shrink: 0; position: relative; z-index: 1; transition: background 0.3s; }
+.float-btn:hover .float-divider { background: var(--white); }
+.float-btn > span:last-child { display: flex; flex-direction: column; line-height: 1.35; position: relative; z-index: 1; }
+.float-btn strong { font-weight: 700; letter-spacing: 0.12em; }
+.float-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #b8842e, 0 2px 8px rgba(0,0,0,0.15); }
+@media (max-width: 768px) {
+  .float-btn { bottom: 16px; right: 16px; font-size: 0.82em; padding: 12px 20px 12px 16px; }
+}
+
+/* 追従ENTRYボタン：オフホワイト地＋橙の縁・文字。ホバーで橙が流れ込む */
+.float-btn {
+  background: var(--beige-light); color: var(--orange); border-color: var(--orange);
+  box-shadow: 0 4px 0 #8f4520, 0 6px 16px rgba(0,0,0,0.2);
+}
+.float-btn svg { fill: var(--orange); }
+.float-divider { background: var(--orange); }
+.float-btn::after { background: var(--orange); }
+.float-btn:hover { color: var(--white); border-color: var(--orange); }
+.float-btn:hover svg { fill: var(--white); }
+.float-btn:hover .float-divider { background: var(--white); }
+.float-btn:active { box-shadow: 0 0 0 #8f4520, 0 2px 8px rgba(0,0,0,0.15); }
+
+/* 追従ENTRYボタン：文字を大きく読みやすく */
+.float-btn { padding: 18px 32px 18px 26px; gap: 14px; }
+.float-btn strong { font-size: 1.12em; font-weight: 800; letter-spacing: 0.14em; }
+.float-btn svg { width: 20px; height: 20px; }
+@media (max-width: 768px) {
+  .float-btn { padding: 13px 22px 13px 18px; gap: 10px; font-size: 0.9em; }
+  .float-btn strong { font-size: 1.05em; }
+  .float-btn svg { width: 17px; height: 17px; }
+}
+
+/* ヘッダーナビ：中くらいの幅では詰める */
+@media (min-width: 769px) and (max-width: 1100px) {
+  header.recruit-header { padding-left: 28px; padding-right: 28px; }
+  .recruit-header .header-logo { gap: 12px; font-size: 0.92em; }
+  .recruit-header .header-nav { gap: 20px; }
+  .recruit-header .header-nav a.header-link { font-size: 0.76em; letter-spacing: 0.1em; }
+}
+@media (min-width: 769px) and (max-width: 900px) {
+  .recruit-header .hl-sep, .recruit-header .hl-page { display: none; }
+}
+/* 追従ENTRYボタン：オフホワイト地＋橙の縁・文字。ホバーで橙が流れ込む */
+.float-btn {
+  background: var(--beige-light); color: var(--orange); border-color: var(--orange);
+  box-shadow: 0 4px 0 #8f4520, 0 6px 16px rgba(0,0,0,0.2);
+}
+.float-btn svg { fill: var(--orange); }
+.float-divider { background: var(--orange); }
+.float-btn::after { background: var(--orange); }
+.float-btn:hover { color: var(--white); border-color: var(--orange); }
+.float-btn:hover svg { fill: var(--white); }
+.float-btn:hover .float-divider { background: var(--white); }
+.float-btn:active { box-shadow: 0 0 0 #8f4520, 0 2px 8px rgba(0,0,0,0.15); }
+/* 追従ENTRYボタン：文字を大きく読みやすく */
+.float-btn { padding: 18px 32px 18px 26px; gap: 14px; }
+.float-btn strong { font-size: 1.12em; font-weight: 800; letter-spacing: 0.14em; }
+.float-btn svg { width: 20px; height: 20px; }
+@media (max-width: 768px) {
+  .float-btn { padding: 13px 22px 13px 18px; gap: 10px; font-size: 0.9em; }
+  .float-btn strong { font-size: 1.05em; }
+  .float-btn svg { width: 17px; height: 17px; }
+}
+</style>
+</head>
+<body>
+<script>document.body.style.transformOrigin = '50% ' + (window.innerHeight / 2) + 'px';</script>
+
+<!-- HEADER -->
+<header id="header" class="recruit-header">
+  <a class="header-logo" href="/recruit/patissier/"><span class="hl-brand">甘納豆かわむら</span><span class="hl-sep" aria-hidden="true"></span><span class="hl-page">スタッフインタビュー</span></a>
+  <a href="/recruit/patissier/" class="header-back">← メインページに戻る</a>
+</header>
+
+<!-- 追従ENTRYボタン（パティシエ募集ページの応募フォームへ） -->
+<a href="/recruit/patissier/#entry" class="float-btn is-shown" id="float-entry" aria-label="パティシエ募集の応募フォームへ">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+  <span class="float-divider"></span>
+  <span><strong>エントリーはこちら →</strong></span>
+</a>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-img-ph">
+    <img src="/recruit/assets/img/202607-yuka-hero.jpg" alt="Yuka パティシエ">
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-role">PATISSIER</span>
+    <h1 class="hero-name">Yuka</h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <strong>2021年</strong>入社
+      </div>
+      <div class="hero-meta-item">
+        <strong>パティシエ</strong>担当
+      </div>
+      <div class="hero-meta-item">
+        <strong>元パティスリー勤務</strong>経験者
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">SCROLL</div>
+</section>
+
+<!-- LEAD -->
+<section class="lead-section">
+  <div class="lead-inner fade-up">
+    <span class="lead-eyebrow">INTRODUCTION</span>
+    <p class="lead-text">
+      <span class="lead-line">和菓子を勉強しながら、仕事と家庭を両立できる環境を求めてかわむらへ。</span><br>
+      <span class="lead-line">自分の作ったものがお客様の笑顔に直結する、そのやりがいが毎日の原動力です。</span>
+    </p>
+  </div>
+</section>
+
+<!-- INTERVIEW 01 -->
+<section class="interview-section">
+  <div class="interview-inner">
+    <div class="interview-img-ph fade-up">
+      <img src="/recruit/assets/img/202607-yuka-oven.jpg" alt="オーブン前での作業風景" style="width:100%;height:100%;object-fit:cover;object-position:center center;filter:saturate(1.2) contrast(1.05);">
+    </div>
+    <div class="interview-body">
+      <div class="section-num fade-up">01</div>
+      <h2 class="section-title fade-up">仕事内容と<br>1日の流れ<span class="section-title-en">WHAT I DO</span></h2>
+      <div class="divider-line fade-up"></div>
+      <div class="interview-q fade-up fade-up-d1">毎日どんな仕事をしていますか？</div>
+      <p class="interview-a fade-up fade-up-d2">サロン・ド・テ・カワムラのパルフェを中心とするスイーツの材料を仕込んだり、羊羹といった和菓子を製造したり、実際に店舗に出て接客もしています。洋菓子・和菓子・接客と、さまざまな仕事ができるのがこの職場の面白いところです。</p>
+      <div class="interview-q fade-up fade-up-d1">入社前と後で一番驚いたことは？</div>
+      <p class="interview-a fade-up fade-up-d2">残業がなく、定時で帰れる環境があることに驚きました。洋菓子店では当たり前だった長時間労働がなく、プライベートの時間をしっかり持てます。それと、洋菓子店では触れることのない材料を扱って、これまでにないお菓子作りができることに魅力を感じています。</p>
+    </div>
+  </div>
+</section>
+
+<!-- INTERVIEW 02 -->
+<section class="interview-section">
+  <div class="interview-inner reverse">
+    <div class="fade-up">
+      <div class="interview-img-ph">
+        <img src="/recruit/assets/img/202607-yuka-ajihei-shaved-ice.jpg" alt="中道さんが手がけたかき氷「味平かぼちゃとココミックスナッツ」" style="width:100%;height:100%;object-fit:cover;object-position:center center;filter:saturate(1.2) contrast(1.05);">
+      </div>
+      <p class="interview-img-caption">Yukaさんが手がける、地元産の味平かぼちゃを使ったかき氷</p>
+    </div>
+    <div class="interview-body">
+      <div class="section-num fade-up">02</div>
+      <h2 class="section-title fade-up">やりがいと<br>好きなところ<span class="section-title-en">MY MOTIVATION</span></h2>
+      <div class="divider-line fade-up"></div>
+      <div class="interview-q fade-up fade-up-d1">この仕事のどんなところが好きですか？</div>
+      <p class="interview-a fade-up fade-up-d2">自分の作った商品をお客様に提供して、その反応を直に見られること。パティシエとしてのやりがいを非常に感じています。作ったものが喜ばれる瞬間が、毎日の原動力になっています。</p>
+      <div class="interview-q fade-up fade-up-d1">特に印象に残っているエピソードは？</div>
+      <p class="interview-a fade-up fade-up-d2">テレビ取材があったときです。自分の作ったカッサータを全国放送の情報番組で紹介してもらいました。反響がとても大きくて、それが本当に嬉しく、大きな充実感につながりました。</p>
+    </div>
+  </div>
+</section>
+
+<!-- INTERVIEW 03 -->
+<section class="interview-section">
+  <div class="interview-inner">
+    <div class="interview-img-ph fade-up">
+      <img src="/recruit/assets/img/202607-yuka-cooking.png" alt="厨房で仕込みをする中道さん" style="width:100%;height:100%;object-fit:cover;object-position:center center;filter:saturate(1.2) contrast(1.05);">
+    </div>
+    <div class="interview-body">
+      <div class="section-num fade-up">03</div>
+      <h2 class="section-title fade-up">女性が働きやすい<br>環境について<span class="section-title-en">WORK-LIFE BALANCE</span></h2>
+      <div class="divider-line fade-up"></div>
+      <div class="interview-q fade-up fade-up-d1">働きやすさを感じる点を教えてください。</div>
+      <p class="interview-a fade-up fade-up-d2">シフトの希望休・有給が取りやすいことはもちろん、同じような境遇のお母さんスタッフが複数いるので、相談事やアドバイスをもらえるのがとても助かっています。共感できる相手が職場にいると、それだけで働きやすさが全然違うと感じています。</p>
+      <div class="interview-q fade-up fade-up-d1">育休から復帰してみていかがでしたか？</div>
+      <p class="interview-a fade-up fade-up-d2">復帰後もしなければならない仕事が明確にあり、不自由を感じることはありませんでした。時短勤務で仕事と子育ての両立が負担なくできていて、満足しています。自由な時間が増えると、子どもと遊ぶ時間も家事の時間もしっかり取れる。想像していた以上に負担が少ないです。</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <p class="quote-text fade-up">
+    甘納豆かわむらは、<em>自分たちの想い</em>を形にできる職場。<br>
+    日々新たな挑戦の機会があります。
+  </p>
+  <p class="quote-attr fade-up fade-up-d1">Yuka — パティシエ</p>
+</section>
+
+<!-- INTERVIEW 04 -->
+<section class="interview-section">
+  <div class="interview-inner reverse">
+    <div class="interview-img-ph fade-up">
+      <!-- ヒーローと同じ格子戸前の写真を、顔が中心に来るよう縦長に切り抜く -->
+      <img src="/recruit/assets/img/202607-yuka-hero.jpg" alt="格子戸の前で笑顔を見せるYukaさん" style="width:100%;height:100%;object-fit:cover;object-position:44% center;transform:scale(1.12);transform-origin:47% 32%;filter:saturate(1.2) contrast(1.05);">
+    </div>
+    <div class="interview-body">
+      <div class="section-num fade-up">04</div>
+      <h2 class="section-title fade-up">これからの<br>目標<span class="section-title-en">MY FUTURE</span></h2>
+      <div class="divider-line fade-up"></div>
+      <div class="interview-q fade-up fade-up-d1">今後どんなパティシエになりたいですか？</div>
+      <p class="interview-a fade-up fade-up-d2">金沢で話題になる、本当に美味しいケーキやお菓子を作って、来てくれる人を心からの笑顔にしたいです。</p>
+      <div class="interview-q fade-up fade-up-d1">就活中の方へメッセージをどうぞ。</div>
+      <p class="interview-a fade-up fade-up-d2">やりがいのある仕事がたくさん見つけられる、チャレンジしやすい職場です。自分が頑張れば頑張るほど結果がついてくる。下積みの期間が長くなく、すぐに挑戦できる環境なので、自分の力を試してみたい、最短で成長したいという人にはうってつけの会社だと思います。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule-section">
+  <div class="container">
+    <span class="sec-eyebrow">A DAY AS A PATISSIER</span>
+    <h2 class="sec-title">1日のスケジュール</h2>
+    <ul class="schedule-list">
+      <li class="schedule-item">
+        <span class="schedule-time">08:00</span>
+        <div class="schedule-body">
+          <div class="schedule-task">出勤</div>
+          <div class="schedule-desc">1日のスタート。準備を整えてすぐ製造へ。</div>
+        </div>
+      </li>
+      <li class="schedule-item">
+        <span class="schedule-time">08:30</span>
+        <div class="schedule-body">
+          <div class="schedule-task">製造開始（洋菓子・和菓子）</div>
+          <div class="schedule-desc">パルフェやスイーツの材料を仕込んだり、羊羹を製造したり。その日によって内容はさまざま。</div>
+        </div>
+      </li>
+      <li class="schedule-item">
+        <span class="schedule-time">12:00</span>
+        <div class="schedule-body">
+          <div class="schedule-task">休憩</div>
+          <div class="schedule-desc">他のスタッフと話したり、好きな動画をスマホで見ながらリフレッシュ。</div>
+        </div>
+      </li>
+      <li class="schedule-item">
+        <span class="schedule-time">13:00</span>
+        <div class="schedule-body">
+          <div class="schedule-task">業務再開</div>
+          <div class="schedule-desc">午後も製造を続けながら、接客に入ることも。</div>
+        </div>
+      </li>
+      <li class="schedule-item">
+        <span class="schedule-time">14:30</span>
+        <div class="schedule-body">
+          <div class="schedule-task">新商品の試作</div>
+          <div class="schedule-desc">アイデアを形にする時間。自由に提案できる雰囲気がある。</div>
+        </div>
+      </li>
+      <li class="schedule-item">
+        <span class="schedule-time">15:30</span>
+        <div class="schedule-body">
+          <div class="schedule-task">退勤前の片付け</div>
+          <div class="schedule-desc">翌日に備えて道具や場所を整える。</div>
+        </div>
+      </li>
+      <li class="schedule-item">
+        <span class="schedule-time">16:00</span>
+        <div class="schedule-body">
+          <div class="schedule-task">退勤</div>
+          <div class="schedule-desc">定時でしっかり帰れる。仕事後の時間を大切にできる。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section class="profile-section">
+  <div class="profile-inner">
+    <div>
+      <div class="profile-img-ph fade-up">
+        <img src="/recruit/assets/img/202607-yuka-profile.jpg" alt="Yuka" style="width:100%;height:100%;object-fit:cover;object-position:center center;border-radius:50%;filter:saturate(1.2) contrast(1.05);">
+      </div>
+    </div>
+    <div>
+      <h2 class="profile-name fade-up">Yuka</h2>
+      <span class="profile-name-en fade-up">Yuka</span>
+      <table class="profile-table">
+        <tr class="fade-up">
+          <th>担当</th>
+          <td>パティシエ</td>
+        </tr>
+        <tr class="fade-up fade-up-d1">
+          <th>入社</th>
+          <td>2021年8月</td>
+        </tr>
+        <tr class="fade-up fade-up-d2">
+          <th>趣味</th>
+          <td>ジムのダンス（ズンバ）、銭湯巡り、カフェ巡り</td>
+        </tr>
+        <tr class="fade-up fade-up-d2">
+          <th>好きな<br>お菓子</th>
+          <td>チョコパイ</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER STAFF -->
+<section class="other-section">
+  <div style="text-align:center;">
+    <span class="sec-eyebrow">OTHER INTERVIEWS</span>
+    <h2 class="sec-title" style="margin-bottom:32px;">他のスタッフも見てみる</h2>
+    <a href="/recruit/patissier/" class="to-recruit-btn">メインページに戻る</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 甘納豆かわむら All Rights Reserved.</p>
+</footer>
+
+<script>
+// ページ入場(ズームイン)
+requestAnimationFrame(function() {
+  requestAnimationFrame(function() {
+    document.body.classList.add('page-enter');
+  });
+});
+
+// ヘッダースクロール
+(function() {
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', function() {
+    header.classList.toggle('scrolled', window.scrollY > 80);
+  });
+})();
+
+// フェードインアニメーション
+(function() {
+  const els = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(function(el) { observer.observe(el); });
+})();
+
+// スケジュール順次アニメーション
+(function() {
+  const items = document.querySelectorAll('.schedule-item');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        const index = Array.from(items).indexOf(entry.target);
+        setTimeout(function() {
+          entry.target.classList.add('visible');
+        }, index * 120);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  items.forEach(function(item) { observer.observe(item); });
+})();
+</script>
+
+</body>
+</html>

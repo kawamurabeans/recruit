@@ -2,6 +2,20 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<script>
+// ローディング画面は「このサイトを最初に開いたとき」だけ表示する。
+// 同じタブで一度表示済み、またはサイト内（インタビュー等）から来た場合は表示しない。
+(function() {
+  var skip = false;
+  try { skip = sessionStorage.getItem('kw_recruit_loader_seen') === '1'; } catch (e) {}
+  try {
+    var ref = document.referrer ? new URL(document.referrer) : null;
+    if (ref && ref.origin === location.origin && ref.pathname.indexOf('/recruit/') === 0) skip = true;
+  } catch (e) {}
+  if (skip) document.documentElement.classList.add('skip-loader');
+})();
+</script>
+<style>html.skip-loader #page-loader { display: none !important; }</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>パティシエ求人（正社員）｜金沢・甘納豆かわむら 採用情報</title>
 <link rel="canonical" href="https://kawamurabeans.github.io/recruit/patissier/">
@@ -2492,7 +2506,7 @@ body.sp-nav-open .float-btn { opacity: 0 !important; pointer-events: none !impor
   <span class="sec-eyebrow fade-up from-left delay-slow">STAFF INTERVIEW</span>
   <h2 class="sec-title fade-up from-left delay-slow">スタッフの声</h2>
   <div class="staff-grid">
-    <a href="/recruit/staff-introduction/patissier/202607-yuka.html" class="staff-card fade-up spin-in">
+    <a href="/recruit/interview/yuka/" class="staff-card fade-up spin-in">
       <div class="card-flip">
         <div class="card-face card-face-front">
           <div class="staff-card-img">
@@ -2693,7 +2707,7 @@ Yuria.Tによって生み出されたこのモナカは
 食べ進めるごとに味が変化していく
 魅惑のパルフェです。
 
-まさに芸術品のような美しさ。" data-link="/recruit/staff-introduction/patissier/202607-yuka.html">
+まさに芸術品のような美しさ。" data-link="/recruit/interview/yuka/">
         <div class="work-card-photo is-portrait"><img src="/recruit/assets/img/202412-strawberry-parfait-yuka.jpg" alt="いちごパルフェ" loading="lazy"></div>
         <div class="work-card-body">
           <div class="work-card-name">いちごパルフェ</div>
@@ -2761,7 +2775,7 @@ Yuria.Tによって生み出されたこのモナカは
 全体にほうじ茶シロップと
 ココナッツソースをたっぷりとまとわせ、
 一口ごとに甘み・香り・食感が
-重なっていくパティシエ渾身の一杯です。" data-link="/recruit/staff-introduction/patissier/202607-yuka.html">
+重なっていくパティシエ渾身の一杯です。" data-link="/recruit/interview/yuka/">
         <div class="work-card-photo is-portrait"><img src="/recruit/assets/img/202506-ajihei-kabocha-kori-yuka.jpg" alt="【 かき氷 】味平かぼちゃとココミックスナッツ" loading="lazy"></div>
         <div class="work-card-body">
           <div class="work-card-name">【 かき氷 】味平かぼちゃとココミックスナッツ</div>
@@ -3165,7 +3179,7 @@ Yuria.Tによって生み出されたこのモナカは
 <!-- STAFF GRID -->
 <section class="staff-section">
   <div class="staff-grid">
-    <a href="/recruit/staff-introduction/patissier/202607-yuka.html" class="staff-card fade-up spin-in">
+    <a href="/recruit/interview/yuka/" class="staff-card fade-up spin-in">
       <div class="card-flip">
         <div class="card-face card-face-front">
           <div class="staff-card-img">
@@ -3239,6 +3253,14 @@ Yuria.Tによって生み出されたこのモナカは
   const text = document.querySelector('.loader-text');
   const loader = document.getElementById('page-loader');
   if (!logo || !loader) return;
+
+  // 2回目以降・サイト内遷移ではローディングを出さない（<head> の判定で skip-loader が付く）
+  if (document.documentElement.classList.contains('skip-loader')) {
+    document.body.classList.remove('loading');
+    loader.style.display = 'none';
+    return;
+  }
+  try { sessionStorage.setItem('kw_recruit_loader_seen', '1'); } catch (e) {}
 
   const isLocalDev = document.documentElement.classList.contains('local-dev');
   setTimeout(finishLoader, isLocalDev ? 0 : 1800);
@@ -4168,6 +4190,26 @@ const ENTRY_ENDPOINT = /(github\.io|^localhost|^127\.0\.0\.1)/.test(location.hos
     });
   });
   window.addEventListener('resize', function() { if (window.innerWidth > 1024) setOpen(false); });
+})();
+</script>
+
+<script>
+// 他ページから #entry などのアンカー付きで来たとき、ヘッダーの高さ分ずらして表示する
+(function() {
+  const id = decodeURIComponent(location.hash.slice(1));
+  if (!id) return;
+  const root = document.getElementById('scroll-root');
+  function jump() {
+    const target = document.getElementById(id);
+    if (!target || !root) return;
+    const hh = (document.querySelector('header.recruit-header') || {}).offsetHeight || 60;
+    root.scrollTo({ top: target.getBoundingClientRect().top + root.scrollTop - hh, behavior: 'instant' });
+  }
+  jump();
+  window.addEventListener('load', jump);
+  // ローダー終了・画像読み込みで位置がずれるので少し後にも合わせ直す
+  setTimeout(jump, 600);
+  setTimeout(jump, 2000);
 })();
 </script>
 </body>
