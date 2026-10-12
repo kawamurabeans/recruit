@@ -16,19 +16,21 @@
 })();
 </script>
 <style>html.skip-loader #page-loader { display: none !important; }
-/* ── スマホのみ：控えめな「上へ戻る」ボタン（左下） ── */
+/* ── スマホのみ：控えめな「上へ戻る」ボタン（ヘッダー直下・中央。上にスクロールし始めた時だけ出す） ── */
 .to-top-btn { display: none; }
 @media (max-width: 768px) {
   .to-top-btn {
-    display: flex; align-items: center; justify-content: center;
-    position: fixed; left: 14px; bottom: 20px; z-index: 190;
-    width: 38px; height: 38px; border-radius: 50%; padding: 0; cursor: pointer;
-    background: rgba(65,33,7,0.45); border: 1px solid rgba(255,255,255,0.35);
-    backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
-    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    position: fixed; left: 50%; top: calc(var(--hdr-h, 62px) + 10px); z-index: 190;
+    transform: translate(-50%, -8px);
+    height: 30px; padding: 0 14px 0 10px; border-radius: 999px; cursor: pointer;
+    background: rgba(65,33,7,0.55); border: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    color: var(--white); font: inherit; font-size: 0.7em; font-weight: bold; letter-spacing: 0.16em;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s;
   }
-  .to-top-btn.is-shown { opacity: 0.85; pointer-events: auto; }
-  .to-top-btn svg { width: 20px; height: 20px; fill: var(--white); }
+  .to-top-btn.is-shown { opacity: 0.9; pointer-events: auto; transform: translate(-50%, 0); }
+  .to-top-btn svg { width: 16px; height: 16px; fill: var(--white); }
   body.sp-nav-open .to-top-btn { opacity: 0 !important; pointer-events: none !important; }
 }
 </style>
@@ -2485,7 +2487,7 @@ body.sp-nav-open .float-btn { opacity: 0 !important; pointer-events: none !impor
 
 <!-- スマホのみ：ページ上部へ戻る小さなボタン（#scroll-root 構造のため iPhone の上部タップで戻れない代わり） -->
 <button type="button" class="to-top-btn" id="to-top" aria-label="ページの先頭へ戻る">
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7l-6 6 1.4 1.4L12 9.8l4.6 4.6L18 13z"/></svg>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7l-6 6 1.4 1.4L12 9.8l4.6 4.6L18 13z"/></svg>TOP
 </button>
 <!-- 追従ENTRYボタン（大口LP bulk.mame-kawamura.com の float-btn と同じデザイン） -->
 <a href="#entry" class="float-btn" id="float-entry" aria-label="応募フォームへ">
@@ -4233,15 +4235,36 @@ const ENTRY_ENDPOINT = /(github\.io|^localhost|^127\.0\.0\.1)/.test(location.hos
 </script>
 
 <script>
-// スマホのみ：1画面分スクロールしたら「上へ戻る」ボタンを出し、押すと一瞬で先頭へ
+// スマホのみ：1画面分より下で「上にスクロールし始めた」ときだけ上へ戻るボタンを出す。押すと一瞬で先頭へ
 (function() {
   const btn = document.getElementById('to-top');
   const root = document.getElementById('scroll-root');
+  const hdr = document.querySelector('header.recruit-header');
   if (!btn || !root) return;
-  function update() { btn.classList.toggle('is-shown', root.scrollTop > window.innerHeight); }
-  root.addEventListener('scroll', update, { passive: true });
-  update();
-  btn.addEventListener('click', function() { root.scrollTo({ top: 0, behavior: 'instant' }); });
+  let lastY = root.scrollTop;
+  let hideTimer = null;
+  function setHeaderVar() { if (hdr) document.documentElement.style.setProperty('--hdr-h', hdr.offsetHeight + 'px'); }
+  setHeaderVar();
+  window.addEventListener('resize', setHeaderVar);
+  root.addEventListener('scroll', function() {
+    const y = root.scrollTop;
+    const goingUp = y < lastY - 4;
+    const goingDown = y > lastY + 4;
+    if (y < window.innerHeight) {
+      btn.classList.remove('is-shown');
+    } else if (goingUp) {
+      btn.classList.add('is-shown');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(function() { btn.classList.remove('is-shown'); }, 2500);
+    } else if (goingDown) {
+      btn.classList.remove('is-shown');
+    }
+    if (goingUp || goingDown) lastY = y;
+  }, { passive: true });
+  btn.addEventListener('click', function() {
+    root.scrollTo({ top: 0, behavior: 'instant' });
+    btn.classList.remove('is-shown');
+  });
 })();
 </script>
 </body>

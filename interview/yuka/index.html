@@ -762,6 +762,25 @@ header.recruit-header, header.recruit-header.scrolled {
   .schedule-section .schedule-note { margin-top: 72px; }
 }
 
+
+/* タイムライン：縦線と丸の中心を一致させる（丸は枠線込みのサイズで中央揃え）、線を少し濃く */
+.schedule-list::before { left: 100px; width: 2px; transform: translateX(-50%); background: rgba(156,98,64,0.35); }
+.schedule-item::before { box-sizing: border-box; width: 16px; height: 16px; left: 100px; top: 5px; transform: translateX(-50%); }
+@media (max-width: 768px) {
+  .schedule-list::before { left: 80px; }
+  .schedule-item::before { left: 80px; }
+}
+
+/* タイムライン：線を最初の丸の中心〜最後の丸の中心に収める（丸と丸の間を項目ごとにつなぐ） */
+.schedule-list::before { display: none; }
+.schedule-item:not(:last-child)::after {
+  content: ''; position: absolute; left: 100px; top: 13px;
+  width: 2px; height: calc(100% + 36px); transform: translateX(-50%);
+  background: rgba(156,98,64,0.35); z-index: 0;
+}
+@media (max-width: 768px) {
+  .schedule-item:not(:last-child)::after { left: 80px; }
+}
 </style>
 </head>
 <body>
