@@ -51,6 +51,32 @@ function signature() {
   return "甘納豆かわむら 採用担当\nTEL：" . SHOP_TEL . "\nMAIL：" . FROM_ADDRESS . "\n";
 }
 
+// 応募の控え：公開フォルダの外のCSVに1行ずつ追記する（メールを消しても記録が残るように）。
+// Excel でそのまま開けるよう UTF-8（BOM付き）。書けなくても応募者の送信は止めない
+function save_entry($row) {
+  $dir = dirname(dirname(dirname(__DIR__))) . '/recruit_private';
+  $file = $dir . '/entries.csv';
+  if (!is_dir($dir) || !is_writable($dir) || (is_file($file) && !is_writable($file))) return false;
+  $isNew = !is_file($file);
+  $fp = @fopen($file, 'a');
+  if (!$fp) return false;
+  $ok = flock($fp, LOCK_EX);
+  if ($ok) {
+    if ($isNew || filesize($file) === 0) {
+      fwrite($fp, "\xEF\xBB\xBF");
+      fputcsv($fp, array_keys($row));
+    }
+    // 先頭が = + - @ のセルは Excel で式として動くので、' を付けて文字として扱わせる
+    $safe = array_map(function ($v) { return preg_match('/^[=+\-@]/u', $v) ? "'" . $v : $v; }, array_values($row));
+    $ok = fputcsv($fp, $safe) !== false;
+    fflush($fp);
+    flock($fp, LOCK_UN);
+  }
+  fclose($fp);
+  if ($isNew) @chmod($file, 0600);
+  return $ok;
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') respond(false, 'method', 405);
 
 $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
@@ -118,6 +144,18 @@ $summary =
   . "■ 志望動機・ご質問：\n" . $dash($d['message']) . "\n";
 
 $now = date('Y年n月j日 H:i');
+// 受付ID：通知メールとCSVの行を突き合わせるための番号
+$entryId = date('Ymd-His') . '-' . substr(md5(uniqid('', true)), 0, 4);
+
+// メールより先に控えを保存する（通知メールが失敗しても応募の記録は残る）
+$saved = save_entry(array(
+  '受付ID' => $entryId, '受付日時' => date('Y-m-d H:i:s'), '応募職種' => $job,
+  'お名前' => $d['name'], 'ふりがな' => $d['kana'], '電話番号' => $d['tel'], 'メールアドレス' => $d['email'],
+  '現在の状況' => $status, '応募区分' => $d['category'], '希望入社時期' => $d['start'],
+  '学校名・製菓経験' => $d['shift'], '知ったきっかけ' => $d['source'], '志望動機・ご質問' => $d['message'],
+  'ページ' => $d['page'], 'utm_source' => $d['utm_source'], 'utm_medium' => $d['utm_medium'],
+  'utm_campaign' => $d['utm_campaign'], '送信元IP' => $ip,
+));
 $fromHeader = 'From: ' . mb_encode_mimeheader(FROM_NAME) . ' <' . FROM_ADDRESS . '>';
 $envelope = '-f' . FROM_ADDRESS;
 
@@ -125,7 +163,10 @@ $envelope = '-f' . FROM_ADDRESS;
 $adminSubject = '【採用応募】' . $job . '｜' . $d['name'] . '様';
 $adminBody =
     "採用サイトから応募がありました。\n"
-  . "受付日時：" . $now . "\n\n"
+  . "受付日時：" . $now . "\n"
+  . "受付ID：" . $entryId . "\n"
+  . ($saved ? '' : "※サーバーへの控え（entries.csv）の保存に失敗しました。このメールを保管してください。\n")
+  . "\n"
   . $summary . "\n"
   . "---------------------------------\n"
   . "ページ：" . $dash($d['page_label']) . "（" . $dash($d['page']) . "）\n"
