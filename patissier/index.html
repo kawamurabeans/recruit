@@ -4119,7 +4119,24 @@ const ENTRY_ENDPOINT = /(github\.io|^localhost|^127\.0\.0\.1)/.test(location.hos
     category: function(v) { return v ? '' : '応募区分を選択してください。'; },
     agree: function(v) { return v ? '' : '個人情報の取り扱いへの同意が必要です。'; }
   };
+  // 全角で入力されても通るように、確認前に半角・ひらがなへそろえる
+  // （スマホの日本語入力では電話番号が全角になりやすい）
+  function toHalfWidth(v) {
+    return v.replace(/[！-～]/g, function(c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
+            .replace(/[－−‐―ー]/g, '-').replace(/　/g, ' ');
+  }
+  const NORMALIZE = {
+    tel: function(v) { return toHalfWidth(v); },
+    email: function(v) { return toHalfWidth(v).replace(/\s+/g, ''); },
+    kana: function(v) { return v.replace(/[ァ-ヶ]/g, function(c) { return String.fromCharCode(c.charCodeAt(0) - 0x60); }); }
+  };
+  function normalize(name) {
+    if (!NORMALIZE[name]) return;
+    const el = form.querySelector('[name="' + name + '"]');
+    if (el && el.value) el.value = NORMALIZE[name](el.value);
+  }
   function validate(name) {
+    normalize(name);
     const row = form.querySelector('[data-field="' + name + '"]');
     const err = RULES[name](val(name));
     if (row) {

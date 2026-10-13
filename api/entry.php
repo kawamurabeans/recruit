@@ -7,7 +7,8 @@
  * - 応答は JSON（{"ok":true} / {"ok":false,"error":"..."}）。フォーム側の fetch が受け取る
  */
 
-mb_language('Japanese');
+// メールは UTF-8 で送る。'Japanese'（ISO-2022-JP）だと 髙・𠮷・①・㈱・絵文字・半角カナ・— が「?」に化ける
+mb_language('uni');
 mb_internal_encoding('UTF-8');
 header('Content-Type: application/json; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');
@@ -84,6 +85,11 @@ $d = array(
   'utm_campaign' => field('utm_campaign', 100),
 );
 
+// 全角の電話番号・メールアドレス、カタカナのふりがなを受け付けられるようにそろえる
+$d['tel'] = str_replace(array('－', '−', '‐', '―', 'ー'), '-', mb_convert_kana($d['tel'], 'as'));
+$d['email'] = preg_replace('/\s+/u', '', mb_convert_kana($d['email'], 'as'));
+$d['kana'] = mb_convert_kana($d['kana'], 'HVcs');
+
 // フォーム側と同じ必須チェック
 $telDigits = preg_replace('/\D/', '', $d['tel']);
 if ($d['name'] === ''
@@ -97,7 +103,7 @@ if ($d['name'] === ''
 
 $job = $d['job'] !== '' ? $d['job'] : '採用';
 $status = $d['status'] . ($d['status_other'] !== '' ? '（' . $d['status_other'] . '）' : '');
-$dash = function ($v) { return $v !== '' ? $v : '—'; };
+$dash = function ($v) { return $v !== '' ? $v : '（未入力）'; };
 
 $summary =
     "■ 応募職種：" . $job . "\n"
