@@ -2151,6 +2151,7 @@ footer a:hover { color: var(--gold); }
 .entry-steps { list-style: none; display: flex; justify-content: center; gap: 0; margin-bottom: 40px; counter-reset: none; }
 .entry-steps li {
   display: flex; align-items: center; gap: 10px; color: #b9a99a; font-size: 0.85em; font-weight: bold; letter-spacing: 0.1em;
+  white-space: nowrap; /* スマホ幅で「入／力」のように縦に折れないように */
 }
 .entry-steps li + li::before { content: ""; width: 56px; height: 2px; background: var(--gray); margin: 0 14px; }
 .entry-steps li span {
@@ -2248,8 +2249,9 @@ footer a:hover { color: var(--gold); }
 @media (max-width: 768px) {
   .entry-box { padding: 30px 18px 30px; border-radius: 16px; }
   .entry-steps { margin-bottom: 30px; }
+  .entry-steps li { gap: 6px; letter-spacing: 0.05em; }
   .entry-steps li + li::before { width: 22px; margin: 0 8px; }
-  .entry-steps li span { width: 28px; height: 28px; }
+  .entry-steps li span { width: 28px; height: 28px; flex-shrink: 0; }
   .entry-choices { grid-template-columns: 1fr; }
   .entry-group legend { font-size: 1em; }
   .entry-confirm-list { grid-template-columns: 1fr; }
