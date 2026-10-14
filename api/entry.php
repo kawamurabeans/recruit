@@ -12,6 +12,7 @@ mb_language('uni');
 mb_internal_encoding('UTF-8');
 header('Content-Type: application/json; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');
+require __DIR__ . '/csv.inc.php';
 
 const TO_ADDRESS   = 'work@mame-kawamura.com';
 const FROM_ADDRESS = 'work@mame-kawamura.com';
@@ -70,12 +71,9 @@ function save_entry($row) {
   $ok = flock($fp, LOCK_EX);
   if ($ok) {
     if ($isNew || filesize($file) === 0) {
-      fwrite($fp, "\xEF\xBB\xBF");
-      fputcsv($fp, array_keys($row));
+      fwrite($fp, "\xEF\xBB\xBF" . kw_csv_line(array_keys($row)));
     }
-    // 先頭が = + - @ のセルは Excel で式として動くので、' を付けて文字として扱わせる
-    $safe = array_map(function ($v) { return preg_match('/^[=+\-@]/u', $v) ? "'" . $v : $v; }, array_values($row));
-    $ok = fputcsv($fp, $safe) !== false;
+    $ok = fwrite($fp, kw_csv_line(array_map('kw_csv_guard', array_values($row)))) !== false;
     fflush($fp);
     flock($fp, LOCK_UN);
   }

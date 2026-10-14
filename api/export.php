@@ -11,6 +11,7 @@
 header('Content-Type: application/json; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');
 header('Cache-Control: no-store');
+require __DIR__ . '/csv.inc.php';
 
 function respond($data, $status = 200) {
   http_response_code($status);
@@ -37,16 +38,19 @@ if (!is_file($file)) respond(array('ok' => true, 'rows' => array()));
 $fp = fopen($file, 'r');
 if (!$fp) respond(array('ok' => false, 'error' => 'read'), 500);
 flock($fp, LOCK_SH);
-$header = fgetcsv($fp);
-if ($header && isset($header[0])) $header[0] = preg_replace('/^\xEF\xBB\xBF/', '', $header[0]);
+$all = kw_csv_parse(stream_get_contents($fp));
+flock($fp, LOCK_UN);
+fclose($fp);
+
+$header = array_shift($all);
 $rows = array();
-while ($header && ($line = fgetcsv($fp)) !== false) {
-  if (count($line) !== count($header)) continue;
+$broken = 0; // 列数が合わない行。黙って捨てずに件数を返し、シート側でエラーとして知らせる
+foreach ($all as $line) {
+  if (count($line) === 1 && $line[0] === '') continue; // 空行
+  if (!$header || count($line) !== count($header)) { $broken++; continue; }
   $row = array_combine($header, $line);
   if ($since !== '' && strcmp(substr($row['受付ID'], 0, 8), $since) < 0) continue;
   $rows[] = $row;
 }
-flock($fp, LOCK_UN);
-fclose($fp);
 
-respond(array('ok' => true, 'rows' => $rows));
+respond(array('ok' => true, 'rows' => $rows, 'broken' => $broken));
