@@ -4213,13 +4213,20 @@ const ENTRY_ENDPOINT = /(github\.io|^localhost|^127\.0\.0\.1)/.test(location.hos
     try {
       const res = await fetch(ENTRY_ENDPOINT, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
       const json = await res.json().catch(function() { return {}; });
-      if (!res.ok || !json.ok) throw new Error(json.error || 'send failed');
+      if (!res.ok || !json.ok) { const e = new Error(json.error || 'send failed'); e.status = res.status; e.code = json.error; throw e; }
       confirmView.hidden = true; doneView.hidden = false; setStep(3);
       scrollToEl(box, 80);
     } catch (err) {
       sendBtn.disabled = false; sendBtn.innerHTML = label;
       sendMsg.classList.add('is-error');
-      sendMsg.textContent = '送信できませんでした。時間をおいて再度お試しいただくか、お電話（076-282-7007）にてご連絡ください。';
+      if (err.code === 'rate') {
+        sendMsg.textContent = '続けて送信されたため、受け付けを一時的に止めています。1分ほどおいてから、もう一度お試しください。';
+      } else if (!err.code && (err.status === 403 || err.status === 501)) {
+        // サーバーの防御機能が、攻撃に使われる記号の並びと見なして止めたとき
+        sendMsg.textContent = 'ご入力内容に、安全のため送信できない記号の組み合わせ（「; id」「../」など）が含まれている可能性があります。記号を減らして「修正する」から再度お試しいただくか、お電話（076-282-7007）にてご連絡ください。';
+      } else {
+        sendMsg.textContent = '送信できませんでした。時間をおいて再度お試しいただくか、お電話（076-282-7007）にてご連絡ください。';
+      }
     }
   });
 })();

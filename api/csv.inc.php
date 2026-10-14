@@ -1,6 +1,6 @@
 <?php
 /**
- * 応募の控え（entries.csv）の書き方・読み方。entry.php と export.php から読み込む
+ * 応募の控え（entries.csv）の書き方・読み方。entry.php から読み込む（kw_csv_parse は控えを読み出すとき用）
  *
  * PHP 7.3 の fputcsv / fgetcsv は \ を特別扱いするため、\" を含む文や \ で終わる文で
  * 区切りが崩れる（Excel・Googleスプレッドシートと読み方が食い違う、行が読めなくなる）。
