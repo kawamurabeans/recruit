@@ -25,9 +25,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') respond(array('ok' => false), 404);
 
 $tokenFile = $private . '/export_token.txt';
 $expected = is_readable($tokenFile) ? trim((string) file_get_contents($tokenFile)) : '';
-$given = isset($_POST['token']) ? (string) $_POST['token'] : '';
+$raw = isset($_POST['token']) ? (string) $_POST['token'] : '';
+// 貼り付け時に紛れ込みやすい前後の空白・改行は取り除いてから照合する
+$given = trim($raw);
 // 合言葉が未設定・不一致のときは、存在しないページと同じ応答にする
-if (strlen($expected) < 32 || !hash_equals($expected, $given)) respond(array('ok' => false), 404);
+if (strlen($expected) < 32 || !hash_equals($expected, $given)) {
+  // 原因を追えるよう、失敗の様子だけを非公開フォルダに残す（合言葉そのものは記録しない）
+  @file_put_contents($private . '/export_fail.log', date('Y-m-d H:i:s') . ' len=' . strlen($raw)
+    . ' trimmed_len=' . strlen($given) . ' ua=' . substr(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 80)
+    . "\n", FILE_APPEND | LOCK_EX);
+  respond(array('ok' => false), 404);
+}
 
 $since = isset($_POST['since']) ? preg_replace('/\D/', '', (string) $_POST['since']) : '';
 $since = substr($since, 0, 8);
